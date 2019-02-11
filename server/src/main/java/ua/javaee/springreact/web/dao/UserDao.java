@@ -7,5 +7,8 @@ import ua.javaee.springreact.web.entity.User;
  */
 public interface UserDao {
     void userReg(User userModel);
+
     boolean isUserExists(String login);
+
+    User getUserByLogin(String login);
 }

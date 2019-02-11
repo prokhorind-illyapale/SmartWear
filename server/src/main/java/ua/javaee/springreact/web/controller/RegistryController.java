@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.javaee.springreact.web.facade.UserRegistryFacade;
+import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.RegistryUserForm;
 
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ public class RegistryController {
     private static final String VALIDATION_TYPE_ERROR = "validationType";
 
     @Autowired
-    private UserRegistryFacade userRegistryFacade;
+    private UserFacade userRegistryFacade;
 
     @RequestMapping(value = "/registry", method = POST)
     public ResponseEntity registry(@Valid @RequestBody RegistryUserForm regForm, BindingResult bindingResult) {

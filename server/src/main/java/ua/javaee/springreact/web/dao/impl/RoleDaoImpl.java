@@ -14,11 +14,17 @@ import javax.persistence.PersistenceContext;
 public class RoleDaoImpl implements RoleDao {
 
     private static final String GET_ROLE_BY_NAME = "Select r From Role r  where r.name=:name";
+    private static final String GET_ROLE_BY_USER_LOGIN = "SELECT r From Role r , User u where u.login=:login and u.role.roleId = r.roleId";
     @PersistenceContext
     private EntityManager entityManager;
 
     public Role getRoleByName(String name) {
         return (Role) entityManager.createQuery(GET_ROLE_BY_NAME).setParameter("name",name ).getSingleResult();
+    }
+
+    @Override
+    public Role getRoleByLogin(String login) {
+        return (Role) entityManager.createQuery(GET_ROLE_BY_USER_LOGIN).setParameter("login", login).getSingleResult();
     }
 
     public void setEntityManager(EntityManager entityManager) {

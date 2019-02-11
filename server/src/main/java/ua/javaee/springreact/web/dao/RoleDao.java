@@ -8,4 +8,6 @@ import ua.javaee.springreact.web.entity.Role;
 public interface RoleDao {
 
     Role getRoleByName(String name);
+
+    Role getRoleByLogin(String login);
 }
