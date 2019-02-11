@@ -5,7 +5,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import ua.javaee.springreact.web.dao.RoleDao;
 import ua.javaee.springreact.web.data.UserData;
-import ua.javaee.springreact.web.entity.Role;
 import ua.javaee.springreact.web.form.RegistryUserForm;
 
 /**
@@ -27,6 +26,7 @@ public class RegUserFormToUserDataPopulator implements AbstractPopulator<Registr
         target.setLogin(source.getLogin());
         target.setPassword(bCryptPasswordEncoder.encode(source.getPassword()));
         target.setUserRole(roleDao.getRoleByName(ROLE_NAME));
+        target.setCity(source.getCity());
     }
 
     public void setRoleDao(RoleDao roleDao) {

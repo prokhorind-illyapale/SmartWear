@@ -10,15 +10,17 @@ public class UserData {
     private String email;
     private String login;
     private String password;
+    private String city;
     private Role userRole;
 
     public UserData() {
     }
 
-    public UserData(String email, String login, String password, Role userRole) {
+    public UserData(String email, String login, String password, String city, Role userRole) {
         this.email = email;
         this.login = login;
         this.password = password;
+        this.city = city;
         this.userRole = userRole;
     }
 
@@ -52,5 +54,13 @@ public class UserData {
 
     public Role getUserRole() {
         return userRole;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
     }
 }

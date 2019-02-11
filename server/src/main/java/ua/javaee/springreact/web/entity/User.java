@@ -1,10 +1,8 @@
 package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
-import static javax.persistence.GenerationType.*;
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * Created by kleba on 06.02.2019.
@@ -22,6 +20,8 @@ public class User {
     private String login;
     @Column
     private String password;
+    @Column
+    private String city;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -29,11 +29,12 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, Role role, String login) {
+    public User(String email, String login, String password, String city, Role role) {
         this.email = email;
-        this.password = password;
-        this.role = role;
         this.login = login;
+        this.password = password;
+        this.city = city;
+        this.role = role;
     }
 
     public void setPassword(String password) {
@@ -74,5 +75,13 @@ public class User {
 
     public String getLogin() {
         return login;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
