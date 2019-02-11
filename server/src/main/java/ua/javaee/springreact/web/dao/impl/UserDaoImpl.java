@@ -15,10 +15,11 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private static final String IS_USER_EXISTS = "SELECT count(u) from User u WHERE u.login=:login";
+    private static final String IS_USER_EXISTS_QUERY = "SELECT count(u) from User u WHERE u.login=:login";
     private static final long SQL_TRUE = 1l;
     private static final String USER_WITH_NAME_WAS_NOT_FOUND = "User with name {} was not found";
-    private static final String USER_WITH_NAME_ALREADY_EXISTS = "User with name {} already exists";
+    private static final String USER_WITH_NAME_ALREADY_EXISTS = "User with name {} was found";
+    private static final String GET_USER_BY_ID_QUERY = "SELECT u from User u WHERE u.login=:login";
     private Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
     @PersistenceContext
     private EntityManager entityManager;
@@ -30,7 +31,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean isUserExists(String login) {
-        Long exists = (Long) entityManager.createQuery(IS_USER_EXISTS)
+        Long exists = (Long) entityManager.createQuery(IS_USER_EXISTS_QUERY)
                 .setParameter("login", login)
                 .getSingleResult();
         if (exists == SQL_TRUE) {
@@ -40,5 +41,13 @@ public class UserDaoImpl implements UserDao {
             logger.info(USER_WITH_NAME_WAS_NOT_FOUND,login);
             return false;
         }
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        User user = (User) entityManager.createQuery(GET_USER_BY_ID_QUERY)
+                .setParameter("login", login)
+                .getSingleResult();
+        return user;
     }
 }

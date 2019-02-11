@@ -9,13 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static ua.javaee.springreact.web.util.error.ErrorTypes.VALIDATION_TYPE_ERROR;
 
 /**
  * Created by kleba on 11.02.2019.
  */
 public class ErrorHelper {
-
-    private static final String VALIDATION_TYPE_ERROR = "validationType";
 
     public static ResponseEntity<List<Error>> processingErrors(BindingResult bindingResult) {
         List<Error> errors = bindingResult.getAllErrors().stream()
