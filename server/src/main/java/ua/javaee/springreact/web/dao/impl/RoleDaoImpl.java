@@ -1,10 +1,13 @@
 package ua.javaee.springreact.web.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ua.javaee.springreact.web.dao.RoleDao;
 import ua.javaee.springreact.web.entity.Role;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -18,13 +21,22 @@ public class RoleDaoImpl implements RoleDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private Logger logger = LoggerFactory.getLogger(RoleDaoImpl.class);
+
     public Role getRoleByName(String name) {
         return (Role) entityManager.createQuery(GET_ROLE_BY_NAME).setParameter("name",name ).getSingleResult();
     }
 
     @Override
     public Role getRoleByLogin(String login) {
-        return (Role) entityManager.createQuery(GET_ROLE_BY_USER_LOGIN).setParameter("login", login).getSingleResult();
+        Role role = null;
+        try {
+            role = (Role) entityManager.createQuery(GET_ROLE_BY_USER_LOGIN).setParameter("login", login).getSingleResult();
+            return role;
+        } catch (NoResultException e) {
+            logger.info("Can't find role for user: {}", login);
+        }
+        return role;
     }
 
     public void setEntityManager(EntityManager entityManager) {

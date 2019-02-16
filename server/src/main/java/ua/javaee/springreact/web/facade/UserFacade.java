@@ -11,7 +11,9 @@ public interface UserFacade {
     void userReg(RegistryUserForm userForm);
     boolean isUserExists(String login);
 
-    boolean isUserHasRights(String login);
+    boolean isUserHasAdminRights(String login);
 
     UserData getUserByLogin(String login);
+
+    void deleteUserByLogin(String login);
 }

@@ -14,6 +14,8 @@ import ua.javaee.springreact.web.populator.UserDataToUserFormPopulator;
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.VALIDATION_TYPE_ERROR;
@@ -32,9 +34,9 @@ public class UserController {
     @Autowired
     private UserDataToUserFormPopulator userDataToUserFormPopulator;
 
-    @RequestMapping(value = "/get/{login}")
+    @RequestMapping(value = "/get/{login}", method = GET)
     public ResponseEntity<?> getUserByLogin(@PathVariable("login") String login, Principal principal) {
-        if (principal.getName().equalsIgnoreCase(login) || userFacade.isUserHasRights(login)) {
+        if (isUserHasRights(login, principal)) {
             if (userFacade.isUserExists(login)) {
                 UserData userData = userFacade.getUserByLogin(login);
                 UserForm userForm = new UserForm();
@@ -47,4 +49,24 @@ public class UserController {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + login, PERMISSION_TYPE_ERROR);
         }
     }
+
+    @RequestMapping(value = "/delete/{login}", method = DELETE)
+    public ResponseEntity<?> deleteUserByAdmin(@PathVariable("login") String login, Principal principal) {
+        if (isUserHasRights(login, principal)) {
+            if (userFacade.isUserExists(login)) {
+                userFacade.deleteUserByLogin(login);
+                return new ResponseEntity(OK);
+            } else {
+                return processingErrors(USER_NOT_FOUND + login, VALIDATION_TYPE_ERROR);
+            }
+        } else {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + login, PERMISSION_TYPE_ERROR);
+        }
+    }
+
+    private boolean isUserHasRights(String login, Principal principal) {
+        return principal.getName().equalsIgnoreCase(login) || userFacade.isUserHasAdminRights(principal.getName());
+    }
+
+
 }

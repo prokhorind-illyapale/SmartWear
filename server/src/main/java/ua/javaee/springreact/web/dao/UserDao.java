@@ -11,4 +11,6 @@ public interface UserDao {
     boolean isUserExists(String login);
 
     User getUserByLogin(String login);
+
+    void deleteUserByLogin(String login);
 }

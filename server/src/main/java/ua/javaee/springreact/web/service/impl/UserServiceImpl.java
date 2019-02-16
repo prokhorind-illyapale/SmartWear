@@ -48,6 +48,12 @@ public class UserServiceImpl implements UserService {
         return roleDao.getRoleByLogin(login);
     }
 
+    @Override
+    @Transactional
+    public void deleteUserByLogin(String login) {
+        userDao.deleteUserByLogin(login);
+    }
+
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
