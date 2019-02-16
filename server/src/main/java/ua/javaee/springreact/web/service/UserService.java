@@ -4,6 +4,8 @@ import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.Role;
 import ua.javaee.springreact.web.entity.User;
 
+import java.util.List;
+
 /**
  * Created by kleba on 09.02.2019.
  */
@@ -14,6 +16,8 @@ public interface UserService {
     User getUserByLogin(String login);
 
     Role getRoleByLogin(String login);
+
+    List<User> getAllUsers();
 
     void deleteUserByLogin(String login);
 }

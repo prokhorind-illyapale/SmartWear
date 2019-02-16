@@ -12,6 +12,8 @@ import ua.javaee.springreact.web.form.UserForm;
 import ua.javaee.springreact.web.populator.UserDataToUserFormPopulator;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -47,6 +49,22 @@ public class UserController {
             }
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + login, PERMISSION_TYPE_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/get/all", method = GET)
+    public ResponseEntity<?> getAllUsers(Principal principal) {
+        if (userFacade.isUserHasAdminRights(principal.getName())) {
+            List<UserData> users = userFacade.getAllUsers();
+            List<UserForm> userForms = new ArrayList<>();
+            for (UserData user : users) {
+                UserForm userForm = new UserForm();
+                userDataToUserFormPopulator.populate(user, userForm);
+                userForms.add(userForm);
+            }
+            return new ResponseEntity(userForms, OK);
+        } else {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
     }
 
