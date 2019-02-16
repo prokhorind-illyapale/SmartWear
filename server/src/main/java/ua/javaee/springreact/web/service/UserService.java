@@ -14,4 +14,6 @@ public interface UserService {
     User getUserByLogin(String login);
 
     Role getRoleByLogin(String login);
+
+    void deleteUserByLogin(String login);
 }

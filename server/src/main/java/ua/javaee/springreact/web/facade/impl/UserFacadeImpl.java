@@ -1,5 +1,7 @@
 package ua.javaee.springreact.web.facade.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.javaee.springreact.web.data.RoleData;
@@ -20,6 +22,7 @@ import ua.javaee.springreact.web.service.UserService;
 @Component
 public class UserFacadeImpl implements UserFacade {
 
+    private static final String ADMIN = "ADMIN";
     @Autowired(required = true)
     private RegUserFormToUserDataPopulator reguserFormToUserDataPopulator;
     @Autowired(required = true)
@@ -29,6 +32,7 @@ public class UserFacadeImpl implements UserFacade {
     @Autowired(required = true)
     private UserService userService;
 
+    private Logger logger = LoggerFactory.getLogger(UserFacadeImpl.class);
 
     @Override
     public void userReg(RegistryUserForm userForm) {
@@ -43,7 +47,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public boolean isUserHasRights(String login) {
+    public boolean isUserHasAdminRights(String login) {
         Role role = userService.getRoleByLogin(login);
         if (role == null) {
             return false;
@@ -51,7 +55,7 @@ public class UserFacadeImpl implements UserFacade {
         RoleData roleData = new RoleData();
         roleToRoleDataPopulator.populate(role, roleData);
 
-        if (roleData.getRoleName().equalsIgnoreCase("ADMIN")) {
+        if (roleData.getRoleName().equalsIgnoreCase(ADMIN)) {
             return true;
         } else {
             return false;
@@ -68,6 +72,12 @@ public class UserFacadeImpl implements UserFacade {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        userService.deleteUserByLogin(login);
+        logger.info("User {} was deleted.", login);
     }
 
 
