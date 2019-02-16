@@ -3,6 +3,8 @@ package ua.javaee.springreact.web.facade;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.form.RegistryUserForm;
 
+import java.util.List;
+
 /**
  * Created by kleba on 09.02.2019.
  */
@@ -16,4 +18,6 @@ public interface UserFacade {
     UserData getUserByLogin(String login);
 
     void deleteUserByLogin(String login);
+
+    List<UserData> getAllUsers();
 }

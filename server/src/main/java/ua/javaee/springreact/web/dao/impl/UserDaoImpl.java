@@ -8,6 +8,7 @@ import ua.javaee.springreact.web.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Created by kleba on 09.02.2019.
@@ -20,6 +21,7 @@ public class UserDaoImpl implements UserDao {
     private static final String USER_WITH_NAME_WAS_NOT_FOUND = "User with name {} was not found";
     private static final String USER_WITH_NAME_ALREADY_EXISTS = "User with name {} was found";
     private static final String GET_USER_BY_ID_QUERY = "SELECT u from User u WHERE u.login=:login";
+    private static final String GET_ALL_USERS = "SELECT u From User u";
     private static final String DELETE_USER_BY_LOGIN = "DELETE FROM User u WHERE u.login=:login";
     private Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
     @PersistenceContext
@@ -57,5 +59,10 @@ public class UserDaoImpl implements UserDao {
         entityManager.createQuery(DELETE_USER_BY_LOGIN)
                 .setParameter("login", login)
                 .executeUpdate();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return entityManager.createQuery(GET_ALL_USERS).getResultList();
     }
 }

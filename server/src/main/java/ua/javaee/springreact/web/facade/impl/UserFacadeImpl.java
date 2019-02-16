@@ -16,6 +16,9 @@ import ua.javaee.springreact.web.populator.RoleToRoleDataPopulator;
 import ua.javaee.springreact.web.populator.UserToUserDataPopulator;
 import ua.javaee.springreact.web.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kleba on 09.02.2019.
  */
@@ -78,6 +81,18 @@ public class UserFacadeImpl implements UserFacade {
     public void deleteUserByLogin(String login) {
         userService.deleteUserByLogin(login);
         logger.info("User {} was deleted.", login);
+    }
+
+    @Override
+    public List<UserData> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserData> userDataList = new ArrayList<>();
+        for (User user : users) {
+            UserData userData = new UserData();
+            userToUserDataPopulator.populate(user, userData);
+            userDataList.add(userData);
+        }
+        return userDataList;
     }
 
 

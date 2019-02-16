@@ -11,6 +11,8 @@ import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.populator.UserDataToUserModelPopulator;
 import ua.javaee.springreact.web.service.UserService;
 
+import java.util.List;
+
 /**
  * Created by kleba on 09.02.2019.
  */
@@ -46,6 +48,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Role getRoleByLogin(String login) {
         return roleDao.getRoleByLogin(login);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     @Override
