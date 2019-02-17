@@ -65,4 +65,10 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUsers() {
         return entityManager.createQuery(GET_ALL_USERS).getResultList();
     }
+
+    @Override
+    public void updateUser(User user) {
+        entityManager.persist(user);
+        logger.info("User {} was updated", user.getLogin());
+    }
 }
