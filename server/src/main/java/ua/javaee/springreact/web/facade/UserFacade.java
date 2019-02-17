@@ -20,4 +20,6 @@ public interface UserFacade {
     void deleteUserByLogin(String login);
 
     List<UserData> getAllUsers();
+
+    void updateUser(UserData user, String login);
 }

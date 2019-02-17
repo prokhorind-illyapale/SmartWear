@@ -20,4 +20,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     void deleteUserByLogin(String login);
+
+    void updateUser(User user);
 }

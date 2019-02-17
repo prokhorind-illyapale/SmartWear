@@ -2,7 +2,6 @@ package ua.javaee.springreact.web.populator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.javaee.springreact.web.data.RoleData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.form.UserForm;
 
@@ -17,12 +16,9 @@ public class UserDataToUserFormPopulator implements AbstractPopulator<UserData, 
 
     @Override
     public void populate(UserData source, UserForm target) {
-        RoleData roleData = new RoleData();
-        roleToRoleDataPopulator.populate(source.getUserRole(), roleData);
-
         target.setEmail(source.getEmail());
         target.setLogin(source.getLogin());
-        target.setUserRole(roleData);
+        target.setUserRole(source.getUserRole());
         target.setCity(source.getCity());
     }
 }

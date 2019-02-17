@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String USER_ROLE = "USER";
     @Autowired(required = true)
     private UserDao userDao;
     @Autowired(required = true)
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
     public void userReg(UserData userData) {
         User user = new User();
         userDataToUserModelPopulator.populate(userData, user);
+        user.setRole(roleDao.getRoleByName(USER_ROLE));
         userDao.userReg(user);
     }
 
@@ -59,6 +61,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUserByLogin(String login) {
         userDao.deleteUserByLogin(login);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        userDao.updateUser(user);
     }
 
     public void setUserDao(UserDao userDao) {

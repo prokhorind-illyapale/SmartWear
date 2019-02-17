@@ -1,7 +1,5 @@
 package ua.javaee.springreact.web.data;
 
-import ua.javaee.springreact.web.entity.Role;
-
 /**
  * Created by kleba on 09.02.2019.
  */
@@ -11,12 +9,12 @@ public class UserData {
     private String login;
     private String password;
     private String city;
-    private Role userRole;
+    private RoleData userRole;
 
     public UserData() {
     }
 
-    public UserData(String email, String login, String password, String city, Role userRole) {
+    public UserData(String email, String login, String password, String city, RoleData userRole) {
         this.email = email;
         this.login = login;
         this.password = password;
@@ -48,11 +46,11 @@ public class UserData {
         this.password = password;
     }
 
-    public void setUserRole(Role userRole) {
+    public void setUserRole(RoleData userRole) {
         this.userRole = userRole;
     }
 
-    public Role getUserRole() {
+    public RoleData getUserRole() {
         return userRole;
     }
 
