@@ -1,22 +1,16 @@
 package ua.javaee.springreact.web.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import ua.javaee.springreact.web.entity.User;
-
-import java.util.List;
 
 /**
  * Created by kleba on 09.02.2019.
  */
-public interface UserDao {
-    void userReg(User userModel);
+public interface UserDao extends CrudRepository<User, Long> {
 
-    boolean isUserExists(String login);
+    Long countByLogin(String login);
 
-    User getUserByLogin(String login);
+    User findByLogin(String login);
 
-    void deleteUserByLogin(String login);
-
-    List<User> getAllUsers();
-
-    void updateUser(User user);
+    void deleteByLogin(String login);
 }
