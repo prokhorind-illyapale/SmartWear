@@ -14,6 +14,8 @@ import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.lookforms.LookForm;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -31,6 +33,7 @@ public class LookController {
 
     private static final String NO_RIGHTS_FOR_THIS_ACTION = "No rights for this action:";
     private static final String CODE_NOT_FOUND = "Code not found:";
+    private static final String USER_NOT_FOUND = "User not found for login:";
 
     @Autowired
     private LookFacade lookFacade;
@@ -55,6 +58,25 @@ public class LookController {
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/get/all/{login}", method = GET)
+    public ResponseEntity<?> getLooksByLogin(@PathVariable("login") String login, Principal principal) {
+        if (!userFacade.isUserExists(login)) {
+            return processingErrors(USER_NOT_FOUND + login, VALIDATION_TYPE_ERROR);
+        }
+        if (principal.getName().equalsIgnoreCase(login) || userFacade.isUserHasAdminRights(principal.getName())) {
+            List<LookData> looks = lookFacade.findAllUserLooks(login);
+            List<LookForm> forms = new ArrayList<>();
+            for (LookData lookData : looks) {
+                LookForm form = (LookForm) lookDataToFormConverter.convert(lookData);
+                forms.add(form);
+            }
+            return new ResponseEntity<Object>(forms, OK);
+        } else {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
+
     }
 
 

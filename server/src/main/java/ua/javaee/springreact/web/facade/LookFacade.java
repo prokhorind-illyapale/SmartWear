@@ -22,4 +22,6 @@ public interface LookFacade {
     Look findModelByCode(String code);
 
     void deleteLookByCode(String code);
+
+    List<LookData> getLooksByLogin(String login);
 }

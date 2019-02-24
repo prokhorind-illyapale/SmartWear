@@ -65,4 +65,16 @@ public class LookFacadeImpl implements LookFacade {
     public void deleteLookByCode(String code) {
         lookService.deleteLookByCode(code);
     }
+
+    @Override
+    public List<LookData> getLooksByLogin(String login) {
+        List<Look> looks = lookService.findAllUserLooks(login);
+        List<LookData> lookDatas = new ArrayList<>();
+
+        for (Look look : looks) {
+            LookData data = (LookData) lookModelToLookDataConverter.convert(look);
+            lookDatas.add(data);
+        }
+        return lookDatas;
+    }
 }

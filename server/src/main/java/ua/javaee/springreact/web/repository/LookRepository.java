@@ -28,4 +28,7 @@ public interface LookRepository extends JpaRepository<Look, Long> {
     @Modifying
     @Query("DELETE FROM Look k WHERE k.code = :code")
     void deleteLookByCode(String code);
+
+    @Query("SELECT k FROM Look k WHERE  k.user.login = :login")
+    List<Look> getLooksByLogin(String login);
 }
