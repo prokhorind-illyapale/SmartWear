@@ -71,8 +71,4 @@ public class LookServiceImpl implements LookService {
         return lookRepository.isLookPublic(code);
     }
 
-    @Override
-    public List<Look> getLooksByLogin(String login) {
-        return lookRepository.findAllUserLooks(login);
-    }
 }
