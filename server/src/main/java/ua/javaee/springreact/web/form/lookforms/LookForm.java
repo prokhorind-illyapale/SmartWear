@@ -1,7 +1,9 @@
 package ua.javaee.springreact.web.form.lookforms;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,11 +19,12 @@ public class LookForm {
     private BigDecimal maxTemperature;
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
     private Set<UserClothAttributeDataForm> userClothAttributes = new HashSet<>();
+    private List<CommentForm> comments = new ArrayList<>();
 
     public LookForm() {
     }
 
-    public LookForm(String userLogin, String code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes) {
+    public LookForm(String userLogin, String code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes, List<CommentForm> comments) {
         this.userLogin = userLogin;
         this.code = code;
         this.likes = likes;
@@ -31,6 +34,7 @@ public class LookForm {
         this.maxTemperature = maxTemperature;
         this.lookTypes = lookTypes;
         this.userClothAttributes = userClothAttributes;
+        this.comments = comments;
     }
 
     public void setUserLogin(String userLogin) {
@@ -103,5 +107,13 @@ public class LookForm {
 
     public BigDecimal getMinTemperature() {
         return minTemperature;
+    }
+
+    public void setComments(List<CommentForm> comments) {
+        this.comments = comments;
+    }
+
+    public List<CommentForm> getComments() {
+        return comments;
     }
 }

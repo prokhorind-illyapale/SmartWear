@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ua.javaee.springreact.web.converter.AbstractConverter;
+import ua.javaee.springreact.web.data.CommentData;
 import ua.javaee.springreact.web.data.LookData;
+import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.facade.LookFacade;
 import ua.javaee.springreact.web.service.LookService;
+import ua.javaee.springreact.web.service.impl.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,11 @@ public class LookFacadeImpl implements LookFacade {
     @Autowired
     @Qualifier("lookModelToLookDataConverter")
     private AbstractConverter lookModelToLookDataConverter;
+    @Autowired
+    @Qualifier("commentModelToDataConverter")
+    private AbstractConverter commentModelToDataConverter;
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public LookData findByCode(String code) {
@@ -36,6 +44,7 @@ public class LookFacadeImpl implements LookFacade {
         List<LookData> lookDatas = new ArrayList<>();
         for (Look look : looks) {
             LookData lookData = (LookData) lookModelToLookDataConverter.convert(look);
+            lookData.setComments(getCommentDatas(look));
             lookDatas.add(lookData);
         }
         return lookDatas;
@@ -66,15 +75,12 @@ public class LookFacadeImpl implements LookFacade {
         lookService.deleteLookByCode(code);
     }
 
-    @Override
-    public List<LookData> getLooksByLogin(String login) {
-        List<Look> looks = lookService.findAllUserLooks(login);
-        List<LookData> lookDatas = new ArrayList<>();
-
-        for (Look look : looks) {
-            LookData data = (LookData) lookModelToLookDataConverter.convert(look);
-            lookDatas.add(data);
+    private List<CommentData> getCommentDatas(Look source) {
+        List<CommentData> comments = new ArrayList<>();
+        for (Comment c : commentService.findCommentsByLookCode(source.getCode())) {
+            CommentData comment = (CommentData) commentModelToDataConverter.convert(c);
+            comments.add(comment);
         }
-        return lookDatas;
+        return comments;
     }
 }

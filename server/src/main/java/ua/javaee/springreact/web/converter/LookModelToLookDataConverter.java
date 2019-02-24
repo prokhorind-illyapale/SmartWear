@@ -11,6 +11,7 @@ import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.LookType;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.populator.AbstractPopulator;
+import ua.javaee.springreact.web.service.impl.CommentService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,9 @@ public class LookModelToLookDataConverter implements AbstractConverter<LookData,
     @Qualifier("userClothAttributeModelToDataConverter")
     private AbstractConverter userClothAttributeModelToDataConverter;
 
+    @Autowired
+    private CommentService commentService;
+
     @Override
     public LookData convert(Look source) {
         LookData target = new LookData();
@@ -46,6 +50,7 @@ public class LookModelToLookDataConverter implements AbstractConverter<LookData,
         target.setMaxTemperature(source.getMaxTemperature());
         return target;
     }
+
 
     private Set<UserClothAttributeData> getUserClothAttributeDatas(Look source) {
         Set<UserClothAttributeData> uaDatas = new HashSet<>();
