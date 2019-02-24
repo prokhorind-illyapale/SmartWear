@@ -10,16 +10,18 @@ public class UserData {
     private String password;
     private String city;
     private RoleData userRole;
+    private String sex;
 
     public UserData() {
     }
 
-    public UserData(String email, String login, String password, String city, RoleData userRole) {
+    public UserData(String email, String login, String password, String city, RoleData userRole, String sex) {
         this.email = email;
         this.login = login;
         this.password = password;
         this.city = city;
         this.userRole = userRole;
+        this.sex = sex;
     }
 
     public String getEmail() {
@@ -60,5 +62,13 @@ public class UserData {
 
     public String getCity() {
         return city;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
     }
 }

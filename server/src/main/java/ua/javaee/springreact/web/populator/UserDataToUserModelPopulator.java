@@ -20,5 +20,6 @@ public class UserDataToUserModelPopulator implements  AbstractPopulator<UserData
         target.setPassword(source.getPassword());
         target.setRole(userService.getRoleByLogin(source.getLogin()));
         target.setCity(source.getCity());
+        target.setSex(source.getSex());
     }
 }

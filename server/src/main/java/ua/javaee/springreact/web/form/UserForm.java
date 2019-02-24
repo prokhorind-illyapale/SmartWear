@@ -14,7 +14,8 @@ public class UserForm {
     private String login;
     @JsonProperty
     private String city;
-
+    @JsonProperty
+    private String sex;
     private RoleData userRole;
 
     public UserForm() {
@@ -22,10 +23,11 @@ public class UserForm {
 
     ;
 
-    public UserForm(String email, String login, String city, RoleData userRole) {
+    public UserForm(String email, String login, String city, String sex, RoleData userRole) {
         this.email = email;
         this.login = login;
         this.city = city;
+        this.sex = sex;
         this.userRole = userRole;
     }
 
@@ -59,5 +61,13 @@ public class UserForm {
 
     public void setUserRole(RoleData userRole) {
         this.userRole = userRole;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
     }
 }

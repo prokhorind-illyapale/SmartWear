@@ -20,5 +20,6 @@ public class UserDataToUserFormPopulator implements AbstractPopulator<UserData, 
         target.setLogin(source.getLogin());
         target.setUserRole(source.getUserRole());
         target.setCity(source.getCity());
+        target.setSex(source.getSex());
     }
 }

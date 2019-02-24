@@ -21,5 +21,6 @@ public class UserToUserDataPopulator implements AbstractPopulator<User, UserData
         target.setUserRole(roleData);
         target.setLogin(source.getLogin());
         target.setEmail(source.getEmail());
+        target.setSex(source.getSex());
     }
 }
