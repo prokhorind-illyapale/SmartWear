@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class LookForm {
     private String userLogin;
-    private long code;
+    private String code;
     private int likes;
     private boolean isPublic;
     private String description;
@@ -21,7 +21,7 @@ public class LookForm {
     public LookForm() {
     }
 
-    public LookForm(String userLogin, long code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes) {
+    public LookForm(String userLogin, String code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes) {
         this.userLogin = userLogin;
         this.code = code;
         this.likes = likes;
@@ -41,11 +41,11 @@ public class LookForm {
         return userLogin;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

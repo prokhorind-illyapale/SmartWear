@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 public interface LookRepository extends JpaRepository<Look, Long> {
 
-    Look findByCode(Long code);
+    Look findByCode(String code);
 
     @Query(("SELECT k FROM Look k WHERE k.user.login=:login"))
     List<Look> findAllUserLooks(String login);
 
     @Query("SELECT k.isActive FROM Look k WHERE k.code = :code")
-    Boolean isLookPublic(Long code);
+    Boolean isLookPublic(String code);
 
     @Query("SELECT k FROM Look k WHERE k.code = :code AND k.user.login = :login")
-    Look isPrincipalLook(Long code, String login);
+    Look isPrincipalLook(String code, String login);
 }

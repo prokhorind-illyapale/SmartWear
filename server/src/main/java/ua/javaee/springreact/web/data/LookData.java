@@ -10,7 +10,7 @@ import java.util.Set;
 public class LookData {
 
     private UserData user;
-    private long code;
+    private String code;
     private int likes;
     private boolean isActive;
     private String description;
@@ -24,7 +24,7 @@ public class LookData {
 
     ;
 
-    public LookData(UserData user, long code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes, BigDecimal minTemperature, BigDecimal maxTemperature) {
+    public LookData(UserData user, String code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes, BigDecimal minTemperature, BigDecimal maxTemperature) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -44,11 +44,11 @@ public class LookData {
         this.user = user;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

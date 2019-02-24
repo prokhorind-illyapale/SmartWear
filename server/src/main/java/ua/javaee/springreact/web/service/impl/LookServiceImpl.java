@@ -25,7 +25,7 @@ public class LookServiceImpl implements LookService {
 
     @Override
     public Look findByCode(String code) {
-        return lookRepository.findByCode(Long.valueOf(code));
+        return lookRepository.findByCode(code);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LookServiceImpl implements LookService {
 
     public boolean isUserHasLookNumber(String code) {
         try {
-            Look look = lookRepository.findByCode(Long.valueOf(code));
+            Look look = lookRepository.findByCode(code);
             if (!isNull(look)) {
                 return true;
             } else {
@@ -52,7 +52,7 @@ public class LookServiceImpl implements LookService {
 
     @Override
     public boolean isPrincipalLook(String code, String login) {
-        Look look = lookRepository.isPrincipalLook(Long.valueOf(code), login);
+        Look look = lookRepository.isPrincipalLook(code, login);
         if (isNull(look)) {
             return false;
         } else {
@@ -61,6 +61,6 @@ public class LookServiceImpl implements LookService {
     }
 
     public boolean isLookPublic(String code) {
-        return lookRepository.isLookPublic(Long.valueOf(code));
+        return lookRepository.isLookPublic(code);
     }
 }
