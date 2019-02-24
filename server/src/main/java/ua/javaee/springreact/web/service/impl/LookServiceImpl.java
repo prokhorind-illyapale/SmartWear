@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.repository.LookRepository;
 import ua.javaee.springreact.web.service.LookService;
@@ -58,6 +59,12 @@ public class LookServiceImpl implements LookService {
         } else {
             return true;
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteLookByCode(String code) {
+        lookRepository.deleteLookByCode(code);
     }
 
     public boolean isLookPublic(String code) {

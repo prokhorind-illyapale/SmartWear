@@ -18,4 +18,6 @@ public interface LookService {
     boolean isUserHasLookNumber(String code);
 
     boolean isPrincipalLook(String code, String login);
+
+    void deleteLookByCode(String code);
 }

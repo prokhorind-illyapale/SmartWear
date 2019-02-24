@@ -55,4 +55,14 @@ public class LookFacadeImpl implements LookFacade {
     public boolean isPrincipalLook(String code, String login) {
         return lookService.isPrincipalLook(code, login);
     }
+
+    @Override
+    public Look findModelByCode(String code) {
+        return lookService.findByCode(code);
+    }
+
+    @Override
+    public void deleteLookByCode(String code) {
+        lookService.deleteLookByCode(code);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.javaee.springreact.web.converter.AbstractConverter;
 import ua.javaee.springreact.web.data.LookData;
+import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.facade.LookFacade;
 import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.lookforms.LookForm;
@@ -15,6 +16,7 @@ import ua.javaee.springreact.web.form.lookforms.LookForm;
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
@@ -50,6 +52,23 @@ public class LookController {
             LookData lookData = lookFacade.findByCode(code);
             LookForm form = (LookForm) lookDataToFormConverter.convert(lookData);
             return new ResponseEntity<Object>(form, OK);
+        } else {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
+    }
+
+
+    @RequestMapping(value = "/delete/{code}", method = DELETE)
+    public ResponseEntity<?> deleteLookByCode(@PathVariable("code") String code, Principal principal) {
+        if (!lookFacade.isLookNumberExists(code)) {
+
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+
+        if (isUserHasRights(code, principal)) {
+            Look look = lookFacade.findModelByCode(code);
+            lookFacade.deleteLookByCode(look.getCode());
+            return new ResponseEntity(OK);
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
