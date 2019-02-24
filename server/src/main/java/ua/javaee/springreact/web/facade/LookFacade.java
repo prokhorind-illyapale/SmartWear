@@ -1,6 +1,7 @@
 package ua.javaee.springreact.web.facade;
 
 import ua.javaee.springreact.web.data.LookData;
+import ua.javaee.springreact.web.entity.Look;
 
 import java.util.List;
 
@@ -17,4 +18,10 @@ public interface LookFacade {
     boolean isLookNumberExists(String code);
 
     boolean isPrincipalLook(String code, String login);
+
+    Look findModelByCode(String code);
+
+    void deleteLookByCode(String code);
+
+    List<LookData> getLooksByLogin(String login);
 }

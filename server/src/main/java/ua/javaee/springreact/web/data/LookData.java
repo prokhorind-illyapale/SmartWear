@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.data;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,19 +10,21 @@ import java.util.Set;
 public class LookData {
 
     private UserData user;
-    private long code;
+    private String code;
     private int likes;
     private boolean isActive;
     private String description;
     private Set<LookTypeData> lookTypes = new HashSet<>();
     private Set<UserClothAttributeData> userClothAttributes = new HashSet<>();
+    private BigDecimal minTemperature;
+    private BigDecimal maxTemperature;
 
     public LookData() {
     }
 
     ;
 
-    public LookData(UserData user, long code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes) {
+    public LookData(UserData user, String code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes, BigDecimal minTemperature, BigDecimal maxTemperature) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -29,6 +32,8 @@ public class LookData {
         this.description = description;
         this.lookTypes = lookTypes;
         this.userClothAttributes = userClothAttributes;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
     }
 
     public UserData getUser() {
@@ -39,11 +44,11 @@ public class LookData {
         this.user = user;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -85,5 +90,21 @@ public class LookData {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public void setMinTemperature(BigDecimal minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public void setMaxTemperature(BigDecimal maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public BigDecimal getMinTemperature() {
+        return minTemperature;
+    }
+
+    public BigDecimal getMaxTemperature() {
+        return maxTemperature;
     }
 }

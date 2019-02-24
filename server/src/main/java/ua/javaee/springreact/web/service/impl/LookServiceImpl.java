@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.repository.LookRepository;
 import ua.javaee.springreact.web.service.LookService;
@@ -25,7 +26,7 @@ public class LookServiceImpl implements LookService {
 
     @Override
     public Look findByCode(String code) {
-        return lookRepository.findByCode(Long.valueOf(code));
+        return lookRepository.findByCode(code);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class LookServiceImpl implements LookService {
 
     public boolean isUserHasLookNumber(String code) {
         try {
-            Look look = lookRepository.findByCode(Long.valueOf(code));
+            Look look = lookRepository.findByCode(code);
             if (!isNull(look)) {
                 return true;
             } else {
@@ -52,7 +53,7 @@ public class LookServiceImpl implements LookService {
 
     @Override
     public boolean isPrincipalLook(String code, String login) {
-        Look look = lookRepository.isPrincipalLook(Long.valueOf(code), login);
+        Look look = lookRepository.isPrincipalLook(code, login);
         if (isNull(look)) {
             return false;
         } else {
@@ -60,7 +61,18 @@ public class LookServiceImpl implements LookService {
         }
     }
 
+    @Override
+    @Transactional
+    public void deleteLookByCode(String code) {
+        lookRepository.deleteLookByCode(code);
+    }
+
     public boolean isLookPublic(String code) {
-        return lookRepository.isLookPublic(Long.valueOf(code));
+        return lookRepository.isLookPublic(code);
+    }
+
+    @Override
+    public List<Look> getLooksByLogin(String login) {
+        return lookRepository.findAllUserLooks(login);
     }
 }

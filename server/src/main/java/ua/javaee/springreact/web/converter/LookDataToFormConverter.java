@@ -33,9 +33,11 @@ public class LookDataToFormConverter implements AbstractConverter<LookForm, Look
         target.setCode(source.getCode());
         target.setLikes(source.getLikes());
         target.setPublic(source.isActive());
-        target.setUser(source.getUser());
+        target.setUserLogin(source.getUser().getLogin());
         target.setLookTypes(getLookTypeDataForms(source));
         target.setUserClothAttributes(getUserClothAttributeDataForms(source));
+        target.setMinTemperature(source.getMinTemperature());
+        target.setMaxTemperature(source.getMaxTemperature());
         return target;
     }
 

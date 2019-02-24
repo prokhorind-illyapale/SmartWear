@@ -1,6 +1,7 @@
 package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,13 +21,17 @@ public class Look {
     @JoinColumn(name = "user_id")
     private User user;
     @Column(unique = true)
-    private long code;
+    private String code;
     @Column
     private int likes;
     @Column
     private String description;
     @Column
     private boolean isActive;
+    @Column
+    private BigDecimal minTemperature;
+    @Column
+    private BigDecimal maxTemperature;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -49,12 +54,14 @@ public class Look {
 
     ;
 
-    public Look(User user, long code, int likes, String description, boolean isActive, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
+    public Look(User user, String code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
         this.user = user;
         this.code = code;
         this.likes = likes;
         this.description = description;
         this.isActive = isActive;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
         this.lookTypes = lookTypes;
         this.userClothAttributes = userClothAttributes;
     }
@@ -75,11 +82,11 @@ public class Look {
         this.user = user;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -121,5 +128,21 @@ public class Look {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public void setMaxTemperature(BigDecimal maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public void setMinTemperature(BigDecimal minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public BigDecimal getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public BigDecimal getMinTemperature() {
+        return minTemperature;
     }
 }

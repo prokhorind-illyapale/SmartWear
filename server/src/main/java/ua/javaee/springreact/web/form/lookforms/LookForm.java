@@ -1,7 +1,6 @@
 package ua.javaee.springreact.web.form.lookforms;
 
-import ua.javaee.springreact.web.data.UserData;
-
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,40 +8,44 @@ import java.util.Set;
  * Created by kleba on 24.02.2019.
  */
 public class LookForm {
-    private UserData user;
-    private long code;
+    private String userLogin;
+    private String code;
     private int likes;
     private boolean isPublic;
     private String description;
+    private BigDecimal minTemperature;
+    private BigDecimal maxTemperature;
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
     private Set<UserClothAttributeDataForm> userClothAttributes = new HashSet<>();
 
     public LookForm() {
     }
 
-    public LookForm(UserData user, long code, int likes, boolean isPublic, String description, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes) {
-        this.user = user;
+    public LookForm(String userLogin, String code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes) {
+        this.userLogin = userLogin;
         this.code = code;
         this.likes = likes;
         this.isPublic = isPublic;
         this.description = description;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
         this.lookTypes = lookTypes;
         this.userClothAttributes = userClothAttributes;
     }
 
-    public UserData getUser() {
-        return user;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
-    public void setUser(UserData user) {
-        this.user = user;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -84,5 +87,21 @@ public class LookForm {
 
     public void setUserClothAttributes(Set<UserClothAttributeDataForm> userClothAttributes) {
         this.userClothAttributes = userClothAttributes;
+    }
+
+    public void setMaxTemperature(BigDecimal maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
+    public void setMinTemperature(BigDecimal minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public BigDecimal getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public BigDecimal getMinTemperature() {
+        return minTemperature;
     }
 }
