@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.javaee.springreact.web.dao.RoleDao;
-import ua.javaee.springreact.web.dao.UserDao;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.Role;
 import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.populator.UserDataToUserModelPopulator;
+import ua.javaee.springreact.web.repository.RoleRepository;
+import ua.javaee.springreact.web.repository.UserRepository;
 import ua.javaee.springreact.web.service.UserService;
 
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService {
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired(required = true)
-    private UserDao userDao;
+    private UserRepository userRepository;
     @Autowired(required = true)
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
     @Autowired(required = true)
     private UserDataToUserModelPopulator userDataToUserModelPopulator;
 
@@ -42,14 +42,14 @@ public class UserServiceImpl implements UserService {
     public void userReg(UserData userData) {
         User user = new User();
         userDataToUserModelPopulator.populate(userData, user);
-        user.setRole(roleDao.findByName(USER_ROLE));
-        userDao.save(user);
+        user.setRole(roleRepository.findByName(USER_ROLE));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public boolean isUserExists(String login) {
-        Long number = userDao.countByLogin(login);
+        Long number = userRepository.countByLogin(login);
         if (number.intValue() == USER_EXISTS) {
             logger.info(USER_WITH_NAME_ALREADY_EXISTS, login);
             return true;
@@ -61,18 +61,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLogin(String login) {
-        return userDao.findByLogin(login);
+        return userRepository.findByLogin(login);
     }
 
     @Override
     public Role getRoleByLogin(String login) {
-        return roleDao.getRoleByLogin(login);
+        return roleRepository.getRoleByLogin(login);
     }
 
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        Iterable<User> usersFromDb = userDao.findAll();
+        Iterable<User> usersFromDb = userRepository.findAll();
         usersFromDb.forEach(users::add);
         return users;
     }
@@ -80,30 +80,29 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserByLogin(String login) {
-        userDao.deleteByLogin(login);
+        userRepository.deleteByLogin(login);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
-        userDao.save(user);
+        userRepository.save(user);
         logger.info(USER_WAS_UPDATED, user.getLogin());
-        //userDao.updateUser(user);
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public UserDao getUserDao() {
-        return userDao;
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
-    public void setRoleDao(RoleDao roleDao) {
-        this.roleDao = roleDao;
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
-    public RoleDao getRoleDao() {
-        return roleDao;
+    public RoleRepository getRoleRepository() {
+        return roleRepository;
     }
 }

@@ -1,14 +1,16 @@
-package ua.javaee.springreact.web.dao;
+package ua.javaee.springreact.web.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ua.javaee.springreact.web.entity.Role;
 
 /**
  * Created by kleba on 09.02.2019.
  */
-public interface RoleDao extends JpaRepository<Role, Long> {
+@Repository
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Role findByName(String name);
 

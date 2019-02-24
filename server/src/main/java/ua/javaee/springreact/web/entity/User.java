@@ -19,6 +19,8 @@ public class User {
     @Column(unique = true)
     private String login;
     @Column
+    private String sex;
+    @Column
     private String password;
     @Column
     private String city;
@@ -29,9 +31,10 @@ public class User {
     public User() {
     }
 
-    public User(String email, String login, String password, String city, Role role) {
+    public User(String email, String login, String sex, String password, String city, Role role) {
         this.email = email;
         this.login = login;
+        this.sex = sex;
         this.password = password;
         this.city = city;
         this.role = role;
@@ -83,5 +86,13 @@ public class User {
 
     public String getCity() {
         return city;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
     }
 }

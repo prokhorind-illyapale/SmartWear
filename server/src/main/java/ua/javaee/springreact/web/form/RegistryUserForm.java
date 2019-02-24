@@ -13,17 +13,18 @@ public class RegistryUserForm {
     private String login;
     @NotNull
     private String password;
-
     private String city;
+    private String sex;
 
     public RegistryUserForm() {
     }
 
-    public RegistryUserForm(@Email String email, @NotNull String login, @NotNull String password, String city) {
+    public RegistryUserForm(@Email String email, @NotNull String login, @NotNull String password, String city, String sex) {
         this.email = email;
         this.login = login;
         this.password = password;
         this.city = city;
+        this.sex = sex;
     }
 
     public String getEmail() {
@@ -56,5 +57,13 @@ public class RegistryUserForm {
 
     public String getCity() {
         return city;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
     }
 }

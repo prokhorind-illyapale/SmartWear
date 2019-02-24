@@ -1,12 +1,14 @@
-package ua.javaee.springreact.web.dao;
+package ua.javaee.springreact.web.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ua.javaee.springreact.web.entity.User;
 
 /**
  * Created by kleba on 09.02.2019.
  */
-public interface UserDao extends CrudRepository<User, Long> {
+@Repository
+public interface UserRepository extends CrudRepository<User, Long> {
 
     Long countByLogin(String login);
 
