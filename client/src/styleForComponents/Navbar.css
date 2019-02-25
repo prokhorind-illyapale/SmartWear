@@ -22,9 +22,6 @@
     width: 100%;
 }
 
-/*.navbar__container__item:first-child {*/
-    /*flex: 1 1 100%;*/
-/*}*/
 
 .navbar__container__item {
     display: flex;
@@ -38,14 +35,12 @@
 }
 
 .navbar__navigation__item {
-    display: block;
     font-size: 13px;
     line-height: 21px;
     letter-spacing: -.2px;
     margin-top: 0;
     margin-bottom: 8px;
     font-weight: 600;
-    margin-bottom: 0;
     display: flex;
     align-items: center;
     text-decoration: none;
