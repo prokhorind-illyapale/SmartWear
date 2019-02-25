@@ -3,6 +3,8 @@ import '../styleForComponents/Navbar.css';
 import { Button } from 'semantic-ui-react'
 
 class Navbar  extends Component {
+
+
     render() {
         return (
             <div className="navbar">
@@ -14,7 +16,10 @@ class Navbar  extends Component {
                     </div>
                     <div className="navbar__container__item">
                         <div className="rd__button-group rd__button-group--no-shadow">
-                            <Button color='teal'>Sign in</Button>
+                            <Button color='teal' onClick={this.props.signIn}>Sign in</Button>
+                        </div>
+                        <div className="rd__button-group rd__button-group--no-shadow">
+                            <Button color='blue' onClick={this.props.signUp}>Sign up</Button>
                         </div>
                     </div>
                 </div>

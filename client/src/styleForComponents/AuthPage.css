@@ -1,5 +1,5 @@
 .authBody {
-    width: 100wh;
+    width: 200wh;
     height: 100vh;
     color: #fff;
     background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
@@ -11,44 +11,54 @@
 
 @-webkit-keyframes Gradient {
     0% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
     50% {
         background-position: 100% 50%
     }
     100% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
 }
 
 @-moz-keyframes Gradient {
     0% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
     50% {
         background-position: 100% 50%
     }
     100% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
 }
 
 @keyframes Gradient {
     0% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
     50% {
         background-position: 100% 50%
     }
     100% {
-        background-position: 0% 50%
+        background-position: 0 50%
     }
 }
 
 .authContainer {
     position: absolute !important;
-    top: 50%;
-    left: 10%;
-    transform: translateY(-50%) !important;
-    width: 80%;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%) !important;
+    width: 60%;
+}
+
+@media screen and (max-width: 420px) {
+    .authContainer {
+        top: 0;
+        left: 0;
+        width: 100%;
+        transform: translateY(5%) !important;
+        height: 100%;
+    }
 }
