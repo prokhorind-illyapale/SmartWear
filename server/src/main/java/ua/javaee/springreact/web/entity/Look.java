@@ -2,7 +2,9 @@ package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -33,6 +35,9 @@ public class Look {
     @Column
     private BigDecimal maxTemperature;
 
+    @OneToMany(mappedBy = "look", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "Look_To_Look_type",
@@ -54,7 +59,7 @@ public class Look {
 
     ;
 
-    public Look(User user, String code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
+    public Look(User user, String code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, List<Comment> comments, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -62,6 +67,7 @@ public class Look {
         this.isActive = isActive;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
+        this.comments = comments;
         this.lookTypes = lookTypes;
         this.userClothAttributes = userClothAttributes;
     }
@@ -144,5 +150,13 @@ public class Look {
 
     public BigDecimal getMinTemperature() {
         return minTemperature;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }
