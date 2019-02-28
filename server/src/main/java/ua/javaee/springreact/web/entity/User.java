@@ -1,6 +1,8 @@
 package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -28,16 +30,20 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Look> looks = new ArrayList();
+
     public User() {
     }
 
-    public User(String email, String login, String sex, String password, String city, Role role) {
+    public User(String email, String login, String sex, String password, String city, Role role, List<Look> looks) {
         this.email = email;
         this.login = login;
         this.sex = sex;
         this.password = password;
         this.city = city;
         this.role = role;
+        this.looks = looks;
     }
 
     public void setPassword(String password) {
@@ -94,5 +100,13 @@ public class User {
 
     public String getSex() {
         return sex;
+    }
+
+    public void setLooks(List<Look> looks) {
+        this.looks = looks;
+    }
+
+    public List<Look> getLooks() {
+        return looks;
     }
 }
