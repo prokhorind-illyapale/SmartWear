@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/hello-world").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/registry").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/home/**").hasAuthority("USER")
@@ -62,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and().httpBasic()
                 .authenticationEntryPoint(authEntryPoint)
+                .and().headers().frameOptions().disable()
                 .and().csrf().disable();
     }
 
