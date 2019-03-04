@@ -7,7 +7,7 @@ class SignIn extends Component {
         login: '',
         password: '',
         isLoading: false,
-        data: []
+        auth_data: []
     };
 
     onLoginSet =(e) => {
@@ -25,8 +25,6 @@ class SignIn extends Component {
         let url = 'http://localhost:8080/user/get/customer',
         headers = new Headers();
 
-        // this.setState({...this.state, isLoading: true});
-
         headers.set('Authorization', 'Basic ' + btoa(this.state.login + ":" + this.state.password));
 
         fetch(url, {
@@ -34,11 +32,11 @@ class SignIn extends Component {
             headers: headers,
        })
         .then(response => response.json())
-        .then(data => this.setState({...this.state, data: data}))
+        .then(data => this.setState({...this.state, auth_data : data}))
         .catch(status => alert(status));
 
 
-        this.setState({...this.state, login: '', password: ''});
+        this.setState({...this.state, isLoading: false, login: '', password: ''});
     };
 
     render() {

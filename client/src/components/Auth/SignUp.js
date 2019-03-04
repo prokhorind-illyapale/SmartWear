@@ -41,7 +41,7 @@ class SignUp extends Component {
         this.setState({...this.state, passwordRepeat: e.target.value})
     };
 
-    valideteEmail = () => {
+    validateEmail = () => {
         // eslint-disable-next-line
         const emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         let email = this.state.email;
@@ -54,8 +54,14 @@ class SignUp extends Component {
         }
     };
 
-    valideteForm = () => {
-        if(this.state.login !== '' && this.state.city !== '' && this.state.email !== '' && this.state.gender !== '' && this.state.password !== '' && this.state.passwordRepeat !== '') {
+    validateForm = () => {
+        if(this.state.login !== ''
+            && this.state.city !== ''
+            && this.state.email !== ''
+            && this.state.gender !== ''
+            && this.state.password !== ''
+            && this.state.passwordRepeat !== '')
+        {
             return true;
         } else {
             alert("All fields is required");
@@ -75,8 +81,8 @@ class SignUp extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        if(this.valideteForm() && this.checkPass() && this.valideteEmail()) {
 
+        if(this.validateForm() && this.checkPass() && this.validateEmail()) {
             let url = 'http://localhost:8080/registry';
             fetch(url, {
                 method:'POST',
