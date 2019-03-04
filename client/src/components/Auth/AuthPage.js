@@ -7,7 +7,7 @@ class AuthPage extends Component {
 
     render() {
         return (
-            <div className='authBody'>
+            <div className='auth-body'>
                 {this.props.signin === true && <SignIn/>}
                 {this.props.signup === true && <SignUp/>}
             </div>

@@ -1,4 +1,4 @@
-.authBody {
+.auth-body {
     width: 200wh;
     height: 100vh;
     color: #fff;
@@ -45,7 +45,7 @@
     }
 }
 
-.authContainer {
+.auth-container {
     position: absolute !important;
     top: 20%;
     left: 50%;
@@ -54,7 +54,7 @@
 }
 
 @media screen and (max-width: 420px) {
-    .authContainer {
+    .auth-container {
         top: 0;
         left: 0;
         width: 100%;
