@@ -107,6 +107,15 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/get/customer", method = GET)
+    public ResponseEntity<?> getSessionUser(Principal principal){
+            UserData userData = userFacade.getUserByLogin(principal.getName());
+                UserForm userForm = new UserForm();
+                userDataToUserFormPopulator.populate(userData, userForm);
+                return new ResponseEntity(userForm, OK);
+
+    }
+
     private boolean isUserHasRights(String login, Principal principal) {
         return principal.getName().equalsIgnoreCase(login) || userFacade.isUserHasAdminRights(principal.getName());
     }

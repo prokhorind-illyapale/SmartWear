@@ -18,19 +18,38 @@ class SignIn extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        let param = btoa(`${this.state.login}:${this.state.password}`);
+        // let base64 = require('base-64');
 
-        return fetch('http://localhost:8080/home?', {
-            method: 'post',
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization':`Basic ${param}`,
-                'Date': new Date(),
-            },
-        })
-            .then(response => response.json())
-            .then(data => console.log(data));
-    };
+let url = 'http://localhost:8080/user/get/customer';
+
+let headers = new Headers();
+
+//headers.append('Content-Type', 'text/json');
+headers.set('Authorization', 'Basic ' + btoa(this.state.login + ":" +this.state.password));
+
+fetch(url, {method:'GET',
+        headers: headers,
+        //credentials: 'user:passwd'
+       })
+.then(response => response.json())
+.then(json => console.log(json));
+//.done();
+
+function parseJSON(response) {
+return response.json()
+}
+//         let param = btoa(`${this.state.login}:${this.state.password}`);
+        
+//         return fetch(`http://localhost:8080/user/get/customer`, {
+//             mode: 'no-cors',
+//             headers: { 
+//                 "Authentication": `Basic ${param}` 
+//             }
+//   })
+//     .then(response => console.log(response.json()))
+//     .then(data => console.log(data))
+//     .catch(er => console.log(er));
+};
 
     render() {
         return (

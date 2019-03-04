@@ -22,7 +22,7 @@ public class LoginController {
 
     @RequestMapping(value = "/home", method = GET)
     public String login(Principal principal) {
-        return "hello for "+principal.getName();
+        return "hello";
     }
 
 }
