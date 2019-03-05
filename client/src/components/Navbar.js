@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import '../styleForComponents/Navbar.css';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 
 class Navbar  extends Component {
-
 
     render() {
         return (
@@ -16,16 +15,25 @@ class Navbar  extends Component {
                         </div>
                     </div>
                     <div className="navbar__container__item">
+                        {!this.props.token &&
                         <div className="rd__button-group rd__button-group--no-shadow">
                             <Link to={`/`}>
                                 <Button basic color='teal'>Sign in</Button>
                             </Link>
                         </div>
+                        }
+                        {!this.props.token &&
                         <div className="rd__button-group rd__button-group--no-shadow">
                             <Link to={`/register`}>
                                 <Button basic color='blue'>Sign up</Button>
                             </Link>
                         </div>
+                        }
+                        {this.props.token &&
+                            <Button basic color="teal" icon>
+                                <Icon name="bars"/>
+                            </Button>
+                        }
                     </div>
                 </div>
             </div>
