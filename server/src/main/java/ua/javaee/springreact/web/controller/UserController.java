@@ -107,12 +107,12 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/get/customer", method = GET)
-    public ResponseEntity<?> getSessionUser(Principal principal){
-            UserData userData = userFacade.getUserByLogin(principal.getName());
-                UserForm userForm = new UserForm();
-                userDataToUserFormPopulator.populate(userData, userForm);
-                return new ResponseEntity(userForm, OK);
+    @RequestMapping(value = "/get/me", method = GET)
+    public ResponseEntity<?> getSessionUser(Principal principal) {
+        UserData userData = userFacade.getUserByLogin(principal.getName());
+        UserForm userForm = new UserForm();
+        userDataToUserFormPopulator.populate(userData, userForm);
+        return new ResponseEntity(userForm, OK);
 
     }
 

@@ -22,5 +22,6 @@ public class RegUserFormToUserDataPopulator implements AbstractPopulator<Registr
         target.setLogin(source.getLogin());
         target.setPassword(bCryptPasswordEncoder.encode(source.getPassword()));
         target.setCity(source.getCity());
+        target.setSex(source.getSex());
     }
 }
