@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { Button, Header, Form, Segment, Icon } from 'semantic-ui-react';
 import {ToastContainer, toast } from 'react-toastify';
+import {bindActionCreators} from "redux";
+import { connect } from 'react-redux';
+import { changeLoggedIn } from '../../actions/changeLoggedIn';
 
 class SignIn extends Component {
 
     state = {
         login: '',
         password: '',
-        isLoading: false,
-        auth_data: [],
+        // isLoading: false,
+        // auth_data: [],
     };
 
     onLoginSet =(e) => {
@@ -34,7 +37,7 @@ class SignIn extends Component {
 
     onSubmit = () => {
         if(this.validateForm()) {
-            let url = 'http://localhost:8080/user/get/customer',
+            let url = 'http://localhost:8080/user/get/me',
                 headers = new Headers(),
                 login_input = document.getElementById('login_input'),
                 password_input = document.getElementById('password_input');
@@ -47,9 +50,7 @@ class SignIn extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
-                    this.setState({...this.state, auth_data: data});
-                    localStorage.setItem('token', btoa(this.state.auth_data.login));
-                    window.location.reload();
+                    this.props.changeLoggedIn(data)
                 })
                 .catch(err => toast.error(err.message , {
                     position: toast.POSITION.TOP_CENTER
@@ -88,5 +89,9 @@ class SignIn extends Component {
 
 }
 
+function matchDispatchToProps(dispath) {
+    return bindActionCreators({ changeLoggedIn: changeLoggedIn }, dispath);
+}
 
-export default SignIn
+
+export default connect(null, matchDispatchToProps)(SignIn)
