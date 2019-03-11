@@ -4,19 +4,16 @@ import { connect } from 'react-redux';
 import {Segment, Header} from 'semantic-ui-react';
 
 class Main extends Component {
-
     render() {
-        return this.props.data.map((data) => {
-            return (
-                <div className="auth-body">
-                    <Segment>
-                        <Header>
-                            Hello {data.login}
-                        </Header>
-                    </Segment>
-                </div>
-            )
-        })
+        return (
+            <div className="auth-body">
+                <Segment>
+                    <Header>
+                        Hello
+                    </Header>
+                </Segment>
+            </div>
+        )
 
     }
 
