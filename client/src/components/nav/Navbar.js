@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import '../styleForComponents/Navbar.css';
-import { Button, Icon } from 'semantic-ui-react';
+import '../../styleForComponents/Navbar.css';
+import { Button } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
+import NavMenu from "./NavMenu";
 
 class Navbar  extends Component {
 
@@ -30,9 +31,7 @@ class Navbar  extends Component {
                         </div>
                         }
                         {this.props.token &&
-                            <Button basic color="teal" icon>
-                                <Icon name="bars"/>
-                            </Button>
+                            <NavMenu/>
                         }
                     </div>
                 </div>
