@@ -1,5 +1,10 @@
-.nav-menu__mini {
+.navbar-menu__mini {
     position: absolute;
-    top: 40%;
-    right: 3.5%
+    top: 100%;
+    right: 0.5%;
+    z-index: 5;
+}
+
+.navbar-menu__red-item {
+    background-color: red !important;
 }
