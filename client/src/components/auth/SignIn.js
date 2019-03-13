@@ -4,6 +4,7 @@ import {ToastContainer, toast } from 'react-toastify';
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux';
 import { changeLoggedIn } from '../../actions/changeLoggedIn';
+import { setToken } from "../../actions/setToken";
 
 class SignIn extends Component {
 
@@ -38,9 +39,10 @@ class SignIn extends Component {
             let url = 'http://localhost:8080/user/get/me',
                 headers = new Headers(),
                 login_input = document.getElementById('login_input'),
-                password_input = document.getElementById('password_input');
+                password_input = document.getElementById('password_input'),
+                auth_data = btoa(this.state.login + ":" + this.state.password);
 
-            headers.set('Authorization', 'Basic ' + btoa(this.state.login + ":" + this.state.password));
+            headers.set('Authorization', 'Basic ' + auth_data);
 
             fetch(url, {
                 method:'GET',
@@ -48,7 +50,8 @@ class SignIn extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
-                    this.props.changeLoggedIn(data)
+                    this.props.setToken(auth_data);
+                    this.props.changeLoggedIn(data);
                 })
                 .catch(err => toast.error(err.message , {
                     position: toast.POSITION.TOP_CENTER
@@ -88,7 +91,7 @@ class SignIn extends Component {
 }
 
 function matchDispatchToProps(dispath) {
-    return bindActionCreators({ changeLoggedIn: changeLoggedIn }, dispath);
+    return bindActionCreators( { changeLoggedIn: changeLoggedIn, setToken: setToken }, dispath);
 }
 
 

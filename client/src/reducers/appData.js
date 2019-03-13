@@ -9,6 +9,12 @@ export const appData = (state = initialState, action) => {
                     ...action.payload
                 }
             ];
+        case 'SET_TOKEN':
+            return [
+                ...state,
+                 action.text
+
+            ];
         default:
             return state;
     }

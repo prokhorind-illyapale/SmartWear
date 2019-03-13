@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Header, Form, Segment, Icon } from 'semantic-ui-react';
 import {ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import {bindActionCreators} from "redux";
+import { connect } from 'react-redux';
+import {setToken} from "../../actions/setToken";
 
 const gender = [
     { key: 'm', text: 'Male', value: 'M' },
@@ -95,21 +99,28 @@ class SignUp extends Component {
                 city_input = document.getElementById('city_input'),
                 gender_input = document.getElementById('gender_input'),
                 pass_input = document.getElementById('pass_input'),
-                pass_rep_input = document.getElementById('pass_rep_input');
-
-            fetch(url, {
-                method:'POST',
-                headers :{
-                    'Content-type' : 'application/json'
-                },
-                body: JSON.stringify({
+                pass_rep_input = document.getElementById('pass_rep_input'),
+                auth_data = btoa(this.state.login + ":" + this.state.password),
+                body = JSON.stringify({
                     login: this.state.login,
                     password: this.state.password,
                     email: this.state.email,
                     city: this.state.city,
                     sex: this.state.gender,
+                });
+
+            axios.post(url, body, {
+                headers :{
+                    'Content-type' : 'application/json'
+                }
+            })
+                .then(data => {
+                    console.log(data);
+                    this.props.setToken(auth_data)
                 })
-            });
+                .catch(function (error) {
+                    console.log('Request failed', error);
+                });
 
             this.setState({...this.state, login: '', password: '', email: '', city: '', sex: '', passwordRepeat: ''});
             login_input.value = '';
@@ -158,4 +169,8 @@ class SignUp extends Component {
 
 }
 
-export default SignUp
+function matchDispatchToProps(dispath) {
+    return bindActionCreators( { setToken: setToken }, dispath);
+}
+
+export default connect(null, matchDispatchToProps)(SignUp)

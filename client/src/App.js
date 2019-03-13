@@ -26,7 +26,7 @@ class App extends Component {
             token;
 
         if(data.length !== 0 || typeof this.state.token === 'undefined' ) {
-            token = btoa(data[0].login);
+            token = data[0];
             localStorage.setItem('token', token);
         } else {
             token = this.state.token
