@@ -3,6 +3,8 @@ import '../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
 import {Segment, Header} from 'semantic-ui-react';
 import axios from 'axios';
+import {bindActionCreators} from "redux";
+import {setUserData} from "../actions/setUserData";
 
     const styleForText ={
         color: 'black'
@@ -10,41 +12,37 @@ import axios from 'axios';
 
 
 class Main extends Component {
-    state = {
-        data: [],
-    };
 
     componentDidMount() {
-        if(typeof localStorage.token !== 'undefined') {
+        if(typeof window.localStorage.token !== 'undefined') {
             let url = 'http://localhost:8080/user/get/',
-                str = atob(localStorage.token),
+                str = atob(window.localStorage.token),
                 login = str.substring(0 ,str.indexOf(':'));
-
 
             axios.get(url + login, {
                 headers: {
-                    'Authorization': "Basic " + localStorage.token
+                    'Authorization': "Basic " + window.localStorage.token
                 }
             })
                 .then(response => {
-                    this.setState({...this.state, data: response.data});
+                    this.props.setUserData(response.data)
                 })
                 .catch(err => console.log(err))
         }
     }
 
     render() {
-            return (
-                <div className="auth-body">
-                    <Segment className="auth-container">
-                        <Header>
-                            Hello {this.state.data.login}
-                        </Header>
-                        <p style={styleForText}>I know you live in {this.state.data.city}</p>
-                    </Segment>
-                </div>
-            )
-
+        let userData = this.props.data.userData;
+        return (
+            <div className="auth-body">
+                <Segment className="auth-container">
+                    <Header>
+                        Hello {userData.login}
+                    </Header>
+                    <p style={styleForText}>I know you live in {userData.city}</p>
+                </Segment>
+            </div>
+        )
 
     }
 
@@ -55,4 +53,9 @@ function mapStateToProps(state) {
         data: state.appData
     }
 }
-export default connect(mapStateToProps)(Main);
+
+function matchDispatchToProps(dispath) {
+    return bindActionCreators( { setUserData: setUserData }, dispath);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Main);

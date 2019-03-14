@@ -1,20 +1,29 @@
-const initialState = [];
+const initialState = {
+    auth: {
+        token: typeof window.localStorage.token !== "undefined" ? window.localStorage.token : null
+    },
+    userData: {
+
+        }
+    };
 
 export const appData = (state = initialState, action) => {
     switch (action.type) {
-        case 'CHANGE_LOGGED_IN':
-            return [
-                ...state,
-                {
-                    ...action.payload
-                }
-            ];
         case 'SET_TOKEN':
-            return [
+            return {
                 ...state,
-                 action.text
 
-            ];
+                auth: {
+                        token: action.text
+                    }
+                 };
+        case 'SET_USER_DATA':
+            return {
+                ...state,
+                userData: {
+                            ...action.payload
+                    }
+                };
         default:
             return state;
     }

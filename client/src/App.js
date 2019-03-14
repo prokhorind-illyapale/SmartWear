@@ -24,9 +24,8 @@ class App extends Component {
 
       let data = this.props.data,
             token;
-
         if(data.length !== 0 || typeof this.state.token === 'undefined' ) {
-            token = data[0];
+            token = data.auth.token;
             localStorage.setItem('token', token);
         } else {
             token = this.state.token

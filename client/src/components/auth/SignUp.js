@@ -115,8 +115,9 @@ class SignUp extends Component {
                 }
             })
                 .then(data => {
-                    console.log(data);
-                    this.props.setToken(auth_data)
+                    if(data) {
+                        this.props.setToken(auth_data)
+                    }
                 })
                 .catch(function (error) {
                     console.log('Request failed', error);
