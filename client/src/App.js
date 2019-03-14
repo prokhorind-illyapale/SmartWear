@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from "./components/nav/Navbar";
 import AuthPage from "./components/auth/AuthPage";
-import Main from "./components/Main";
+import Main from "./components/pages/Main";
 import { connect } from 'react-redux';
 import { BrowserRouter as Router} from "react-router-dom";
 
@@ -33,7 +33,7 @@ class App extends Component {
 
       return (
           <Router>
-              <div>
+              <div className='App'>
                   <Navbar token={token}/>
                   {!token ? <AuthPage/> : <Main/>}
               </div>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Icon,  Menu } from 'semantic-ui-react';
 import '../../styleForComponents/NavMenu.css';
+import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 
 class NavMenu  extends Component {
 
@@ -9,7 +11,10 @@ class NavMenu  extends Component {
         menuIsShow: false,
     };
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+    handleItemClick = (e, { name }) => {
+        this.setState({ activeItem: name });
+        this.showMenu()
+    } ;
 
     showMenu = () => {
        this.state.icon === 'bars'
@@ -28,9 +33,11 @@ class NavMenu  extends Component {
                 {this.state.menuIsShow &&
                     <div className='navbar-menu__mini'>
                         <Menu inverted vertical>
-                            <Menu.Item name='home' onClick={this.handleItemClick}>
-                                Home
-                            </Menu.Item>
+                            <Link to={`/`}>
+                                <Menu.Item name='home' as='span' onClick={this.handleItemClick}>
+                                    Home
+                                </Menu.Item>
+                            </Link>
                             <Menu.Item
                                 name='looks'
                                 onClick={this.handleItemClick}
@@ -39,6 +46,15 @@ class NavMenu  extends Component {
                                 name='settings'
                                 onClick={this.handleItemClick}
                             />
+                            {this.props.data.userData.userRole.roleName === "ADMIN" &&
+                                <Link to={`/admin`}>
+                                    <Menu.Item
+                                        as='span'
+                                        name='admin'
+                                        onClick={this.handleItemClick}
+                                    />
+                                </Link>
+                            }
                             <Menu.Item
                                 className='navbar-menu__red-item'
                                 name='log out'
@@ -54,4 +70,10 @@ class NavMenu  extends Component {
     }
 }
 
-export default NavMenu;
+function mapStateToProps(state) {
+    return {
+        data: state.appData
+    }
+}
+
+export default connect(mapStateToProps)(NavMenu);

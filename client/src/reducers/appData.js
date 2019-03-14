@@ -2,9 +2,8 @@ const initialState = {
     auth: {
         token: typeof window.localStorage.token !== "undefined" ? window.localStorage.token : null
     },
-    userData: {
-
-        }
+    userData: {},
+    allUsers: [],
     };
 
 export const appData = (state = initialState, action) => {
@@ -24,6 +23,13 @@ export const appData = (state = initialState, action) => {
                             ...action.payload
                     }
                 };
+        case 'GET_ALL_USERS':
+            return {
+                ...state,
+                allUsers: [
+                    ...action.payload
+                ]
+            };
         default:
             return state;
     }

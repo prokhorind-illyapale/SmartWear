@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import '../styleForComponents/AuthPage.css';
-import { connect } from 'react-redux';
-import {Segment, Header} from 'semantic-ui-react';
-import axios from 'axios';
+import { Route} from "react-router-dom";
+import UserPage from "./UserPage";
+import Admin from "./Admin";
+import axios from "axios";
 import {bindActionCreators} from "redux";
-import {setUserData} from "../actions/setUserData";
+import {setUserData} from "../../actions/setUserData";
+import connect from "react-redux/es/connect/connect";
 
-    const styleForText ={
-        color: 'black'
-    };
 
 
 class Main extends Component {
@@ -32,30 +30,18 @@ class Main extends Component {
     }
 
     render() {
-        let userData = this.props.data.userData;
         return (
-            <div className="auth-body">
-                <Segment className="auth-container">
-                    <Header>
-                        Hello {userData.login}
-                    </Header>
-                    <p style={styleForText}>I know you live in {userData.city}</p>
-                </Segment>
+            <div>
+                <Route exact path="/" component={UserPage}/>
+                <Route path="/admin" component={Admin}/>
             </div>
         )
-
     }
 
-}
-
-function mapStateToProps(state) {
-    return {
-        data: state.appData
-    }
 }
 
 function matchDispatchToProps(dispath) {
     return bindActionCreators( { setUserData: setUserData }, dispath);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(Main);
+export default connect(null, matchDispatchToProps)(Main);
