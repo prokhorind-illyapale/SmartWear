@@ -3,7 +3,7 @@ import Navbar from "./components/nav/Navbar";
 import AuthPage from "./components/auth/AuthPage";
 import Main from "./components/pages/Main";
 import { connect } from 'react-redux';
-import { BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router, Switch} from "react-router-dom";
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'semantic-ui-css/semantic.min.css'
@@ -35,7 +35,9 @@ class App extends Component {
           <Router>
               <div className='App'>
                   <Navbar token={token}/>
-                  {!token ? <AuthPage/> : <Main/>}
+                  <Switch>
+                      {!token ? <AuthPage/> : <Main/>}
+                  </Switch>
               </div>
           </Router>
     );

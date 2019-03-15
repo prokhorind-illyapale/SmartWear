@@ -1,6 +1,6 @@
 const initialState = {
     auth: {
-        token: typeof window.localStorage.token !== "undefined" ? window.localStorage.token : null
+        token: typeof window.localStorage.token !== "undefined" ? window.localStorage.token : ""
     },
     userData: {},
     allUsers: [],
