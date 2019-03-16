@@ -23,6 +23,7 @@ public class Look {
     @JoinColumn(name = "user_id")
     private User user;
     @Column(unique = true)
+    @GeneratedValue(strategy = IDENTITY)
     private String code;
     @Column
     private int likes;
@@ -34,6 +35,8 @@ public class Look {
     private BigDecimal minTemperature;
     @Column
     private BigDecimal maxTemperature;
+    @Column(columnDefinition = "mediumblob")
+    private byte[] picture;
 
     @OneToMany(mappedBy = "look", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
@@ -158,5 +161,13 @@ public class Look {
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public byte[] getPicture() {
+        return picture;
     }
 }

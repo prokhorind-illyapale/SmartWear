@@ -48,6 +48,7 @@ public class LookModelToLookDataConverter implements AbstractConverter<LookData,
         target.setUserClothAttributes(getUserClothAttributeDatas(source));
         target.setMinTemperature(source.getMinTemperature());
         target.setMaxTemperature(source.getMaxTemperature());
+        target.setPicture(source.getPicture());
         return target;
     }
 

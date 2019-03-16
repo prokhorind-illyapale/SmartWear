@@ -16,6 +16,7 @@ public class LookData {
     private int likes;
     private boolean isActive;
     private String description;
+    private byte[] picture;
     private Set<LookTypeData> lookTypes = new HashSet<>();
     private Set<UserClothAttributeData> userClothAttributes = new HashSet<>();
     private List<CommentData> comments = new ArrayList<>();
@@ -118,5 +119,13 @@ public class LookData {
 
     public List<CommentData> getComments() {
         return comments;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public byte[] getPicture() {
+        return picture;
     }
 }

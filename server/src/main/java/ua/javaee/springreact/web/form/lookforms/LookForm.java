@@ -17,6 +17,7 @@ public class LookForm {
     private String description;
     private BigDecimal minTemperature;
     private BigDecimal maxTemperature;
+    private byte[] picture;
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
     private Set<UserClothAttributeDataForm> userClothAttributes = new HashSet<>();
     private List<CommentForm> comments = new ArrayList<>();
@@ -115,5 +116,13 @@ public class LookForm {
 
     public List<CommentForm> getComments() {
         return comments;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public byte[] getPicture() {
+        return picture;
     }
 }
