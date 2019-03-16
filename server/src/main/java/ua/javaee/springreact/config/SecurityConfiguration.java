@@ -21,10 +21,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private AuthenticationEntryPoint authEntryPoint;
-
     @Autowired
     private DataSource dataSource;
 
@@ -63,8 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and().httpBasic()
                 .authenticationEntryPoint(authEntryPoint)
+                .and().logout().logoutUrl("/logout")
                 .and().headers().frameOptions().disable();
-               // .and().csrf().disable();
     }
 
     @Override
