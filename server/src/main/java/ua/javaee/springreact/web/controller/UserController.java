@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.javaee.springreact.web.data.UserData;
+import ua.javaee.springreact.web.data.weatherapi.Climate;
 import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.UserForm;
 import ua.javaee.springreact.web.populator.UserDataToUserFormPopulator;
 import ua.javaee.springreact.web.populator.UserFormToUserDataPopulator;
+import ua.javaee.springreact.web.service.WeatherService;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class UserController {
     private static final String YOU_HAVE_NO_RIGHTS_TO_CHANGE_USER_ROLE = "You have no rights to change User role:";
     @Autowired
     private UserFacade userFacade;
+    @Autowired
+    private WeatherService weatherService;
     @Autowired
     private UserDataToUserFormPopulator userDataToUserFormPopulator;
     @Autowired
@@ -114,6 +118,13 @@ public class UserController {
         userDataToUserFormPopulator.populate(userData, userForm);
         return new ResponseEntity(userForm, OK);
 
+    }
+
+    @RequestMapping(value = "/get/weather", method = GET)
+    public ResponseEntity<?> getUserWeather(Principal principal) {
+        UserData userData = userFacade.getUserByLogin(principal.getName());
+        Climate userClimate = weatherService.getClimateByCityName(userData.getCity());
+        return new ResponseEntity(userClimate, OK);
     }
 
     private boolean isUserHasRights(String login, Principal principal) {

@@ -1,4 +1,4 @@
-package ua.javaee.springreact.web.service.impl;
+package ua.javaee.springreact.web.service;
 
 import ua.javaee.springreact.web.entity.Comment;
 

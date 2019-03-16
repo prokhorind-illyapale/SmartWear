@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.repository.CommentRepository;
+import ua.javaee.springreact.web.service.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;

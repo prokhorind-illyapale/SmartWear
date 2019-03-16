@@ -11,7 +11,7 @@ import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.LookType;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.populator.AbstractPopulator;
-import ua.javaee.springreact.web.service.impl.CommentService;
+import ua.javaee.springreact.web.service.CommentService;
 
 import java.util.HashSet;
 import java.util.Set;

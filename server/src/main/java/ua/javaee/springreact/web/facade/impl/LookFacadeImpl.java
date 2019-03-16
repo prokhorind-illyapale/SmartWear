@@ -9,8 +9,8 @@ import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.facade.LookFacade;
+import ua.javaee.springreact.web.service.CommentService;
 import ua.javaee.springreact.web.service.LookService;
-import ua.javaee.springreact.web.service.impl.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
