@@ -3,6 +3,8 @@ import { Button, Icon,  Menu } from 'semantic-ui-react';
 import '../../styleForComponents/NavMenu.css';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import {bindActionCreators} from "redux";
+import {logOut} from "../../actions/logOut";
 
 class NavMenu  extends Component {
 
@@ -22,6 +24,10 @@ class NavMenu  extends Component {
            this.setState({...this.state, icon: 'cancel', menuIsShow: true})
            :
            this.setState({...this.state, icon: 'bars', menuIsShow: false});
+    };
+
+    logOut = () => {
+        this.props.logOut();
     };
 
     render() {
@@ -55,12 +61,15 @@ class NavMenu  extends Component {
                                     />
                                 </Link>
                             }
-                            <Menu.Item
-                                className='navbar-menu__red-item'
-                                name='log out'
-                                color='red'
-                                onClick={this.handleItemClick}
-                            />
+                            <Link to={`/`}>
+                                <Menu.Item
+                                    as='span'
+                                    className='navbar-menu__red-item'
+                                    name='log out'
+                                    color='red'
+                                    onClick={this.logOut}
+                                />
+                            </Link>
                         </Menu>
                     </div>
 
@@ -76,4 +85,8 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(NavMenu);
+function matchDispatchToProps(dispath) {
+    return bindActionCreators( { logOut: logOut }, dispath);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(NavMenu);

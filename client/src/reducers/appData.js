@@ -3,8 +3,7 @@ const initialState = {
         token: typeof window.localStorage.token !== "undefined" ? window.localStorage.token : ""
     },
     userData: {},
-    allUsers: [],
-    };
+};
 
 export const appData = (state = initialState, action) => {
     switch (action.type) {
@@ -23,12 +22,12 @@ export const appData = (state = initialState, action) => {
                             ...action.payload
                     }
                 };
-        case 'GET_ALL_USERS':
+        case 'LOG_OUT':
             return {
                 ...state,
-                allUsers: [
-                    ...action.payload
-                ]
+               auth: {
+                    token: ''
+                }
             };
         default:
             return state;

@@ -3,13 +3,18 @@ import axios from 'axios'
 import {bindActionCreators} from "redux";
 import {getAllUsers} from "../../actions/getAllUsers";
 import connect from "react-redux/es/connect/connect";
-import { List, Icon, Segment } from 'semantic-ui-react'
+import {Table, Button } from 'semantic-ui-react'
 import '../../styleForComponents/AuthPage.css';
+import {deleteUser} from "../../actions/deleteUser";
 
 
 const styleContainer ={
-    margin: '70px 0 0 0'
-}
+    position: 'absolute',
+    transform: 'translateX(-50%)',
+    top: '20%',
+    left: '50%',
+    width: '80%'
+};
 
 class Admin extends Component {
 
@@ -28,39 +33,69 @@ class Admin extends Component {
             .catch(err => console.error(err))
     }
 
-    render() {
-          return this.props.data.allUsers.map(data => {
-            return (
-                <Segment compact style={styleContainer}>
-                    <List>
-                        <List.Item>
-                            <Icon avatar name="user"/>
-                            <List.Content>
-                                <List.Header as='span'>{data.login}</List.Header>
-                                <List.Description>
-                                    City: {data.city}
-                                </List.Description>
-                                <List.Description>
-                                    Email: {data.email}
-                                </List.Description>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Segment>
-            )
-        })
+    deleteUserByLogin = (login) => {
+        if(window.confirm('Are you sure?')) {
+            this.props.deleteUser(login);
+            let url = 'http://localhost:8080/user/delete/';
+            axios.delete(url + login, {
+                headers: {
+                    'Content-type' : 'application/json',
+                    'Authorization': "Basic " + window.localStorage.token
+                }
+            })
+                .then(data => data)
+                .catch(err => console.log(err))
+        }
 
+    };
+
+
+    tableUserData() {
+        return this.props.data.map((data) => {
+            return (
+                <Table.Body key={data.login}>
+                    <Table.Row>
+                        <Table.Cell>{data.login}</Table.Cell>
+                        <Table.Cell>{data.city}</Table.Cell>
+                        <Table.Cell>{data.email}</Table.Cell>
+                        <Table.Cell>{data.sex === "M" ? "Male" : "Female"}</Table.Cell>
+                        <Table.Cell>{data.userRole.roleName}</Table.Cell>
+                        <Table.Cell>
+                            <Button basic negative onClick={() => this.deleteUserByLogin(data.login)}>Delete</Button>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Body>
+            )
+        });
+    }
+
+    render() {
+            return (
+                <Table celled style={styleContainer}>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Login</Table.HeaderCell>
+                            <Table.HeaderCell>City</Table.HeaderCell>
+                            <Table.HeaderCell>Email</Table.HeaderCell>
+                            <Table.HeaderCell>Gender</Table.HeaderCell>
+                            <Table.HeaderCell>Role</Table.HeaderCell>
+                            <Table.HeaderCell>Delete</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    {this.tableUserData()}
+                </Table>
+            )
     }
 
 }
 
 function matchDispatchToProps(dispath) {
-    return bindActionCreators( { getAllUsers: getAllUsers }, dispath);
+    return bindActionCreators( { getAllUsers: getAllUsers, deleteUser: deleteUser }, dispath);
 }
 
 function mapStateToProps(state) {
     return {
-        data: state.appData
+        data: state.usersData
     }
 }
 

@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import { connect } from 'react-redux';
 import {setToken} from "../../actions/setToken";
 
+
 const gender = [
     { key: 'm', text: 'Male', value: 'M' },
     { key: 'f', text: 'Female', value: 'F' },
@@ -116,7 +117,8 @@ class SignUp extends Component {
             })
                 .then(data => {
                     if(data) {
-                        this.props.setToken(auth_data)
+                        this.props.setToken(auth_data);
+                        this.props.history.push('/')
                     }
                 })
                 .catch(function (error) {

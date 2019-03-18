@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import { appData } from "./appData";
+import { usersData } from "./allUsers";
 
 const allReducers = combineReducers({
-    appData
+    appData,
+    usersData
 });
 
 const reducers = (state, action) => {
