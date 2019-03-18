@@ -1,5 +1,5 @@
 .navbar {
-    position: fixed;
+    position: absolute;
     display: flex;
     align-items: center;
     top: 0;
@@ -13,6 +13,7 @@
     z-index: 30;
     transition: .15s background ease-in-out;
     padding: 8px 24px;
+
 }
 
 .navbar__container {

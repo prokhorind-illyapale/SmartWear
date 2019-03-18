@@ -13,19 +13,29 @@ class Main extends Component {
 
     componentDidMount() {
         if(typeof window.localStorage.token !== 'undefined') {
-            let url = 'http://localhost:8080/user/get/',
+            let url_user = 'http://localhost:8080/user/get/',
+                url_weather = 'http://localhost:8080/user/get/weather',
                 str = atob(window.localStorage.token),
                 login = str.substring(0 ,str.indexOf(':'));
 
-            axios.get(url + login, {
+            axios.get(url_user + login, {
                 headers: {
                     'Authorization': "Basic " + window.localStorage.token
                 }
             })
                 .then(response => {
-                    this.props.setUserData(response.data)
+                    this.props.setUserData(response.data);
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
+
+            axios.get(url_weather, {
+                headers: {
+                    'Authorization': "Basic " + window.localStorage.token,
+                    'Content-type' : 'application/json',
+                }
+            })
+                .then(responseWeather => console.log(responseWeather.data))
+
         }
     }
 

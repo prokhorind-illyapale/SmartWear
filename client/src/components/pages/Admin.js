@@ -3,7 +3,7 @@ import axios from 'axios'
 import {bindActionCreators} from "redux";
 import {getAllUsers} from "../../actions/getAllUsers";
 import connect from "react-redux/es/connect/connect";
-import {Table, Button } from 'semantic-ui-react'
+import {Table, Button, Icon } from 'semantic-ui-react'
 import '../../styleForComponents/AuthPage.css';
 import {deleteUser} from "../../actions/deleteUser";
 
@@ -60,8 +60,10 @@ class Admin extends Component {
                         <Table.Cell>{data.email}</Table.Cell>
                         <Table.Cell>{data.sex === "M" ? "Male" : "Female"}</Table.Cell>
                         <Table.Cell>{data.userRole.roleName}</Table.Cell>
-                        <Table.Cell>
-                            <Button basic negative onClick={() => this.deleteUserByLogin(data.login)}>Delete</Button>
+                        <Table.Cell textAlign='center'>
+                            <Button basic icon negative onClick={() => this.deleteUserByLogin(data.login)}>
+                                <Icon name='cancel'/>
+                            </Button>
                         </Table.Cell>
                     </Table.Row>
                 </Table.Body>
@@ -79,7 +81,7 @@ class Admin extends Component {
                             <Table.HeaderCell>Email</Table.HeaderCell>
                             <Table.HeaderCell>Gender</Table.HeaderCell>
                             <Table.HeaderCell>Role</Table.HeaderCell>
-                            <Table.HeaderCell>Delete</Table.HeaderCell>
+                            <Table.HeaderCell textAlign='center'>Delete</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     {this.tableUserData()}
