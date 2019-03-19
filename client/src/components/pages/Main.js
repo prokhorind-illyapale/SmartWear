@@ -5,6 +5,7 @@ import Admin from "./Admin";
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
+import {getWeather} from "../../actions/getWeather";
 import connect from "react-redux/es/connect/connect";
 
 
@@ -34,7 +35,10 @@ class Main extends Component {
                     'Content-type' : 'application/json',
                 }
             })
-                .then(responseWeather => console.log(responseWeather.data))
+                .then(responseWeather => {
+                    this.props.getWeather(responseWeather.data)
+                })
+                .catch(err => console.log(err));
 
         }
     }
@@ -51,7 +55,11 @@ class Main extends Component {
 }
 
 function matchDispatchToProps(dispath) {
-    return bindActionCreators( { setUserData: setUserData }, dispath);
+    return bindActionCreators(
+        {
+            setUserData: setUserData,
+            getWeather: getWeather
+        }, dispath);
 }
 
 export default connect(null, matchDispatchToProps)(Main);
