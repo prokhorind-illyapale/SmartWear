@@ -27,7 +27,10 @@ class NavMenu  extends Component {
     };
 
     logOut = () => {
-        this.props.logOut();
+        if(window.confirm("Are you sure?")) {
+            this.props.logOut();
+        }
+        this.showMenu()
     };
 
     render() {

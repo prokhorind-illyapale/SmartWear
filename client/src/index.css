@@ -8,6 +8,14 @@
     -moz-animation: Gradient 15s ease infinite;
     animation: Gradient 15s ease infinite;
 }
+.ui.dimmer {
+    background-color: unset !important;
+}
+.close.icon {
+    color: black !important;
+    top: 0 !important;
+    right: 0 !important;
+}
 @-webkit-keyframes Gradient {
     0% {
         background-position: 0 50%
