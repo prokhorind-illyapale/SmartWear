@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
-import {Segment, Header} from 'semantic-ui-react';
+import {Segment, Header,  Divider} from 'semantic-ui-react';
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {getWeather} from "../../actions/getWeather";
+import {weatherIcons} from '../../img/weatherIcons';
+
 
     const styleForText ={
-        color: 'black'
+        color: 'black',
+        fontSize: '15px'
+    };
+
+    const flexField = {
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '5px 15px',
     };
 
 
@@ -32,7 +41,7 @@ class UserPage extends Component {
         if(typeof this.props.data.sys !== 'undefined') {
             let sunrise = this.props.data.sys.sunrise;
 
-            return sunrise.substring(sunrise.indexOf('T') + 1, sunrise.indexOf('.'));
+            return sunrise.substring(sunrise.indexOf('T') + 1, sunrise.indexOf(':') + 3);
         }
     }
 
@@ -40,9 +49,34 @@ class UserPage extends Component {
         if(typeof this.props.data.sys !== 'undefined') {
             let sunset = this.props.data.sys.sunset;
 
-            return sunset.substring(sunset.indexOf('T') + 1, sunset.indexOf('.'))
+            return sunset.substring(sunset.indexOf('T') + 1, sunset.indexOf(':') + 3)
 
         }
+    }
+
+    getRoundTemp() {
+        if(typeof this.props.data.main !== 'undefined') {
+            let temp = Number(this.props.data.main.temp);
+
+            return Math.round(temp).toString();
+        }
+    }
+
+    getIconWeather() {
+        if(typeof this.props.data.weather !== 'undefined') {
+            let weather = this.props.data.weather,
+                prefix = 'wi wi-',
+                code = weather[0].id,
+                icon = weatherIcons[code].icon;
+
+            if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
+                icon = 'day-' + icon;
+            }
+
+           return prefix + icon;
+
+        }
+
     }
 
 
@@ -52,14 +86,23 @@ class UserPage extends Component {
         return (
             <div>
                 <Segment className="auth-container">
-                    <Header textAlign='center'>
-                        {data.name}
+                    <Header as='h1' textAlign='center'>
+                        {data.name} <i className={this.getIconWeather()}/>
                     </Header>
-                    <p style={styleForText}>Now: {typeof data.main !== 'undefined' && data.main.temp}&deg;</p>
-                    <p style={styleForText}>Max: {typeof data.main !== 'undefined' && data.main.temp_max}&deg;</p>
-                    <p style={styleForText}>Min: {typeof data.main !== 'undefined' && data.main.temp_min}&deg;</p>
-                    <p style={styleForText}>Sunrise: {this.getRiseHours()} PM</p>
-                    <p style={styleForText}>Sunset: {this.getSetHours()} AM</p>
+                    <Header as='h2' textAlign='center'>
+                        {this.getRoundTemp()}&deg;
+                    </Header>
+                    <Divider/>
+                    <div style={flexField}>
+                        <p style={styleForText}><b>Min:</b> {typeof data.main !== 'undefined' && data.main.temp_min}&deg;</p>
+                        <p style={styleForText}><b>Max:</b> {typeof data.main !== 'undefined' && data.main.temp_max}&deg;</p>
+                    </div>
+                    <Divider/>
+                    <div style={flexField}>
+                        <p style={styleForText}><b>Sunrise:</b> {this.getRiseHours()}</p>
+                        <p style={styleForText}><b>Sunset:</b> {this.getSetHours()}</p>
+                    </div>
+
                 </Segment>
             </div>
         )

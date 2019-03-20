@@ -4,7 +4,7 @@ import AuthPage from "./components/auth/AuthPage";
 import Main from "./components/pages/Main";
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch} from "react-router-dom";
-
+import 'weather-icons/css/weather-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'semantic-ui-css/semantic.min.css'
 
