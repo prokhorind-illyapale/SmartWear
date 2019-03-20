@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
 import {Segment, Header} from 'semantic-ui-react';
+import axios from "axios";
+import {bindActionCreators} from "redux";
+import {getWeather} from "../../actions/getWeather";
 
     const styleForText ={
         color: 'black'
@@ -10,11 +13,26 @@ import {Segment, Header} from 'semantic-ui-react';
 
 class UserPage extends Component {
 
+    componentDidMount() {
+        let url_weather = 'http://localhost:8080/user/get/weather';
+
+        axios.get(url_weather, {
+            headers: {
+                'Authorization': "Basic " + window.localStorage.token,
+                'Content-type' : 'application/json',
+            }
+        })
+            .then(responseWeather => {
+                this.props.getWeather(responseWeather.data)
+            })
+            .catch(err => console.log(err));
+    }
+
     getRiseHours(){
         if(typeof this.props.data.sys !== 'undefined') {
             let sunrise = this.props.data.sys.sunrise;
 
-            return sunrise.substring(sunrise.indexOf(':') + 1, sunrise.indexOf('.'));
+            return sunrise.substring(sunrise.indexOf('T') + 1, sunrise.indexOf('.'));
         }
     }
 
@@ -22,7 +40,7 @@ class UserPage extends Component {
         if(typeof this.props.data.sys !== 'undefined') {
             let sunset = this.props.data.sys.sunset;
 
-            return sunset.substring(sunset.indexOf(':') + 1, sunset.indexOf('.'))
+            return sunset.substring(sunset.indexOf('T') + 1, sunset.indexOf('.'))
 
         }
     }
@@ -40,8 +58,8 @@ class UserPage extends Component {
                     <p style={styleForText}>Now: {typeof data.main !== 'undefined' && data.main.temp}&deg;</p>
                     <p style={styleForText}>Max: {typeof data.main !== 'undefined' && data.main.temp_max}&deg;</p>
                     <p style={styleForText}>Min: {typeof data.main !== 'undefined' && data.main.temp_min}&deg;</p>
-                    <p style={styleForText}>Sunset: {this.getRiseHours()} AM</p>
-                    <p style={styleForText}>Sunrise: {this.getSetHours()} PM</p>
+                    <p style={styleForText}>Sunrise: {this.getRiseHours()} PM</p>
+                    <p style={styleForText}>Sunset: {this.getSetHours()} AM</p>
                 </Segment>
             </div>
         )
@@ -55,6 +73,12 @@ function mapStateToProps(state) {
         data: state.userWeather
     }
 }
+function matchDispatchToProps(dispath) {
+    return bindActionCreators(
+        {
+            getWeather: getWeather
+        }, dispath);
+}
 
 
-export default connect(mapStateToProps)(UserPage);
+export default connect(mapStateToProps, matchDispatchToProps)(UserPage);

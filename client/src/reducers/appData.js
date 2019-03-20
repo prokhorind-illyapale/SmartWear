@@ -29,6 +29,13 @@ export const appData = (state = initialState, action) => {
                     token: ''
                 }
             };
+        case "UPDATE_USER_BY_LOGIN":
+            return {
+            ...state,
+            userData: {
+                ...action.payload.fields
+            }
+        };
         default:
             return state;
     }

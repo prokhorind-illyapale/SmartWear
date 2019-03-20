@@ -5,7 +5,6 @@ import Admin from "./Admin";
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
-import {getWeather} from "../../actions/getWeather";
 import connect from "react-redux/es/connect/connect";
 
 
@@ -15,7 +14,6 @@ class Main extends Component {
     componentDidMount() {
         if(typeof window.localStorage.token !== 'undefined') {
             let url_user = 'http://localhost:8080/user/get/',
-                url_weather = 'http://localhost:8080/user/get/weather',
                 str = atob(window.localStorage.token),
                 login = str.substring(0 ,str.indexOf(':'));
 
@@ -26,17 +24,6 @@ class Main extends Component {
             })
                 .then(response => {
                     this.props.setUserData(response.data);
-                })
-                .catch(err => console.log(err));
-
-            axios.get(url_weather, {
-                headers: {
-                    'Authorization': "Basic " + window.localStorage.token,
-                    'Content-type' : 'application/json',
-                }
-            })
-                .then(responseWeather => {
-                    this.props.getWeather(responseWeather.data)
                 })
                 .catch(err => console.log(err));
 
@@ -58,7 +45,6 @@ function matchDispatchToProps(dispath) {
     return bindActionCreators(
         {
             setUserData: setUserData,
-            getWeather: getWeather
         }, dispath);
 }
 
