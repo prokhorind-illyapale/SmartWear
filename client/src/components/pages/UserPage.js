@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
-import {Segment, Header,  Divider} from 'semantic-ui-react';
+import {Segment, Header,  Divider, Button} from 'semantic-ui-react';
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {getWeather} from "../../actions/getWeather";
@@ -19,22 +19,40 @@ import {weatherIcons} from '../../img/weatherIcons';
         padding: '5px 15px',
     };
 
+    const smallText = {
+        fontSize: '13px'
+    };
+
+    const degBtn = {
+        position: 'absolute',
+        top: '10px',
+        right: '10px'
+    };
+
 
 class UserPage extends Component {
+
+    state = {
+        celsius : true,
+        fahrenheit: false,
+    };
 
     componentDidMount() {
         let url_weather = 'http://localhost:8080/user/get/weather';
 
         axios.get(url_weather, {
+            timeout: 60000,
             headers: {
                 'Authorization': "Basic " + window.localStorage.token,
                 'Content-type' : 'application/json',
             }
         })
-            .then(responseWeather => {
-                this.props.getWeather(responseWeather.data)
-            })
-            .catch(err => console.log(err));
+        .then(responseWeather => {
+            this.props.getWeather(responseWeather.data);
+            this.setState(responseWeather.data.main)
+        })
+        .catch(err => console.log(err))
+
     }
 
     getRiseHours(){
@@ -51,14 +69,6 @@ class UserPage extends Component {
 
             return sunset.substring(sunset.indexOf('T') + 1, sunset.indexOf(':') + 3)
 
-        }
-    }
-
-    getRoundTemp() {
-        if(typeof this.props.data.main !== 'undefined') {
-            let temp = Number(this.props.data.main.temp);
-
-            return Math.round(temp).toString();
         }
     }
 
@@ -79,6 +89,36 @@ class UserPage extends Component {
 
     }
 
+    changeToCelsius = () => {
+        if(this.state.celsius === false) {
+            this.setState({
+                ...this.state,
+                celsius: true,
+                fahrenheit: false,
+                temp: ( Number(this.state.temp) - 32) * 5/9,
+                temp_max: ( Number(this.state.temp_max) - 32) * 5/9,
+                temp_min: ( Number(this.state.temp_min) - 32) * 5/9
+            });
+        }
+
+
+    };
+
+    changeToFahrenheit = () => {
+        if(this.state.fahrenheit === false) {
+            this.setState({
+                ...this.state,
+                celsius: false,
+                fahrenheit: true,
+                temp: ( Number(this.state.temp) * 9/5) + 32,
+                temp_max: ( Number(this.state.temp_max) * 9/5) + 32,
+                temp_min: ( Number(this.state.temp_min) * 9/5) + 32
+            });
+        }
+
+
+    };
+
 
     render() {
         let data = this.props.data;
@@ -86,23 +126,37 @@ class UserPage extends Component {
         return (
             <div>
                 <Segment className="auth-container">
+                    <Button.Group style={degBtn}>
+                        <Button active={this.state.celsius} onClick={this.changeToCelsius}>&deg;C</Button>
+                        <Button active={this.state.fahrenheit} onClick={this.changeToFahrenheit}>&deg;F</Button>
+                    </Button.Group>
                     <Header as='h1' textAlign='center'>
-                        {data.name} <i className={this.getIconWeather()}/>
+                        {data.name} <i className={this.getIconWeather()}/><br/>
+                        <span style={smallText}>{typeof data.weather !== 'undefined' && data.weather.map(data => data.description)}</span>
                     </Header>
                     <Header as='h2' textAlign='center'>
-                        {this.getRoundTemp()}&deg;
+                        {Math.round(this.state.temp)}&deg;
                     </Header>
                     <Divider/>
                     <div style={flexField}>
-                        <p style={styleForText}><b>Min:</b> {typeof data.main !== 'undefined' && data.main.temp_min}&deg;</p>
-                        <p style={styleForText}><b>Max:</b> {typeof data.main !== 'undefined' && data.main.temp_max}&deg;</p>
+                        <p style={styleForText}><b>Min:</b> {Math.round(this.state.temp_min)}&deg;</p>
+                        <p style={styleForText}><b>Max:</b> {Math.round(this.state.temp_max)}&deg;</p>
                     </div>
                     <Divider/>
                     <div style={flexField}>
                         <p style={styleForText}><b>Sunrise:</b> {this.getRiseHours()}</p>
                         <p style={styleForText}><b>Sunset:</b> {this.getSetHours()}</p>
                     </div>
-
+                    <Divider/>
+                    <div style={flexField}>
+                        <p style={styleForText}><b>Humidity:</b> {typeof data.main !== 'undefined' && data.main.humidity}%</p>
+                        <p style={styleForText}><b>Pressure:</b> {typeof data.main !== 'undefined' && data.main.pressure} hPa</p>
+                    </div>
+                    <Divider/>
+                    <div style={flexField}>
+                        <p style={styleForText}><b>Wind Speed:</b> {typeof data.wind !== 'undefined' && data.wind.speed} meter/sec</p>
+                        <p style={styleForText}><b>Wind Degrees:</b> {typeof data.wind !== 'undefined' && data.wind.deg}&deg;</p>
+                    </div>
                 </Segment>
             </div>
         )
