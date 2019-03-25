@@ -12,14 +12,13 @@ public interface UserFacade {
 
     void userReg(RegistryUserForm userForm);
     boolean isUserExists(String login);
-
     boolean isUserHasAdminRights(String login);
-
     UserData getUserByLogin(String login);
-
     void deleteUserByLogin(String login);
-
     List<UserData> getAllUsers();
 
+    void updatePassword(String login, String password);
     void updateUser(UserData user, String login);
+
+    boolean isPasswordMatches(String login, String password);
 }

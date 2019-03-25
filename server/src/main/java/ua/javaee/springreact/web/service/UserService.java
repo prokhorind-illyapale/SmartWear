@@ -12,14 +12,13 @@ import java.util.List;
 public interface UserService {
     void userReg(UserData userData);
     boolean isUserExists(String login);
-
     User getUserByLogin(String login);
-
     Role getRoleByLogin(String login);
-
     List<User> getAllUsers();
-
     void deleteUserByLogin(String login);
-
     void updateUser(User user);
+
+    String convertPassword(String password);
+
+    boolean isPasswordMatches(String nonEncrypred, String encrypted);
 }

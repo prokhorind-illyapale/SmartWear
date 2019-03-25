@@ -16,6 +16,7 @@ import ua.javaee.springreact.web.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 
@@ -44,6 +45,12 @@ public class UserFacadeImpl implements UserFacade {
         UserData userData = new UserData();
         reguserFormToUserDataPopulator.populate(userForm, userData);
         userService.userReg(userData);
+    }
+
+    public void updatePassword(String login, String password) {
+        User user = userService.getUserByLogin(login);
+        user.setPassword(userService.convertPassword(password));
+        userService.updateUser(user);
     }
 
     @Override
@@ -145,6 +152,14 @@ public class UserFacadeImpl implements UserFacade {
         oldValues.setPassword(model.getPassword());
         oldValues.setLogin(model.getLogin());
         return oldValues;
+    }
+
+    public boolean isPasswordMatches(String login, String password) {
+        User user = userService.getUserByLogin(login);
+        if (isNull(user)) {
+            return false;
+        }
+        return userService.isPasswordMatches(password, user.getPassword());
     }
 
 
