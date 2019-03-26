@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/Navbar.css';
 import { Button } from 'semantic-ui-react';
-import { Link } from "react-router-dom";
+import {withRouter } from "react-router-dom";
 import NavMenu from "./NavMenu";
 
 class Navbar  extends Component {
@@ -18,16 +18,12 @@ class Navbar  extends Component {
                     <div className="navbar__container__item">
                         {!this.props.token &&
                         <div className="rd__button-group rd__button-group--no-shadow">
-                            <Link to={`/`}>
-                                <Button basic color='teal'>Sign in</Button>
-                            </Link>
+                            <Button basic color='teal' onClick={() => this.props.history.push('/')}>Sign in</Button>
                         </div>
                         }
                         {!this.props.token &&
                         <div className="rd__button-group rd__button-group--no-shadow">
-                            <Link to={`/register`}>
-                                <Button basic color='blue'>Sign up</Button>
-                            </Link>
+                            <Button basic color='blue' onClick={() => this.props.history.push('/register')}>Sign up</Button>
                         </div>
                         }
                         {this.props.token &&
@@ -40,4 +36,4 @@ class Navbar  extends Component {
     }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

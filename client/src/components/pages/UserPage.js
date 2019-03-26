@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
-import {Segment, Header,  Divider, Button} from 'semantic-ui-react';
+import {Segment, Header,  Divider, Button, Message} from 'semantic-ui-react';
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {getWeather} from "../../actions/getWeather";
@@ -123,43 +123,55 @@ class UserPage extends Component {
     render() {
         let data = this.props.data;
 
-        return (
-            <div>
-                <Segment className="auth-container">
-                    <Button.Group style={degBtn}>
-                        <Button active={this.state.celsius} onClick={this.changeToCelsius}>&deg;C</Button>
-                        <Button active={this.state.fahrenheit} onClick={this.changeToFahrenheit}>&deg;F</Button>
-                    </Button.Group>
-                    <Header as='h1' textAlign='center'>
-                        {data.name} <i className={this.getIconWeather()}/><br/>
-                        <span style={smallText}>{typeof data.weather !== 'undefined' && data.weather.map(data => data.description)}</span>
-                    </Header>
-                    <Header as='h2' textAlign='center'>
-                        {Math.round(this.state.temp)}&deg;
-                    </Header>
-                    <Divider/>
-                    <div style={flexField}>
-                        <p style={styleForText}><b>Min:</b> {Math.round(this.state.temp_min)}&deg;</p>
-                        <p style={styleForText}><b>Max:</b> {Math.round(this.state.temp_max)}&deg;</p>
-                    </div>
-                    <Divider/>
-                    <div style={flexField}>
-                        <p style={styleForText}><b>Sunrise:</b> {this.getRiseHours()}</p>
-                        <p style={styleForText}><b>Sunset:</b> {this.getSetHours()}</p>
-                    </div>
-                    <Divider/>
-                    <div style={flexField}>
-                        <p style={styleForText}><b>Humidity:</b> {typeof data.main !== 'undefined' && data.main.humidity}%</p>
-                        <p style={styleForText}><b>Pressure:</b> {typeof data.main !== 'undefined' && data.main.pressure} hPa</p>
-                    </div>
-                    <Divider/>
-                    <div style={flexField}>
-                        <p style={styleForText}><b>Wind Speed:</b> {typeof data.wind !== 'undefined' && data.wind.speed} meter/sec</p>
-                        <p style={styleForText}><b>Wind Degrees:</b> {typeof data.wind !== 'undefined' && data.wind.deg}&deg;</p>
-                    </div>
-                </Segment>
-            </div>
-        )
+        if(Object.keys(data).length !== 0) {
+            return (
+                <div>
+                    <Segment className="auth-container">
+                        <Button.Group style={degBtn}>
+                            <Button active={this.state.celsius} onClick={this.changeToCelsius}>&deg;C</Button>
+                            <Button active={this.state.fahrenheit} onClick={this.changeToFahrenheit}>&deg;F</Button>
+                        </Button.Group>
+                        <Header as='h1' textAlign='center'>
+                            {data.name} <i className={this.getIconWeather()}/><br/>
+                            <span style={smallText}>{typeof data.weather !== 'undefined' && data.weather.map(data => data.description)}</span>
+                        </Header>
+                        <Header as='h2' textAlign='center'>
+                            {(Math.round(this.state.temp)).toString()}&deg;
+                        </Header>
+                        <Divider/>
+                        <div style={flexField}>
+                            <p style={styleForText}><b>Min:</b> {(Math.round(this.state.temp_min)).toString()}&deg;</p>
+                            <p style={styleForText}><b>Max:</b> {(Math.round(this.state.temp_max)).toString()}&deg;</p>
+                        </div>
+                        <Divider/>
+                        <div style={flexField}>
+                            <p style={styleForText}><b>Sunrise:</b> {this.getRiseHours()}</p>
+                            <p style={styleForText}><b>Sunset:</b> {this.getSetHours()}</p>
+                        </div>
+                        <Divider/>
+                        <div style={flexField}>
+                            <p style={styleForText}><b>Humidity:</b> {typeof data.main !== 'undefined' && data.main.humidity}%</p>
+                            <p style={styleForText}><b>Pressure:</b> {typeof data.main !== 'undefined' && data.main.pressure} hPa</p>
+                        </div>
+                        <Divider/>
+                        <div style={flexField}>
+                            <p style={styleForText}><b>Wind Speed:</b> {typeof data.wind !== 'undefined' && data.wind.speed} meter/sec</p>
+                            <p style={styleForText}><b>Wind Degrees:</b> {typeof data.wind !== 'undefined' && data.wind.deg}&deg;</p>
+                        </div>
+                    </Segment>
+                </div>
+            )
+        } else {
+            let city = this.props.userData.city;
+            return (
+                    <Message warning className="auth-container">
+                        {city !== '' && <p style={styleForText}>We can't find city with name <b>{city}</b></p>}
+                        {city === '' && <p style={styleForText}>Please, choose your city</p>}
+                    </Message>
+                )
+        }
+
+
 
     }
 
@@ -167,7 +179,8 @@ class UserPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.userWeather
+        data: state.userWeather,
+        userData: state.appData.userData
     }
 }
 function matchDispatchToProps(dispath) {

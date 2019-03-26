@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route} from "react-router-dom";
 import UserPage from "./UserPage";
 import Admin from "./Admin";
+import Settings from "./Settings";
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
@@ -35,6 +36,7 @@ class Main extends Component {
             <div>
                 <Route exact path="/" component={UserPage}/>
                 <Route path="/admin" component={Admin}/>
+                <Route path="/settings" component={Settings}/>
             </div>
         )
     }

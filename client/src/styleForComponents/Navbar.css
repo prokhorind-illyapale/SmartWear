@@ -1,10 +1,6 @@
 .navbar {
-    position: absolute;
     display: flex;
     align-items: center;
-    top: 0;
-    left: 0;
-    right: 0;
     min-height: 58px;
     background: #232a34;
     color: #fff;
@@ -13,7 +9,7 @@
     z-index: 30;
     transition: .15s background ease-in-out;
     padding: 8px 24px;
-
+    margin: 0;
 }
 
 .navbar__container {
