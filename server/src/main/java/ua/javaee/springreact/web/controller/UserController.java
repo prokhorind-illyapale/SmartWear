@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.data.weatherapi.Climate;
 import ua.javaee.springreact.web.facade.UserFacade;
+import ua.javaee.springreact.web.form.ChangePasswordForm;
 import ua.javaee.springreact.web.form.UserForm;
 import ua.javaee.springreact.web.populator.UserDataToUserFormPopulator;
 import ua.javaee.springreact.web.populator.UserFormToUserDataPopulator;
@@ -36,6 +37,7 @@ public class UserController {
     private static final String USER_NOT_FOUND = "User not found for login:";
     private static final String NO_RIGHTS_FOR_THIS_ACTION = "No rights for this action:";
     private static final String YOU_HAVE_NO_RIGHTS_TO_CHANGE_USER_ROLE = "You have no rights to change User role:";
+    private static final String WRONG_OLD_PASSWORD = "Wrong old password";
     @Autowired
     private UserFacade userFacade;
     @Autowired
@@ -125,6 +127,19 @@ public class UserController {
         UserData userData = userFacade.getUserByLogin(principal.getName());
         Climate userClimate = weatherService.getClimateByCityName(userData.getCity());
         return new ResponseEntity(userClimate, OK);
+    }
+
+    @RequestMapping(value = "/change-user-password", method = POST)
+    public ResponseEntity<?> changeUserPassword(@RequestBody ChangePasswordForm form, Principal principal) {
+        if (!userFacade.isPasswordMatches(form.getLogin(), form.getOldPassword())) {
+            return processingErrors(WRONG_OLD_PASSWORD + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
+
+        if (!principal.getName().equalsIgnoreCase(form.getLogin())) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
+        userFacade.updatePassword(form.getLogin(), form.getNewPassword());
+        return new ResponseEntity(OK);
     }
 
     private boolean isUserHasRights(String login, Principal principal) {

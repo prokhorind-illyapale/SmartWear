@@ -3,6 +3,7 @@ package ua.javaee.springreact.web.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.javaee.springreact.web.data.UserData;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired(required = true)
     private UserDataToUserModelPopulator userDataToUserModelPopulator;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     @Transactional
@@ -88,6 +92,14 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userRepository.save(user);
         logger.info(USER_WAS_UPDATED, user.getLogin());
+    }
+
+    public String convertPassword(String password) {
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+    public boolean isPasswordMatches(String nonEncrypred, String encrypted) {
+        return bCryptPasswordEncoder.matches(nonEncrypred, encrypted);
     }
 
     public void setUserRepository(UserRepository userRepository) {
