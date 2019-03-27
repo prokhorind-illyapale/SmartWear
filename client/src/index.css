@@ -16,6 +16,17 @@
     top: 0 !important;
     right: 0 !important;
 }
+.bm-item-list a {
+    padding: 0.8em;
+}
+.bm-menu a {
+    color: #b8b7ad;
+    display: block !important;
+}
+#slide .bm-menu, #stack .bm-menu, #reveal .bm-menu {
+    padding: 2.5em 1.5em 0;
+    font-size: 1.15em;
+}
 
 @-webkit-keyframes Gradient {
     0% {

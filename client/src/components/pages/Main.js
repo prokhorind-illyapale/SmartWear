@@ -7,6 +7,7 @@ import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
 import connect from "react-redux/es/connect/connect";
+import NavMenu from "../nav/NavMenu";
 
 
 
@@ -34,10 +35,14 @@ class Main extends Component {
     render() {
         return (
             <div>
-                <Route exact path="/" component={UserPage}/>
-                <Route path="/admin" component={Admin}/>
-                <Route path="/settings" component={Settings}/>
+                <NavMenu isOpen={this.props.isOpen} showMenu={this.props.showMenu}/>
+                <div>
+                    <Route exact path="/" component={UserPage}/>
+                    <Route path="/admin" component={Admin}/>
+                    <Route path="/settings" component={Settings}/>
+                </div>
             </div>
+
         )
     }
 

@@ -1,85 +1,100 @@
 import React, { Component } from 'react';
-import { Button, Icon,  Menu } from 'semantic-ui-react';
 import '../../styleForComponents/NavMenu.css';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {logOut} from "../../actions/logOut";
+import { slide as Menu } from 'react-burger-menu';
+import {Icon} from 'semantic-ui-react';
+
+const styles = {
+    bmBurgerButton: {
+        position: 'fixed',
+        width: '36px',
+        height: '30px',
+        left: '36px',
+        top: '36px'
+    },
+    bmBurgerBars: {
+        background: '#373a47'
+    },
+    bmBurgerBarsHover: {
+        background: '#a90000'
+    },
+    bmCrossButton: {
+        height: '24px',
+        width: '24px'
+    },
+    bmCross: {
+        background: '#bdc3c7'
+    },
+    bmMenuWrap: {
+        position: 'fixed',
+        height: '100%'
+    },
+    bmMenu: {
+        background: '#373a47',
+        padding: '2.5em 1.5em 0',
+        fontSize: '1.15em'
+    },
+    bmMorphShape: {
+        fill: '#373a47'
+    },
+    bmItemList: {
+        color: '#b8b7ad',
+        padding: '0.8em'
+    },
+    bmItem: {
+        display: 'inline-block'
+    },
+    bmOverlay: {
+        background: 'rgba(0, 0, 0, 0.3)'
+    }
+};
 
 class NavMenu  extends Component {
 
-    state = {
-        icon: 'bars',
-        menuIsShow: false,
-    };
-
-    handleItemClick = (e, { name }) => {
-        this.setState({ activeItem: name });
-        this.showMenu()
+    handleItemClick = () => {
+        this.props.showMenu()
     } ;
-
-    showMenu = () => {
-        this.state.icon === 'bars'
-            ?
-            this.setState({...this.state, icon: 'cancel', menuIsShow: true})
-            :
-            this.setState({...this.state, icon: 'bars', menuIsShow: false});
-    };
 
     logOut = () => {
         if(window.confirm("Are you sure?")) {
             this.props.logOut();
         }
-        this.showMenu()
+        this.props.showMenu()
     };
 
     render() {
+        let data = this.props.data.userData;
         return (
             <div>
-                <Button basic color="teal" icon onClick={this.showMenu}>
-                    <Icon name={this.state.icon}/>
-                </Button>
-                {this.state.menuIsShow &&
-                <div className='navbar-menu__mini'>
-                    <Menu inverted vertical>
-                        <Link to={`/`}>
-                            <Menu.Item name='home' as='span' onClick={this.handleItemClick}>
-                                Home
-                            </Menu.Item>
+                <Menu id='slide' styles={styles} right width={ '20%' } customBurgerIcon={ false } customCrossIcon={ false } isOpen={this.props.isOpen}>
+                        <Link to={`/`} onClick={this.handleItemClick}>
+                            <Icon name='home'/>
+                            <span>Home</span>
                         </Link>
-                        <Menu.Item
-                            name='looks'
-                            onClick={this.handleItemClick}
-                        />
-                        <Link to={`/settings`}>
-                            <Menu.Item
-                                as='span'
-                                name='settings'
-                                onClick={this.handleItemClick}
-                            />
+                        <Link to={`/looks`} onClick={this.handleItemClick}>
+                            <Icon name='user circle'/>
+                            <span>Looks</span>
                         </Link>
-                        {this.props.data.userData.userRole.roleName === "ADMIN" &&
-                        <Link to={`/admin`}>
-                            <Menu.Item
-                                as='span'
-                                name='admin'
-                                onClick={this.handleItemClick}
-                            />
+                        <Link to={`/settings`} onClick={this.handleItemClick}>
+                            <Icon name='settings'/>
+                            <span>Settings</span>
+                        </Link>
+                        {this.props.isOpen === true
+                        && data.userRole.roleName === "ADMIN"
+                        &&
+                        <Link  to={`/admin`} onClick={this.handleItemClick}>
+                            <Icon name='privacy'/>
+                            <span>Admin</span>
                         </Link>
                         }
-                        <Link to={`/`}>
-                            <Menu.Item
-                                as='span'
-                                className='navbar-menu__red-item'
-                                name='log out'
-                                color='red'
-                                onClick={this.logOut}
-                            />
+                        <Link to={`/`} onClick={this.logOut}>
+                            <Icon name='log out'/>
+                            <span>Logout</span>
                         </Link>
-                    </Menu>
-                </div>
-
-                }
+                </Menu>
             </div>
         );
     }

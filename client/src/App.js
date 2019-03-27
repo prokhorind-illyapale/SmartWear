@@ -10,7 +10,9 @@ import 'semantic-ui-css/semantic.min.css'
 
 class App extends Component {
     state = {
-        token: ''
+        token: '',
+        isOpen: false,
+        icon: 'bars'
     };
 
     componentDidMount() {
@@ -19,6 +21,14 @@ class App extends Component {
         }
 
     }
+
+    showMenu = () => {
+        this.state.icon === 'bars'
+            ?
+            this.setState({...this.state, icon: 'cancel', isOpen: true})
+            :
+            this.setState({...this.state, icon: 'bars', isOpen: false});
+    };
 
   render() {
 
@@ -34,9 +44,9 @@ class App extends Component {
       return (
           <Router>
               <div className='App'>
-                  <Navbar token={token}/>
+                  <Navbar token={token} isOpen={this.state.isOpen} showMenu={this.showMenu} icon={this.state.icon}/>
                   <Switch>
-                  {!token ? <AuthPage/> : <Main/>}
+                  {!token ? <AuthPage/> : <Main isOpen={this.state.isOpen} showMenu={this.showMenu}/>}
                   </Switch>
               </div>
           </Router>
