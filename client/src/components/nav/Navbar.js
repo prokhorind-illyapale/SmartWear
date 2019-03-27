@@ -31,7 +31,7 @@ class Navbar  extends Component {
                         }
                         {this.props.token &&
                             <Button basic color="teal" icon onClick={this.props.showMenu}>
-                                <Icon name={this.props.icon}/>
+                                <Icon name='bars'/>
                             </Button>
                         }
                     </div>

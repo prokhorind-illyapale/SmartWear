@@ -7,6 +7,7 @@ import {BrowserRouter as Router ,Switch} from "react-router-dom";
 import 'weather-icons/css/weather-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'semantic-ui-css/semantic.min.css'
+import NavMenu from "./components/nav/NavMenu";
 
 class App extends Component {
     state = {
@@ -23,11 +24,15 @@ class App extends Component {
     }
 
     showMenu = () => {
-        this.state.icon === 'bars'
-            ?
-            this.setState({...this.state, icon: 'cancel', isOpen: true})
-            :
-            this.setState({...this.state, icon: 'bars', isOpen: false});
+        this.setState({isOpen: true})
+    };
+
+    handleStateChange = (state) => {
+        this.setState({isOpen: state.isOpen})
+    };
+
+    closeMenu = () => {
+        this.setState({isOpen: false})
     };
 
   render() {
@@ -44,9 +49,10 @@ class App extends Component {
       return (
           <Router>
               <div className='App'>
+                  <NavMenu isOpen={this.state.isOpen} closeMenu={this.closeMenu} handleStateChange={this.handleStateChange}/>
                   <Navbar token={token} isOpen={this.state.isOpen} showMenu={this.showMenu} icon={this.state.icon}/>
                   <Switch>
-                  {!token ? <AuthPage/> : <Main isOpen={this.state.isOpen} showMenu={this.showMenu}/>}
+                  {!token ? <AuthPage/> : <Main/>}
                   </Switch>
               </div>
           </Router>

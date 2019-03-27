@@ -54,38 +54,43 @@ const styles = {
 
 class NavMenu  extends Component {
 
-    handleItemClick = () => {
-        this.props.showMenu()
-    } ;
-
     logOut = () => {
         if(window.confirm("Are you sure?")) {
             this.props.logOut();
         }
-        this.props.showMenu()
+        this.props.closeMenu()
     };
+
 
     render() {
         let data = this.props.data.userData;
         return (
             <div>
-                <Menu id='slide' styles={styles} right width={ '20%' } customBurgerIcon={ false } customCrossIcon={ false } isOpen={this.props.isOpen}>
-                        <Link to={`/`} onClick={this.handleItemClick}>
+                <Menu
+                    id='slide'
+                    styles={styles}
+                    right
+                    width={ '20%' }
+                    customBurgerIcon={ false }
+                    isOpen={this.props.isOpen}
+                    onStateChange={(state) => this.props.handleStateChange(state)}
+                >
+                        <Link to={`/`} onClick={this.props.closeMenu}>
                             <Icon name='home'/>
                             <span>Home</span>
                         </Link>
-                        <Link to={`/looks`} onClick={this.handleItemClick}>
+                        <Link to={`/looks`} onClick={this.props.closeMenu}>
                             <Icon name='user circle'/>
                             <span>Looks</span>
                         </Link>
-                        <Link to={`/settings`} onClick={this.handleItemClick}>
+                        <Link to={`/settings`} onClick={this.props.closeMenu}>
                             <Icon name='settings'/>
                             <span>Settings</span>
                         </Link>
                         {this.props.isOpen === true
                         && data.userRole.roleName === "ADMIN"
                         &&
-                        <Link  to={`/admin`} onClick={this.handleItemClick}>
+                        <Link  to={`/admin`} onClick={this.props.closeMenu}>
                             <Icon name='privacy'/>
                             <span>Admin</span>
                         </Link>
