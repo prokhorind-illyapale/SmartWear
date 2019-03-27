@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/AuthPage.css';
 import { connect } from 'react-redux';
-import {Segment, Header,  Divider, Button, Message} from 'semantic-ui-react';
+import {Segment, Header,  Divider, Button, Message, Loader} from 'semantic-ui-react';
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {getWeather} from "../../actions/getWeather";
@@ -119,6 +119,12 @@ class UserPage extends Component {
 
     };
 
+    roundTemp = (temp) => {
+        let round = Math.round(temp);
+
+        return round.toString();
+    };
+
 
     render() {
         let data = this.props.data;
@@ -136,12 +142,12 @@ class UserPage extends Component {
                             <span style={smallText}>{typeof data.weather !== 'undefined' && data.weather.map(data => data.description)}</span>
                         </Header>
                         <Header as='h2' textAlign='center'>
-                            {(Math.round(this.state.temp)).toString()}&deg;
+                            {isNaN(this.roundTemp(this.state.temp)) ? <Loader size='small' active/> : this.roundTemp(this.state.temp)}&deg;
                         </Header>
                         <Divider/>
                         <div style={flexField}>
-                            <p style={styleForText}><b>Min:</b> {(Math.round(this.state.temp_min)).toString()}&deg;</p>
-                            <p style={styleForText}><b>Max:</b> {(Math.round(this.state.temp_max)).toString()}&deg;</p>
+                            <p style={styleForText}><b>Min:</b> {isNaN(this.roundTemp(this.state.temp_min)) ? '' : this.roundTemp(this.state.temp_min)}&deg;</p>
+                            <p style={styleForText}><b>Max:</b> {isNaN(this.roundTemp(this.state.temp_max)) ? '' : this.roundTemp(this.state.temp_max)}&deg;</p>
                         </div>
                         <Divider/>
                         <div style={flexField}>
@@ -171,8 +177,6 @@ class UserPage extends Component {
                 )
         }
 
-
-
     }
 
 }
@@ -184,10 +188,7 @@ function mapStateToProps(state) {
     }
 }
 function matchDispatchToProps(dispath) {
-    return bindActionCreators(
-        {
-            getWeather: getWeather
-        }, dispath);
+    return bindActionCreators({getWeather: getWeather}, dispath);
 }
 
 

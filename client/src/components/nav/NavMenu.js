@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon,  Menu } from 'semantic-ui-react';
 import '../../styleForComponents/NavMenu.css';
 import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {logOut} from "../../actions/logOut";
 
@@ -19,17 +19,16 @@ class NavMenu  extends Component {
     } ;
 
     showMenu = () => {
-       this.state.icon === 'bars'
-           ?
-           this.setState({...this.state, icon: 'cancel', menuIsShow: true})
-           :
-           this.setState({...this.state, icon: 'bars', menuIsShow: false});
+        this.state.icon === 'bars'
+            ?
+            this.setState({...this.state, icon: 'cancel', menuIsShow: true})
+            :
+            this.setState({...this.state, icon: 'bars', menuIsShow: false});
     };
 
     logOut = () => {
         if(window.confirm("Are you sure?")) {
             this.props.logOut();
-            this.props.history.push('/')
         }
         this.showMenu()
     };
@@ -41,37 +40,44 @@ class NavMenu  extends Component {
                     <Icon name={this.state.icon}/>
                 </Button>
                 {this.state.menuIsShow &&
-                    <div className='navbar-menu__mini'>
-                        <Menu inverted vertical>
-                            <Menu.Item name='home' as='a' onClick={() => this.props.history.push('/')}>
+                <div className='navbar-menu__mini'>
+                    <Menu inverted vertical>
+                        <Link to={`/`}>
+                            <Menu.Item name='home' as='span' onClick={this.handleItemClick}>
                                 Home
                             </Menu.Item>
+                        </Link>
+                        <Menu.Item
+                            name='looks'
+                            onClick={this.handleItemClick}
+                        />
+                        <Link to={`/settings`}>
                             <Menu.Item
-                                as='a'
-                                name='looks'
+                                as='span'
+                                name='settings'
                                 onClick={this.handleItemClick}
                             />
+                        </Link>
+                        {this.props.data.userData.userRole.roleName === "ADMIN" &&
+                        <Link to={`/admin`}>
                             <Menu.Item
-                                as='a'
-                                name='settings'
-                                onClick={() => this.props.history.push('/settings')}
+                                as='span'
+                                name='admin'
+                                onClick={this.handleItemClick}
                             />
-                            {this.props.data.userData.userRole.roleName === "ADMIN" &&
-                                <Menu.Item
-                                    as='a'
-                                    name='admin'
-                                    onClick={() => this.props.history.push('/admin')}
-                                />
-                            }
+                        </Link>
+                        }
+                        <Link to={`/`}>
                             <Menu.Item
-                                as='a'
+                                as='span'
                                 className='navbar-menu__red-item'
                                 name='log out'
                                 color='red'
                                 onClick={this.logOut}
                             />
-                        </Menu>
-                    </div>
+                        </Link>
+                    </Menu>
+                </div>
 
                 }
             </div>
@@ -89,4 +95,4 @@ function matchDispatchToProps(dispath) {
     return bindActionCreators( { logOut: logOut }, dispath);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(NavMenu));
+export default connect(mapStateToProps, matchDispatchToProps)(NavMenu);
