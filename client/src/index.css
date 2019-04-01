@@ -9,10 +9,10 @@
     animation: Gradient 15s ease infinite;
 }
 .ui.dimmer {
-    background-color: unset !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
 }
 .close.icon {
-    color: black !important;
+    color: #4780ad!important;
     top: 0 !important;
     right: 0 !important;
 }
@@ -23,9 +23,19 @@
     color: #b8b7ad;
     display: block !important;
 }
+.bm-menu a:focus {
+    outline: none;
+}
 #slide .bm-menu, #stack .bm-menu, #reveal .bm-menu {
     padding: 2.5em 1.5em 0;
     font-size: 1.15em;
+}
+.item-pointer {
+    cursor: pointer;
+}
+
+.confirm_window {
+    top: 40px;
 }
 
 @-webkit-keyframes Gradient {

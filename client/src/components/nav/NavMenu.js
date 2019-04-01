@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import '../../styleForComponents/NavMenu.css';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {logOut} from "../../actions/logOut";
 import { slide as Menu } from 'react-burger-menu';
-import {Icon} from 'semantic-ui-react';
+import {Icon, Confirm} from 'semantic-ui-react';
 
 const styles = {
     bmBurgerButton: {
@@ -54,11 +54,21 @@ const styles = {
 
 class NavMenu  extends Component {
 
+    state = {
+        open: false
+    };
+
+    open = () => {
+        this.setState({ open: true });
+        this.props.closeMenu();
+    } ;
+
+    close = () => this.setState({ open: false });
+
     logOut = () => {
-        if(window.confirm("Are you sure?")) {
-            this.props.logOut();
-        }
-        this.props.closeMenu()
+        this.props.logOut();
+        this.props.history.push('/');
+        this.close();
     };
 
 
@@ -75,30 +85,37 @@ class NavMenu  extends Component {
                     isOpen={this.props.isOpen}
                     onStateChange={(state) => this.props.handleStateChange(state)}
                 >
-                        <Link to={`/`} onClick={this.props.closeMenu}>
-                            <Icon name='home'/>
-                            <span>Home</span>
-                        </Link>
-                        <Link to={`/looks`} onClick={this.props.closeMenu}>
-                            <Icon name='user circle'/>
-                            <span>Looks</span>
-                        </Link>
-                        <Link to={`/settings`} onClick={this.props.closeMenu}>
-                            <Icon name='settings'/>
-                            <span>Settings</span>
-                        </Link>
-                        {this.props.isOpen === true
-                        && data.userRole.roleName === "ADMIN"
-                        &&
-                        <Link  to={`/admin`} onClick={this.props.closeMenu}>
-                            <Icon name='privacy'/>
-                            <span>Admin</span>
-                        </Link>
-                        }
-                        <Link to={`/`} onClick={this.logOut}>
-                            <Icon name='log out'/>
-                            <span>Logout</span>
-                        </Link>
+                    <Link to={`/`} onClick={this.props.closeMenu}>
+                        <Icon name='home'/>
+                        <span>Home</span>
+                    </Link>
+                    <Link to={`/looks`} onClick={this.props.closeMenu}>
+                        <Icon name='user circle'/>
+                        <span>Looks</span>
+                    </Link>
+                    {this.props.isOpen === true
+                    && data.userRole.roleName === "ADMIN"
+                    &&
+                    <Link  to={`/admin`} onClick={this.props.closeMenu}>
+                        <Icon name='privacy'/>
+                        <span>Admin</span>
+                    </Link>
+                    }
+                    <Link to={`/settings`} onClick={this.props.closeMenu}>
+                        <Icon name='settings'/>
+                        <span>Settings</span>
+                    </Link>
+                    <a href={void(0)} className='item-pointer' onClick={this.open}>
+                        <Icon name='log out'/>
+                        <span>Logout</span>
+                    </a>
+                    <Confirm
+                        className='confirm_window'
+                        size='mini'
+                        open={this.state.open}
+                        onCancel={this.close}
+                        onConfirm={this.logOut}
+                    />
                 </Menu>
             </div>
         );
@@ -115,4 +132,4 @@ function matchDispatchToProps(dispath) {
     return bindActionCreators( { logOut: logOut }, dispath);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(NavMenu);
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(NavMenu));

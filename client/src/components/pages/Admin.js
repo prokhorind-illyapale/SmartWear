@@ -3,7 +3,7 @@ import axios from 'axios'
 import {bindActionCreators} from "redux";
 import {getAllUsers} from "../../actions/getAllUsers";
 import connect from "react-redux/es/connect/connect";
-import {Table, Button, Icon, Modal, Form } from 'semantic-ui-react'
+import {Table, Button, Icon, Modal, Form} from 'semantic-ui-react'
 import '../../styleForComponents/AuthPage.css';
 import {deleteUser} from "../../actions/deleteUser";
 import {updateUserByLogin} from "../../actions/updateUserByLogin";
@@ -27,17 +27,26 @@ class Admin extends Component {
         email: '',
         city: '',
         sex: '',
-        userRole: {roleName: ''}
+        userRole: {roleName: ''},
+        open_pass: false,
+        password: '',
+        repeatPassword: '',
+        open_confirm: false
     };
 
     showEditModal = ({login, email, city, sex, userRole}) => {
         this.setState({...this.state, open: true, login, email, city, sex, userRole, id: login});
     };
 
-
     closeEditModal = () =>
         this.setState({ open: false });
 
+    showPassModal = ({login}) => {
+        this.setState({...this.state, open_pass: true, id: login})
+    };
+
+    closePassModal = () =>
+        this.setState({ open_pass: false });
 
     editField =({target}) => {
        this.setState({...this.state, [target.name]: target.value })
@@ -78,6 +87,40 @@ class Admin extends Component {
 
     };
 
+    updatePassword = () => {
+        let url = 'http://localhost:8080/admin/change-user-password',
+            password = this.state.password,
+            repeat_pass = this.state.repeatPassword,
+            body = JSON.stringify({
+                login: this.state.id,
+                password: password
+            });
+
+        if(repeat_pass === password) {
+            axios.post(url, body, {
+                headers: {
+                    'Content-type' : 'application/json',
+                    'Authorization': "Basic " + window.localStorage.token
+                }
+            })
+                .then(response => {
+                    if(response.status === 200) {
+                        this.closePassModal();
+                        toast.success('Success', {
+                            position: toast.POSITION.TOP_CENTER
+                        });
+                    }
+                })
+                .catch(err => console.log(err));
+        } else {
+            toast.error('Password does not match', {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+
+        this.setState({...this.state, password: '', repeatPassword: '', id: ''})
+    };
+
     updateUserByLogin = (login) => {
         let url = 'http://localhost:8080/user/update/',
             fields = {
@@ -106,13 +149,13 @@ class Admin extends Component {
                     toast.success('Success', {
                         position: toast.POSITION.TOP_CENTER
                     });
-                    this.props.updateUserByLogin(login, fields)
+                    this.props.updateUserByLogin(login, fields);
+                    this.closeEditModal();
                 }
             })
             .catch(err => console.log(err));
-
-        this.closeEditModal();
     };
+
 
 
     tableUserData() {
@@ -166,6 +209,29 @@ class Admin extends Component {
                                 </Modal.Actions>
                             </Modal>
                         </Table.Cell>
+                        <Table.Cell textAlign='center'>
+                            <Button basic icon onClick={() => this.showPassModal(data)}>
+                                <Icon name='key'/>
+                            </Button>
+                            <Modal size='small' open={this.state.open_pass} onClose={this.closePassModal} closeIcon>
+                            <Modal.Header>Edit {this.state.id} password</Modal.Header>
+                            <Modal.Content>
+                                <Form>
+                                    <Form.Field>
+                                        <label>New Password</label>
+                                        <input type='password' name='password' defaultValue={this.state.password} onChange={this.editField}/>
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Repeat Password</label>
+                                        <input type='password' name='repeatPassword' defaultValue={this.state.repeatPassword} onChange={this.editField}/>
+                                    </Form.Field>
+                                </Form>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button type='submit' onClick={() => this.updatePassword(this.state.id)}>Submit</Button>
+                            </Modal.Actions>
+                        </Modal>
+                        </Table.Cell>
                     </Table.Row>
                 </Table.Body>
             )
@@ -186,6 +252,7 @@ class Admin extends Component {
                                 <Table.HeaderCell textAlign='center'>Role</Table.HeaderCell>
                                 <Table.HeaderCell textAlign='center'>Delete</Table.HeaderCell>
                                 <Table.HeaderCell textAlign='center'>Edit</Table.HeaderCell>
+                                <Table.HeaderCell textAlign='center'>Password</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         {this.tableUserData()}
