@@ -105,11 +105,17 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void updateUser(UserData user, String login) {
+    public void updateUser(UserData user, String login, String principalName) {
         if (isNotBlank(login)) {
             User userModel = userService.getUserByLogin(login);
             User oldValues = getOldValues(userModel);
             userDataToUserModelPopulator.populate(user, userModel);
+            if (isUserHasAdminRights(principalName) && user.getUserRole() != null) {
+                Role newRole = userService.getRoleByName(user.getUserRole().getRoleName());
+                if (newRole != null) {
+                    userModel.setRole(newRole);
+                }
+            }
             setOldValuesIfBlank(userModel, oldValues);
             userService.updateUser(userModel);
         } else {

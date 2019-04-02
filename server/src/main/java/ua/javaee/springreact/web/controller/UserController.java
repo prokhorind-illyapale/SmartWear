@@ -100,7 +100,7 @@ public class UserController {
                 if (userFacade.isUserHasAdminRights(principal.getName()) || (userForm.getUserRole() == null || "USER".equalsIgnoreCase(userForm.getUserRole().getRoleName()))) {
                     UserData user = new UserData();
                     userFormToUserDataPopulator.populate(userForm, user);
-                    userFacade.updateUser(user, login);
+                    userFacade.updateUser(user, login, principal.getName());
                     return new ResponseEntity(HttpStatus.OK);
                 } else {
                     return processingErrors(YOU_HAVE_NO_RIGHTS_TO_CHANGE_USER_ROLE + login, PERMISSION_TYPE_ERROR);

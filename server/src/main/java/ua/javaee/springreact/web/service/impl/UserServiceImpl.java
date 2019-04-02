@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Role getRoleByName(String roleName) {
+        return roleRepository.findByName(roleName);
+    }
+
+    @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         Iterable<User> usersFromDb = userRepository.findAll();

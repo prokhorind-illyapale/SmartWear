@@ -14,6 +14,8 @@ public interface UserService {
     boolean isUserExists(String login);
     User getUserByLogin(String login);
     Role getRoleByLogin(String login);
+
+    Role getRoleByName(String roleName);
     List<User> getAllUsers();
     void deleteUserByLogin(String login);
     void updateUser(User user);

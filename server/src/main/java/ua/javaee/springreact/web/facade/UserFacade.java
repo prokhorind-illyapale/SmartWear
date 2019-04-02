@@ -18,7 +18,8 @@ public interface UserFacade {
     List<UserData> getAllUsers();
 
     void updatePassword(String login, String password);
-    void updateUser(UserData user, String login);
+
+    void updateUser(UserData user, String login, String principalName);
 
     boolean isPasswordMatches(String login, String password);
 }
