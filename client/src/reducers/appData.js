@@ -19,7 +19,7 @@ export const appData = (state = initialState, action) => {
             return {
                 ...state,
                 userData: {
-                            ...action.payload
+                    ...action.payload
                     }
                 };
         case 'LOG_OUT':
@@ -27,6 +27,13 @@ export const appData = (state = initialState, action) => {
                 ...state,
                auth: {
                     token: ''
+                }
+            };
+        case 'UPDATE_USER_PROFILE':
+            return {
+                ...state,
+                userData: {
+                    ...action.payload
                 }
             };
         default:
