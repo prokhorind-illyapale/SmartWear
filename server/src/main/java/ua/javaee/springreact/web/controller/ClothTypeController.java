@@ -2,6 +2,7 @@ package ua.javaee.springreact.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.javaee.springreact.web.converter.ClothTypeDataToFormConverter;
 import ua.javaee.springreact.web.data.ClothTypeData;
@@ -9,6 +10,7 @@ import ua.javaee.springreact.web.facade.ClothTypeFacade;
 import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.lookforms.ClothTypeDataForm;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -52,7 +54,11 @@ public class ClothTypeController {
     }
 
     @PostMapping
-    public ResponseEntity saveClothType(ClothTypeDataForm form, Principal principal) {
+    public ResponseEntity saveClothType(@Valid @RequestBody ClothTypeDataForm form, Principal principal, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return processingErrors(bindingResult);
+        }
         if (!userFacade.isUserHasAdminRights(principal.getName())) {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }

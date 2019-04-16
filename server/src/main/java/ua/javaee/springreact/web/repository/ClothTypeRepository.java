@@ -12,6 +12,6 @@ import ua.javaee.springreact.web.entity.ClothType;
 @Repository
 public interface ClothTypeRepository extends JpaRepository<ClothType, Long> {
 
-    @Query("SELECT ct From ClothType ct where ct.name = :name")
+    @Query("SELECT ct From ClothType ct where LOWER(ct.name) LIKE LOWER(concat(?1, '%'))")
     ClothType findClothTypeByName(@Param("name") String name);
 }
