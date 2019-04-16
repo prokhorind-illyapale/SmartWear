@@ -105,6 +105,18 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
+    public List<RoleData> getAllUserRoles() {
+        List<Role> roles = userService.getAllUserRoles();
+        List<RoleData> roleDatas = new ArrayList<>();
+        for (Role role : roles) {
+            RoleData roleData = new RoleData();
+            roleToRoleDataPopulator.populate(role, roleData);
+            roleDatas.add(roleData);
+        }
+        return roleDatas;
+    }
+
+    @Override
     public void updateUser(UserData user, String login, String principalName) {
         if (isNotBlank(login)) {
             User userModel = userService.getUserByLogin(login);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ua.javaee.springreact.web.data.RoleData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.data.weatherapi.Climate;
 import ua.javaee.springreact.web.facade.UserFacade;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
@@ -111,6 +113,15 @@ public class UserController {
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + login, PERMISSION_TYPE_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/get/roles", method = GET)
+    public ResponseEntity<?> getRoles(Principal principal) {
+        if (!userFacade.isUserHasAdminRights(principal.getName())) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
+        List<RoleData> roles = userFacade.getAllUserRoles();
+        return ok(roles);
     }
 
     @RequestMapping(value = "/get/me", method = GET)
