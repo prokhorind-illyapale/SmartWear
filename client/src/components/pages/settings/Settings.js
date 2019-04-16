@@ -19,7 +19,6 @@ class Settings extends Component {
         menuWidth: 4,
         settingsWidth: 10,
         vertical: true,
-        horizontal: "false"
     };
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -39,9 +38,9 @@ class Settings extends Component {
 
     updateContainer() {
         if(window.innerWidth < 1200) {
-            this.setState({menuWidth: 16, settingsWidth: 16, vertical: false, horizontal: "true"})
+            this.setState({menuWidth: 16, settingsWidth: 16, vertical: false})
         } else if(window.innerWidth >= 1200) {
-            this.setState({menuWidth: 4, settingsWidth: 10, vertical: true, horizontal: "false"})
+            this.setState({menuWidth: 4, settingsWidth: 10, vertical: true})
         }
     }
 

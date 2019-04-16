@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setToken} from "../../../actions/setToken";
+import {updateUserProfile} from "../../../actions/updateUserProfile";
 import {toast, ToastContainer} from "react-toastify";
 
 
@@ -15,7 +16,6 @@ class Profile extends Component {
 
 
     editField =({target}) => {
-        console.log({target})
         this.setState({...this.state, [target.name]: target.value })
     };
 
@@ -61,11 +61,19 @@ class Profile extends Component {
         if(this.checkForm()) {
             let url = 'http://localhost:8080/user/update/',
                 login = this.state.id,
+                fields = {
+                    login: this.state.login,
+                    email: this.state.email,
+                    sex: this.state.sex,
+                    city: this.state.city,
+                    userRole: {roleName: this.state.userRole.roleName}
+                },
                 body = JSON.stringify({
                     login: this.state.login,
                     email: this.state.email,
                     sex: this.state.sex,
-                    city: this.state.city
+                    city: this.state.city,
+                    userRole: {roleName: this.state.userRole.roleName}
                 });
 
             axios.put(url + login, body, {
@@ -76,6 +84,7 @@ class Profile extends Component {
             })
                 .then(response => {
                     if (response.status === 200) {
+                        this.props.updateUserProfile(fields);
                         toast.success('Profile updated', {
                             position: toast.POSITION.TOP_CENTER
                         });
@@ -130,7 +139,10 @@ class Profile extends Component {
     }
 }
 function matchDispatchToProps(dispath) {
-    return bindActionCreators( { setToken: setToken }, dispath);
+    return bindActionCreators( {
+        setToken: setToken,
+        updateUserProfile: updateUserProfile
+    }, dispath);
 }
 
 function mapStateToProps(state) {

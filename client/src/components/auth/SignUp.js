@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Header, Form, Segment, Icon } from 'semantic-ui-react';
+import { Button, Header, Form, Segment, Icon, Progress } from 'semantic-ui-react';
 import {ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import {bindActionCreators} from "redux";
@@ -20,7 +20,10 @@ class SignUp extends Component {
         city: '',
         gender: '',
         password: '',
-        passwordRepeat: ''
+        passwordRepeat: '',
+        progress: false,
+        percent: 10,
+        color: 'grey'
     };
 
     onLoginSet = (e) => {
@@ -40,7 +43,21 @@ class SignUp extends Component {
     };
 
     onPassSet = (e) => {
-        this.setState({...this.state, password: e.target.value})
+        this.setState({...this.state, password: e.target.value, progress: true});
+
+        let length = e.target.value.length;
+
+        if(length === 3) {
+            this.setState({percent: 30, color: 'grey'});
+        } else if (length === 6) {
+            this.setState({percent: 60, color: 'grey'});
+        } else if (length === 8) {
+            this.setState({percent: 80, color: 'yellow'});
+        } else if (length === 10) {
+            this.setState({percent: 100, color: 'green'});
+        }  else if (!length ) {
+            this.setState({progress: false, color: 'grey', percent: 10});
+        }
     };
 
     onPassRepeatSet = (e) => {
@@ -159,6 +176,7 @@ class SignUp extends Component {
                             <Form.Input id="city_input" onChange={this.onCitySet} icon='location arrow' iconPosition='left' label='Location' placeholder='Your city' />
                             <Form.Select id="gender_input" onChange={this.onGenderSet} fluid label='Gender' options={gender} placeholder='Gender' value={value}/>
                             <Form.Input id="pass_input" onChange={this.onPassSet} icon='lock' iconPosition='left' label='Password' type='password' />
+                            {this.state.progress && <Form.Field><Progress percent={this.state.percent} size='small' progress color={this.state.color}/></Form.Field>}
                             <Form.Input id="pass_rep_input" onChange={this.onPassRepeatSet} icon='lock' iconPosition='left' label='Repeat your password' type='password' />
 
                             <Button content='Register' onClick={this.onSubmit} primary />

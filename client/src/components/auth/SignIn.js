@@ -4,6 +4,7 @@ import {ToastContainer, toast } from 'react-toastify';
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux';
 import { setToken } from "../../actions/setToken";
+import axios from "axios";
 
 class SignIn extends Component {
 
@@ -36,26 +37,25 @@ class SignIn extends Component {
     onSubmit = () => {
         if(this.validateForm()) {
             let url = 'http://localhost:8080/user/get/me',
-                headers = new Headers(),
                 login_input = document.getElementById('login_input'),
                 password_input = document.getElementById('password_input'),
                 auth_data = btoa(this.state.login + ":" + this.state.password);
 
-            headers.set('Authorization', 'Basic ' + auth_data);
-
-            fetch(url, {
-                method:'GET',
-                headers: headers,
+            axios.get(url, {
+                headers: {
+                    'Authorization': "Basic " + auth_data,
+                },
             })
-                .then(response => response.json())
                 .then(data => {
-                    if(data.length !== 0) {
+                    if(data.status === 200) {
                         this.props.setToken(auth_data);
                     }
                 })
-                .catch(err => toast.error(err.message , {
-                    position: toast.POSITION.TOP_CENTER
-                }));
+                .catch(err => {
+                    toast.error(err.message , {
+                        position: toast.POSITION.TOP_CENTER
+                    })
+                });
 
 
             this.setState({...this.state, isLoading: false, login: '', password: ''});

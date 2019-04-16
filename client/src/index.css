@@ -38,6 +38,10 @@
     top: 40px;
 }
 
+.ui.progress {
+    margin: 1em 0 !important;
+}
+
 @-webkit-keyframes Gradient {
     0% {
         background-position: 0 50%
