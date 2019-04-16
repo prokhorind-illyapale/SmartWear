@@ -12,6 +12,7 @@ import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static ua.javaee.springreact.web.util.controller.ControllerConstants.NO_RIGHTS_FOR_THIS_ACTION;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
 
@@ -21,7 +22,6 @@ import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ER
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private static final String NO_RIGHTS_FOR_THIS_ACTION = "No rights for this action:";
     @Autowired
     private UserFacade userFacade;
 
