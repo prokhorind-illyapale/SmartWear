@@ -11,4 +11,10 @@ import java.util.List;
 public interface ClothTypeFacade {
 
     public List<ClothTypeData> getAllClothTypes();
+
+    public ClothTypeData getClothTypeData(String name);
+
+    public void saveClothType(String name);
+
+    public void removeClothType(String name);
 }

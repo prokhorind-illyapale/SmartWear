@@ -9,4 +9,10 @@ import java.util.List;
  */
 public interface ClothTypeService {
     List<ClothType> getAllClothTypes();
+
+    ClothType findClothType(String name);
+
+    void saveClothType(String name);
+
+    void removeClothType(String name);
 }

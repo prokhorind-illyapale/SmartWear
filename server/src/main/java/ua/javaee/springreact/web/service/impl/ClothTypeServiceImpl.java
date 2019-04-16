@@ -20,4 +20,20 @@ public class ClothTypeServiceImpl implements ClothTypeService {
     public List<ClothType> getAllClothTypes() {
         return clothTypeRepository.findAll();
     }
+
+    public ClothType findClothType(String name) {
+        return clothTypeRepository.findClothTypeByName(name);
+    }
+
+    public void saveClothType(String name) {
+        ClothType clothType = new ClothType();
+        clothType.setName(name);
+        clothTypeRepository.save(clothType);
+    }
+
+    @Override
+    public void removeClothType(String name) {
+        ClothType clothType = clothTypeRepository.findClothTypeByName(name);
+        clothTypeRepository.delete(clothType);
+    }
 }

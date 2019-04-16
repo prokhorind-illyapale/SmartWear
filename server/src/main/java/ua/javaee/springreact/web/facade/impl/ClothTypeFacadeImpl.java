@@ -9,6 +9,7 @@ import ua.javaee.springreact.web.facade.ClothTypeFacade;
 import ua.javaee.springreact.web.service.ClothTypeService;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,6 +28,25 @@ public class ClothTypeFacadeImpl implements ClothTypeFacade {
     public List<ClothTypeData> getAllClothTypes() {
         List<ClothType> clothTypes = clothTypeService.getAllClothTypes();
         return clothTypes.stream().map(this::convert).collect(toList());
+    }
+
+    @Override
+    public ClothTypeData getClothTypeData(String name) {
+        ClothType clothTypeModel = clothTypeService.findClothType(name);
+        if (Objects.isNull(clothTypeModel)) {
+            return null;
+        }
+        return convert(clothTypeModel);
+    }
+
+    @Override
+    public void saveClothType(String name) {
+        clothTypeService.saveClothType(name);
+    }
+
+    @Override
+    public void removeClothType(String name) {
+        clothTypeService.removeClothType(name);
     }
 
     private ClothTypeData convert(ClothType clothType) {
