@@ -1,6 +1,7 @@
 package ua.javaee.springreact.web.service;
 
 import ua.javaee.springreact.web.entity.Look;
+import ua.javaee.springreact.web.entity.UserClothAttribute;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface LookService {
     Look findByCode(String code);
 
     List<Look> findAllUserLooks(String login);
+
+    void removeDeletedUserClothAttributesFromLooks(List<UserClothAttribute> userClothAttributes);
 
     boolean isLookPublic(String code);
 

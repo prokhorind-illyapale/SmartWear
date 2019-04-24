@@ -134,4 +134,8 @@ public class UserClothAttribute {
     public Set<Look> getLooks() {
         return looks;
     }
+
+    public long getUserClothId() {
+        return userClothId;
+    }
 }

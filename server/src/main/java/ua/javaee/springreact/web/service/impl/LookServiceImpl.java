@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.javaee.springreact.web.entity.Look;
+import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.repository.LookRepository;
 import ua.javaee.springreact.web.service.LookService;
 
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -60,6 +63,25 @@ public class LookServiceImpl implements LookService {
             return true;
         }
     }
+
+    public void removeDeletedUserClothAttributesFromLooks(List<UserClothAttribute> userClothAttributes) {
+        List<String> ids = userClothAttributes.stream().map(UserClothAttribute::getCode).collect(toList());
+        List<Look> looks = lookRepository.findAllLooksByUserAttributes(ids);
+        remove(userClothAttributes, looks);
+    }
+
+    private void remove(List<UserClothAttribute> userClothAttributes, List<Look> looks) {
+        for (Look look : looks) {
+            for (UserClothAttribute userClothAttribute : userClothAttributes) {
+                Set<UserClothAttribute> userClothAttributeSet = look.getUserClothAttributes();
+                if (userClothAttributeSet.contains(userClothAttribute)) {
+                    userClothAttributeSet.remove(userClothAttribute);
+                }
+            }
+        }
+        lookRepository.saveAll(looks);
+    }
+
 
     @Override
     @Transactional

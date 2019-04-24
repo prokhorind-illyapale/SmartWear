@@ -9,4 +9,11 @@ import java.util.List;
  */
 public interface ClothFacade {
     List<ClothData> getAllClothes();
+
+    void saveCloth(ClothData cloth);
+
+    ClothData getCloth(String clothName, String sexType);
+
+    void deleteCloth(String clothName, String sexType);
+
 }
