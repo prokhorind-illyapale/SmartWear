@@ -18,8 +18,7 @@ public class UserClothAttribute {
     @Column(name = "user_cloth_id")
     private long userClothId;
     @Column
-    @GeneratedValue(strategy = IDENTITY)
-    private String code;
+    private long code;
     @Column(columnDefinition = "mediumblob")
     private byte[] picture;
     @Column
@@ -47,7 +46,7 @@ public class UserClothAttribute {
 
     ;
 
-    public UserClothAttribute(String code, byte[] picture, String description, String size, String color, BigDecimal price, User user, Cloth cloth, Set<Look> looks) {
+    public UserClothAttribute(long code, byte[] picture, String description, String size, String color, BigDecimal price, User user, Cloth cloth, Set<Look> looks) {
         this.code = code;
         this.picture = picture;
         this.description = description;
@@ -119,11 +118,11 @@ public class UserClothAttribute {
         return cloth;
     }
 
-    public void setCode(String code) {
+    public void setCode(long code) {
         this.code = code;
     }
 
-    public String getCode() {
+    public long getCode() {
         return code;
     }
 

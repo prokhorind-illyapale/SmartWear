@@ -65,7 +65,7 @@ public class LookServiceImpl implements LookService {
     }
 
     public void removeDeletedUserClothAttributesFromLooks(List<UserClothAttribute> userClothAttributes) {
-        List<String> ids = userClothAttributes.stream().map(UserClothAttribute::getCode).collect(toList());
+        List<Long> ids = userClothAttributes.stream().map(UserClothAttribute::getCode).collect(toList());
         List<Look> looks = lookRepository.findAllLooksByUserAttributes(ids);
         remove(userClothAttributes, looks);
     }

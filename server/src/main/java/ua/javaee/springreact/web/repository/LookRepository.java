@@ -20,7 +20,7 @@ public interface LookRepository extends JpaRepository<Look, Long> {
     List<Look> findAllUserLooks(String login);
 
     @Query("SELECT k FROM Look k  JOIN UserClothAttribute uca ON uca.code IN (:userAttributesCodes)")
-    List<Look> findAllLooksByUserAttributes(List<String> userAttributesCodes);
+    List<Look> findAllLooksByUserAttributes(List<Long> userAttributesCodes);
 
     @Query("SELECT k.isActive FROM Look k WHERE k.code = :code")
     Boolean isLookPublic(String code);

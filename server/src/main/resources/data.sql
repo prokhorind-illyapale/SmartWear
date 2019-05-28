@@ -41,7 +41,7 @@ INSERT INTO look_to_look_type (look_id, look_type_id) VALUES ('2', '2');
 INSERT INTO look_to_look_type (look_id, look_type_id) VALUES ('2', '4');
 
 INSERT INTO user_cloth_attribute (user_cloth_id, code, color, description, picture, price, size, cloth_id, user_id)
-VALUES (1, '1', 'green', 'customize cloth', NULL, 100.00, 'M', 1, 1);
+VALUES (1, 1l, 'green', 'customize cloth', NULL, 100.00, 'M', 1, 1);
 
 INSERT INTO look_to_user_clothes (look_id, user_cloth_id) VALUES (1, 1);
 

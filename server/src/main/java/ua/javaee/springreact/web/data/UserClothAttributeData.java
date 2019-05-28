@@ -9,7 +9,7 @@ public class UserClothAttributeData {
 
     private UserData userData;
 
-    private String code;
+    private long code;
 
     private byte[] picture;
 
@@ -23,7 +23,7 @@ public class UserClothAttributeData {
 
     private ClothData cloth;
 
-    public UserClothAttributeData(UserData userData, String code, byte[] picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
+    public UserClothAttributeData(UserData userData, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
         this.userData = userData;
         this.code = code;
         this.picture = picture;
@@ -46,12 +46,12 @@ public class UserClothAttributeData {
         this.userData = userData;
     }
 
-    public String getCode() {
-        return code;
+    public void setCode(long code) {
+        this.code = code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public long getCode() {
+        return code;
     }
 
     public byte[] getPicture() {

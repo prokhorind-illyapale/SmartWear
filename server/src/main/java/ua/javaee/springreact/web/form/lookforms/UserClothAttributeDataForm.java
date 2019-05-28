@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class UserClothAttributeDataForm {
 
     private String userLogin;
-    private String code;
+    private long code;
     private byte[] picture;
     private String description;
     private String size;
@@ -21,7 +21,7 @@ public class UserClothAttributeDataForm {
 
     ;
 
-    public UserClothAttributeDataForm(String userLogin, String code, byte[] picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
+    public UserClothAttributeDataForm(String userLogin, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
         this.userLogin = userLogin;
         this.code = code;
         this.picture = picture;
@@ -40,12 +40,12 @@ public class UserClothAttributeDataForm {
         this.userLogin = userLogin;
     }
 
-    public String getCode() {
-        return code;
+    public void setCode(long code) {
+        this.code = code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public long getCode() {
+        return code;
     }
 
     public byte[] getPicture() {
