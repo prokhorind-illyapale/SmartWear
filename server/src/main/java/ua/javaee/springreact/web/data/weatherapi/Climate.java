@@ -33,12 +33,14 @@ public class Climate {
 
     private Main main;
 
+    private String timezone;
+
     public Climate() {
     }
 
     ;
 
-    public Climate(String id, String dt, Clouds clouds, Coord coord, Wind wind, String cod, String visibility, Sys sys, String name, String base, List<Weather> weather, Main main) {
+    public Climate(String id, String dt, Clouds clouds, Coord coord, Wind wind, String cod, String visibility, Sys sys, String name, String base, List<Weather> weather, Main main,String timezone) {
         this.id = id;
         this.dt = dt;
         this.clouds = clouds;
@@ -51,6 +53,7 @@ public class Climate {
         this.base = base;
         this.weather = weather;
         this.main = main;
+        this.timezone = timezone;
     }
 
     public String getId() {
@@ -147,5 +150,21 @@ public class Climate {
 
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    public void setRain(Rain rain) {
+        this.rain = rain;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
+    public Rain getRain() {
+        return rain;
+    }
+
+    public String getTimezone() {
+        return timezone;
     }
 }
