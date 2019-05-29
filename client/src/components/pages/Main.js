@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route} from "react-router-dom";
 import UserPage from "./UserPage";
-import Admin from "./Admin";
+import Admin from "./admin/Admin";
 import Settings from "./settings/Settings";
 import axios from "axios";
 import {bindActionCreators} from "redux";

@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import {bindActionCreators} from "redux";
-import {getAllUsers} from "../../actions/getAllUsers";
+import {getAllUsers} from "../../../actions/getAllUsers";
 import connect from "react-redux/es/connect/connect";
-import {Table, Button, Icon, Modal, Form} from 'semantic-ui-react'
-import '../../styleForComponents/AuthPage.css';
-import {deleteUser} from "../../actions/deleteUser";
-import {updateUserByLogin} from "../../actions/updateUserByLogin";
+import {Table, Button, Icon, Modal, Form} from 'semantic-ui-react';
+import '../../../styleForComponents/AuthPage.css';
+import {deleteUser} from "../../../actions/deleteUser";
+import {updateUserByLogin} from "../../../actions/updateUserByLogin";
 import {ToastContainer, toast } from 'react-toastify';
 
 
 const styleContainer ={
-    position: 'absolute',
-    transform: 'translateX(-50%)',
-    top: '20%',
-    left: '50%',
-    width: '80%'
+    margin: '10px auto',
 };
 
-class Admin extends Component {
+class Users extends Component {
 
     state = {
         id: '',
@@ -280,4 +276,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(Admin);
+export default connect(mapStateToProps, matchDispatchToProps)(Users);
