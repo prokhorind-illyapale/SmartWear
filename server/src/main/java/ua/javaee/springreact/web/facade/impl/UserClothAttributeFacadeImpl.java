@@ -8,6 +8,7 @@ import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.facade.UserClothAttributeFacade;
+import ua.javaee.springreact.web.populator.UserClothAttributeDataToModelPopulator;
 import ua.javaee.springreact.web.service.UserClothAttributeService;
 
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ public class UserClothAttributeFacadeImpl implements UserClothAttributeFacade {
     private UserClothAttributeModelToDataConverter converter;
     @Autowired
     private UserClothAttributeDataToModelConverter reverseConverter;
-
+    @Autowired
+    private UserClothAttributeDataToModelPopulator reversePopulator;
 
     public UserClothAttributeData get(Long code) {
         UserClothAttribute model = userClothAttributeService.get(code);
@@ -39,7 +41,18 @@ public class UserClothAttributeFacadeImpl implements UserClothAttributeFacade {
     @Override
     public boolean save(UserClothAttributeData userClothAttributeData) {
         UserClothAttribute userClothAttribute = reverseConverter.convert(userClothAttributeData);
+        userClothAttribute.setCode(userClothAttributeService.count() + 1l);
         return userClothAttributeService.save(userClothAttribute);
+    }
+
+    @Override
+    public boolean update(UserClothAttributeData userClothAttributeData, Long code) {
+        UserClothAttribute model = userClothAttributeService.get(code);
+        if (isNull(model)) {
+            return false;
+        }
+        reversePopulator.populate(userClothAttributeData, model);
+        return userClothAttributeService.save(model);
     }
 
     @Override

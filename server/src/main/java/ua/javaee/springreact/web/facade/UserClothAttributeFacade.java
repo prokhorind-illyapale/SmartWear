@@ -15,5 +15,7 @@ public interface UserClothAttributeFacade {
 
     boolean save(UserClothAttributeData userClothAttributeData);
 
+    boolean update(UserClothAttributeData userClothAttributeData, Long code);
+
     boolean isUserClothAttributes(UserData userData, Long code);
 }

@@ -68,6 +68,14 @@ public class UserClothAttributeController {
         return ok().build();
     }
 
+    @PutMapping("/{code}")
+    public ResponseEntity update(@PathVariable Long code, Principal principal, @RequestBody UserClothAttributeData userClothAttributeData) {
+        if (userClothAttributeFacade.update(userClothAttributeData, code)) {
+            return ok().build();
+        }
+        return processingErrors(CANT_SAVE, VALIDATION_TYPE_ERROR);
+    }
+
     @PostMapping
     public ResponseEntity save(@RequestBody UserClothAttributeData userClothAttributeData) {
         if (userClothAttributeFacade.save(userClothAttributeData)) {
