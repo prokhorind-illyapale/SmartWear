@@ -10,6 +10,9 @@ import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.facade.UserClothAttributeFacade;
 import ua.javaee.springreact.web.service.UserClothAttributeService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Objects.isNull;
 
 @Component
@@ -43,5 +46,18 @@ public class UserClothAttributeFacadeImpl implements UserClothAttributeFacade {
     public boolean isUserClothAttributes(UserData userData, Long code) {
         UserClothAttribute model = userClothAttributeService.get(code);
         return !isNull(model) && userData.getLogin().equalsIgnoreCase(model.getUser().getLogin());
+    }
+
+    @Override
+    public List<UserClothAttributeData> get(String userName, int pageNumber, int size) {
+        List<UserClothAttribute> models = userClothAttributeService.get(userName, pageNumber, size);
+        List<UserClothAttributeData> data = new ArrayList<>();
+        if (isNull(models) || models.isEmpty()) {
+            return null;
+        }
+        for (UserClothAttribute model : models) {
+            data.add(converter.convert(model));
+        }
+        return data;
     }
 }

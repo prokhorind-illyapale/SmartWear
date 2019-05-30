@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,9 @@ public interface UserClothAttributeRepository extends JpaRepository<UserClothAtt
 
     @Query("SELECT uca FROM UserClothAttribute uca WHERE uca.cloth.name=:name")
     List<UserClothAttribute> findUserClothAttributeByCloth(@Param("name") String name);
+
+    @Query("SELECT uca FROM UserClothAttribute uca WHERE uca.user.login=:name")
+    List<UserClothAttribute> findAllByUserName(@Param("name") String name, Pageable pageable);
 
     @Query("SELECT uca FROM UserClothAttribute uca WHERE uca.code=:code")
     UserClothAttribute findUserClothAttributeByCode(@Param("code") Long code);

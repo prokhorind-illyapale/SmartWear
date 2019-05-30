@@ -43,9 +43,20 @@ public class UserClothAttributeController {
         return ok(data);
     }
 
+    @GetMapping("/{userName}/{pageNumber}")
+    public ResponseEntity getAllAttributesByUserName(@PathVariable String userName, @PathVariable int pageNumber,
+                                                     @RequestParam(required = false, defaultValue = "5") int size,
+                                                     Principal principal
+    ) {
+        if (!userFacade.isUserHasAdminRights(principal.getName())
+                && !principal.getName().equalsIgnoreCase(userName)) {
+            return processingErrors(NO_PERMISSIONS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+        return ok(userClothAttributeFacade.get(userName, pageNumber, size));
+    }
+
     @DeleteMapping("/{code}")
     public ResponseEntity remove(@PathVariable Long code, Principal principal) {
-
         if (!userFacade.isUserHasAdminRights(principal.getName())
                 && !userClothAttributeFacade.isUserClothAttributes(userFacade.getUserByLogin(principal.getName()), code)) {
             return processingErrors(NO_PERMISSIONS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
