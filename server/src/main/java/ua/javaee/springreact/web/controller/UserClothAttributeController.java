@@ -70,6 +70,11 @@ public class UserClothAttributeController {
 
     @PutMapping("/{code}")
     public ResponseEntity update(@PathVariable Long code, Principal principal, @RequestBody UserClothAttributeData userClothAttributeData) {
+        if (!userFacade.isUserHasAdminRights(principal.getName())
+                && !userClothAttributeFacade.isUserClothAttributes(userFacade.getUserByLogin(principal.getName()), code)) {
+            return processingErrors(NO_PERMISSIONS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+
         if (userClothAttributeFacade.update(userClothAttributeData, code)) {
             return ok().build();
         }
