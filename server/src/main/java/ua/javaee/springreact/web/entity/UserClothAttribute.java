@@ -29,6 +29,8 @@ public class UserClothAttribute {
     private String color;
     @Column
     private BigDecimal price;
+    @Column
+    private boolean isPublic;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -46,9 +48,10 @@ public class UserClothAttribute {
 
     ;
 
-    public UserClothAttribute(long code, byte[] picture, String description, String size, String color, BigDecimal price, User user, Cloth cloth, Set<Look> looks) {
+    public UserClothAttribute(long code, boolean isPublic, byte[] picture, String description, String size, String color, BigDecimal price, User user, Cloth cloth, Set<Look> looks) {
         this.code = code;
         this.picture = picture;
+        this.isPublic = isPublic;
         this.description = description;
         this.size = size;
         this.color = color;
@@ -136,5 +139,13 @@ public class UserClothAttribute {
 
     public long getUserClothId() {
         return userClothId;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
     }
 }

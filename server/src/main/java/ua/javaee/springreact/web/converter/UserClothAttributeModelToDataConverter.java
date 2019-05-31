@@ -35,6 +35,7 @@ public class UserClothAttributeModelToDataConverter implements AbstractConverter
         target.setPrice(source.getPrice());
         target.setSize(source.getSize());
         target.setUserData(user);
+        target.setPublic(source.isPublic());
         return target;
     }
 }

@@ -28,6 +28,7 @@ public class UserClothAttributeDataToFormConverter implements AbstractConverter<
         target.setUserLogin(source.getUserData().getLogin());
         target.setSize(source.getSize());
         target.setCloth((ClothForm) clothDataToFormConverter.convert(source.getCloth()));
+        target.setPublic(source.isPublic());
 
         return target;
     }

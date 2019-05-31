@@ -23,7 +23,9 @@ public class UserClothAttributeData {
 
     private ClothData cloth;
 
-    public UserClothAttributeData(UserData userData, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
+    private boolean isPublic;
+
+    public UserClothAttributeData(UserData userData, boolean isPublic, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
         this.userData = userData;
         this.code = code;
         this.picture = picture;
@@ -32,6 +34,7 @@ public class UserClothAttributeData {
         this.color = color;
         this.price = price;
         this.cloth = cloth;
+        this.isPublic = isPublic;
     }
 
     public UserClothAttributeData() {
@@ -100,5 +103,13 @@ public class UserClothAttributeData {
 
     public void setCloth(ClothData cloth) {
         this.cloth = cloth;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
     }
 }

@@ -20,5 +20,6 @@ public class UserClothAttributeDataToModelPopulator implements AbstractPopulator
         target.setCloth(clothService.getCloth(source.getCloth().getName(), source.getCloth().getSex().getName()));
         target.setColor(source.getColor());
         target.setDescription(source.getDescription());
+        target.setPublic(source.isPublic());
     }
 }

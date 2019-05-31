@@ -15,13 +15,14 @@ public class UserClothAttributeDataForm {
     private String color;
     private BigDecimal price;
     private ClothForm cloth;
+    private boolean isPublic;
 
     public UserClothAttributeDataForm() {
     }
 
     ;
 
-    public UserClothAttributeDataForm(String userLogin, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
+    public UserClothAttributeDataForm(String userLogin, boolean isPublic, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
         this.userLogin = userLogin;
         this.code = code;
         this.picture = picture;
@@ -30,6 +31,7 @@ public class UserClothAttributeDataForm {
         this.color = color;
         this.price = price;
         this.cloth = cloth;
+        this.isPublic = isPublic;
     }
 
     public String getUserLogin() {
@@ -94,5 +96,13 @@ public class UserClothAttributeDataForm {
 
     public void setCloth(ClothForm cloth) {
         this.cloth = cloth;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
     }
 }
