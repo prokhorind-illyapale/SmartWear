@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/look/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/user-cloth/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/cloth/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/look-type/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated()
                 .and().httpBasic()
