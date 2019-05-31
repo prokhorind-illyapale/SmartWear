@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -19,7 +20,7 @@ public class LookForm {
     private BigDecimal maxTemperature;
     private byte[] picture;
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
-    private Set<UserClothAttributeDataForm> userClothAttributes = new HashSet<>();
+    private Set<Long> userClothAttributesCodes = new HashSet<>();
     private List<CommentForm> comments = new ArrayList<>();
 
     public LookForm() {
@@ -34,7 +35,7 @@ public class LookForm {
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
         this.lookTypes = lookTypes;
-        this.userClothAttributes = userClothAttributes;
+        this.userClothAttributesCodes = userClothAttributes.stream().map(UserClothAttributeDataForm::getCode).collect(Collectors.toSet());
         this.comments = comments;
     }
 
@@ -86,12 +87,12 @@ public class LookForm {
         this.lookTypes = lookTypes;
     }
 
-    public Set<UserClothAttributeDataForm> getUserClothAttributes() {
-        return userClothAttributes;
+    public Set<Long> getUserClothAttributes() {
+        return userClothAttributesCodes;
     }
 
     public void setUserClothAttributes(Set<UserClothAttributeDataForm> userClothAttributes) {
-        this.userClothAttributes = userClothAttributes;
+        this.userClothAttributesCodes = userClothAttributes.stream().map(UserClothAttributeDataForm::getCode).collect(Collectors.toSet());
     }
 
     public void setMaxTemperature(BigDecimal maxTemperature) {
