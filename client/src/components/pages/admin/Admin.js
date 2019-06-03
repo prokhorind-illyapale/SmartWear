@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {Segment, Menu} from 'semantic-ui-react';
 import {Link, Route} from "react-router-dom";
 import Users from "./Users";
-import clothTypes from './clothTypes'
+import clothTypes from './clothTypes';
+import lookTypes from './lookTypes'
 
 const container = {
     width: '80%',
@@ -58,9 +59,20 @@ class Admin extends Component {
                             Cloth Types
                         </Menu.Item>
                     </Link>
+                    <Link to={`/admin/looktypes`}>
+                        <Menu.Item
+                            as='span'
+                            name='looktypes'
+                            active={activeItem === 'looktypes'}
+                            onClick={this.handleItemClick}
+                        >
+                            Look Types
+                        </Menu.Item>
+                    </Link>
                 </Menu>
                 <Route exact path='/admin' component={Users}/>
                 <Route path='/admin/clothtypes' component={clothTypes}/>
+                <Route path='/admin/looktypes' component={lookTypes}/>
             </Segment>
         )
     }

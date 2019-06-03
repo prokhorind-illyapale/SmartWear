@@ -89,9 +89,9 @@ class NavMenu  extends Component {
                         <Icon name='home'/>
                         <span>Home</span>
                     </Link>
-                    <Link to={`/looks`} onClick={this.props.closeMenu}>
+                    <Link to={`/cloth`} onClick={this.props.closeMenu}>
                         <Icon name='user circle'/>
-                        <span>Looks</span>
+                        <span>Cloth</span>
                     </Link>
                     {this.props.isOpen === true
                     && data.userRole.roleName === "ADMIN"

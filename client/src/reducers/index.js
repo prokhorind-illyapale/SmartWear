@@ -3,12 +3,14 @@ import { appData } from "./appData";
 import { usersData } from "./allUsers";
 import { userWeather } from "./userWeather";
 import { clothTypes } from "./clothTypes";
+import { lookTypes } from "./lookTypes";
 
 const allReducers = combineReducers({
     appData,
     usersData,
     userWeather,
-    clothTypes
+    clothTypes,
+    lookTypes
 });
 
 const reducers = (state, action) => {

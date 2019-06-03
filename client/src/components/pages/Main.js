@@ -7,6 +7,7 @@ import axios from "axios";
 import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
 import connect from "react-redux/es/connect/connect";
+import ClothPage from "./cloth/ClothPage";
 
 
 
@@ -38,6 +39,7 @@ class Main extends Component {
                     <Route exact path="/" component={UserPage}/>
                     <Route path="/admin" component={Admin}/>
                     <Route path="/settings" component={Settings}/>
+                    <Route path="/cloth" component={ClothPage}/>
                 </div>
             </div>
 
