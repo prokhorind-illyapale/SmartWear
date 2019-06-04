@@ -36,4 +36,9 @@ public class ClothTypeServiceImpl implements ClothTypeService {
         ClothType clothType = clothTypeRepository.findClothTypeByName(name);
         clothTypeRepository.delete(clothType);
     }
+
+    @Override
+    public void saveClothType(ClothType clothType) {
+        clothTypeRepository.save(clothType);
+    }
 }

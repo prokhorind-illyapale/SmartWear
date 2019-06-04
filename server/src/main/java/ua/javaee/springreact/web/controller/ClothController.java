@@ -67,7 +67,7 @@ public class ClothController {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
 
-        if (nonNull(clothData)) {
+        if (nonNull(clothFacade.getCloth(clothData.getName(), clothData.getSex().getName()))) {
             return processingErrors(CLOTH_ALREADY_EXISTS, VALIDATION_TYPE_ERROR);
         }
         clothFacade.saveCloth(clothData);

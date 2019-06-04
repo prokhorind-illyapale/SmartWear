@@ -15,4 +15,6 @@ public interface ClothTypeService {
     void saveClothType(String name);
 
     void removeClothType(String name);
+
+    void saveClothType(ClothType clothType);
 }
