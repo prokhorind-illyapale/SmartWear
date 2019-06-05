@@ -28,4 +28,7 @@ public interface UserClothAttributeRepository extends JpaRepository<UserClothAtt
     @Modifying
     @Query("DELETE FROM UserClothAttribute uca WHERE uca.code=:code")
     void removeByCode(@Param("code") Long code);
+
+    @Query("SELECT uca.code FROM UserClothAttribute uca WHERE id = (SELECT MAX(uca.userClothId) FROM UserClothAttribute uca)")
+    Long getLastRow();
 }

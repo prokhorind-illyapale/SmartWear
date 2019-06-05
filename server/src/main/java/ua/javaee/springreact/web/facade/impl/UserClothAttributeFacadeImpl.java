@@ -41,7 +41,7 @@ public class UserClothAttributeFacadeImpl implements UserClothAttributeFacade {
     @Override
     public boolean save(UserClothAttributeData userClothAttributeData) {
         UserClothAttribute userClothAttribute = reverseConverter.convert(userClothAttributeData);
-        userClothAttribute.setCode(userClothAttributeService.count() + 1l);
+        userClothAttribute.setCode(userClothAttributeService.getLastRow() + 1l);
         return userClothAttributeService.save(userClothAttribute);
     }
 

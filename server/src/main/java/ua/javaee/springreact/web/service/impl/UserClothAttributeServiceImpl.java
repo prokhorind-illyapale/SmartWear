@@ -43,6 +43,12 @@ public class UserClothAttributeServiceImpl implements UserClothAttributeService 
         }
     }
 
+    @Override
+    @Transactional
+    public long getLastRow() {
+        return userClothAttributeRepository.getLastRow();
+    }
+
     public long count() {
         return userClothAttributeRepository.count();
     }

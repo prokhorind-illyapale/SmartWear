@@ -11,5 +11,6 @@ public interface UserClothAttributeService {
     boolean save(UserClothAttribute userClothAttribute);
     long count();
 
+    long getLastRow();
     List<UserClothAttribute> get(String userName, int pageNumber, int size);
 }
