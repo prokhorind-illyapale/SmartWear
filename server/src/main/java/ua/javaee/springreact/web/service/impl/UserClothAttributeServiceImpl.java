@@ -11,6 +11,8 @@ import ua.javaee.springreact.web.service.UserClothAttributeService;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserClothAttributeServiceImpl implements UserClothAttributeService {
 
@@ -46,7 +48,7 @@ public class UserClothAttributeServiceImpl implements UserClothAttributeService 
     @Override
     @Transactional
     public long getLastRow() {
-        return userClothAttributeRepository.getLastRow();
+        return isNull(userClothAttributeRepository.getLastRow()) ? 0l : userClothAttributeRepository.getLastRow();
     }
 
     public long count() {
