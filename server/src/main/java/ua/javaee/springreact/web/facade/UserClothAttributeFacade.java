@@ -13,7 +13,7 @@ public interface UserClothAttributeFacade {
 
     void remove(Long code);
 
-    boolean save(UserClothAttributeData userClothAttributeData);
+    long save(UserClothAttributeData userClothAttributeData);
 
     boolean update(UserClothAttributeData userClothAttributeData, Long code);
 

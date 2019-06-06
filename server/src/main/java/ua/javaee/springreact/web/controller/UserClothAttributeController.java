@@ -83,9 +83,6 @@ public class UserClothAttributeController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody UserClothAttributeData userClothAttributeData) {
-        if (userClothAttributeFacade.save(userClothAttributeData)) {
-            return ok().build();
-        }
-        return processingErrors(CANT_SAVE, VALIDATION_TYPE_ERROR);
+        return ok(userClothAttributeFacade.save(userClothAttributeData));
     }
 }
