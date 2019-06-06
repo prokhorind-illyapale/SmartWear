@@ -58,7 +58,8 @@ class ClothPage extends Component {
         size: '',
         color: '',
         price: '',
-        cloth: ''
+        cloth: '',
+        code: ''
     };
     
     componentDidMount() {
@@ -103,6 +104,15 @@ class ClothPage extends Component {
 
     customizeCloth = () => {
         let url = 'http://localhost:8080/user-cloth/',
+            payload = {
+                picture: this.state.picture,
+                description: this.state.description,
+                size: this.state.size,
+                color: this.state.color,
+                price: this.state.price,
+                cloth: this.state.cloth,
+                code: this.state.code
+            },
             body = JSON.stringify({
                 picture: this.state.picture,
                 description: this.state.description,
@@ -120,7 +130,8 @@ class ClothPage extends Component {
         })
             .then(response => {
                 if(response.status === 200) {
-                    this.props.addClothAttr(JSON.parse(body))
+                    this.setState({...this.state, code: response.data});
+                    this.props.addClothAttr(payload, this.state.code);
                 }
             })
             .catch(err => console.error(err));

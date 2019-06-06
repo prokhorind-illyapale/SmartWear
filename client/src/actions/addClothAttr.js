@@ -1,4 +1,7 @@
-export const addClothAttr = (clothAttr) => ({
+export const addClothAttr = (clothAttr, code) => ({
     type: 'ADD_CLOTH_ATTR',
-    payload: clothAttr,
+    payload:  {
+        clothAttr,
+        code
+    },
 });

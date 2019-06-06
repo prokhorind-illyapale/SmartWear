@@ -11,8 +11,8 @@ export const clothAttr = (state = initialState, action) => {
             return [
                 ...state,
                 {
-                    ...action.payload,
-                    code: state.length !== 0 ? state[state.length - 1].code + 1 : 1
+                    ...action.payload.clothAttr,
+                    code: action.payload.code
                 }
 
             ];
