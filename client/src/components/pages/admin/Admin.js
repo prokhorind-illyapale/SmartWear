@@ -4,6 +4,7 @@ import {Link, Route} from "react-router-dom";
 import Users from "./Users";
 import clothTypes from './clothTypes';
 import lookTypes from './lookTypes'
+import Cloth from "./Cloth";
 
 const container = {
     width: '80%',
@@ -49,6 +50,16 @@ class Admin extends Component {
                             Users
                         </Menu.Item>
                     </Link>
+                    <Link to={`/admin/cloth`}>
+                        <Menu.Item
+                            as='span'
+                            name='cloth'
+                            active={activeItem === 'cloth'}
+                            onClick={this.handleItemClick}
+                        >
+                            Cloth
+                        </Menu.Item>
+                    </Link>
                     <Link to={`/admin/clothtypes`}>
                         <Menu.Item
                             as='span'
@@ -73,6 +84,7 @@ class Admin extends Component {
                 <Route exact path='/admin' component={Users}/>
                 <Route path='/admin/clothtypes' component={clothTypes}/>
                 <Route path='/admin/looktypes' component={lookTypes}/>
+                <Route path='/admin/cloth' component={Cloth}/>
             </Segment>
         )
     }

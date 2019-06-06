@@ -42,6 +42,24 @@
     margin: 1em 0 !important;
 }
 
+.ui.card>.image>img, .ui.cards>.card>.image>img {
+    width: 100px !important;
+}
+
+.ui.card>.image, .ui.cards>.card>.image {
+    background-color: white !important;
+    margin: 10px auto;
+}
+
+.ui.cards {
+    padding: 20px;
+}
+
+.addClothIcon {
+    margin: 10px auto  !important;
+    font-size: 5.8em !important;
+}
+
 @-webkit-keyframes Gradient {
     0% {
         background-position: 0 50%
