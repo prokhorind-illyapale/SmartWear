@@ -162,20 +162,40 @@ class ClothPage extends Component {
             let idx = clothIcons.findIndex(x => x.name === data.cloth.name);
             return (
                 <Card key={index}>
-                    {idx !== -1 ? <Image src={clothIcons[idx].value}  wrapped ui={false}/> : <div className='image'><Icon name='plus' size='huge' className='addClothIcon'/></div>}
+                    {
+                        idx !== -1 
+                            ? <Image src={clothIcons[idx].value}  wrapped ui={false}/> 
+                            : <div className='image'>
+                                <Icon name='plus' size='huge' className='addClothIcon'/>
+                            </div>
+                    }
                     <Card.Content textAlign='center'>
-                        <Card.Header>{data.cloth.name}</Card.Header>
+                        <Card.Header>{data.description}</Card.Header>
                         <Card.Meta>
-                            {data.description}
+                            {data.cloth.name}
                         </Card.Meta>
                         <Card.Description>
-                            Size: {data.size}
+                            <b>Size:</b> {data.size}
                         </Card.Description>
                         <Card.Description>
-                            Color: {data.color}
+                            <b>Sex:</b> {data.cloth.sex.name}
                         </Card.Description>
                         <Card.Description>
-                            Price: {data.price}$
+                            <b>Color:</b> {data.color}
+                            <div style={
+                                {
+                                    width: '15px', 
+                                    height: '15px', 
+                                    border: '1px solid rgba(177, 177, 177, 1)', 
+                                    borderRadius: '2px',
+                                    marginLeft: '5px',
+                                    display: 'inline-block',
+                                    backgroundColor: data.color
+                                }
+                            }/>
+                        </Card.Description>
+                        <Card.Description>
+                            <b>Price:</b> {data.price}$
                         </Card.Description>
                     </Card.Content>
                     <Card.Content extra textAlign='center'>
@@ -207,7 +227,7 @@ class ClothPage extends Component {
                             />
                         </Form.Field>
                         <Form.Field>
-                            <label>Description</label>
+                            <label>Brand/Model</label>
                             <input type='text' name='description' onChange={this.editField}/>
                         </Form.Field>
                         <Form.Field>
