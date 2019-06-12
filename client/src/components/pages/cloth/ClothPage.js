@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Card, Dropdown, Icon, Image, Modal, Form, Input} from 'semantic-ui-react';
+import {Button, Card, Dropdown, Icon, Image, Modal, Form, Input, Confirm} from 'semantic-ui-react';
 import {clothIcons} from '../../../img/clothIcons';
 import axios from "axios";
 import connect from "react-redux/es/connect/connect";
@@ -8,6 +8,8 @@ import {setClothAttr} from "../../../actions/setClothAttr";
 import {setCloth} from "../../../actions/setCloth";
 import {addClothAttr} from "../../../actions/addClothAttr";
 import {deleteClothAttr} from "../../../actions/deleteClothAttr";
+import {updateClothAttr} from "../../../actions/updateClothAttr";
+
 
 
 const size = [
@@ -53,6 +55,8 @@ class ClothPage extends Component {
     
     state = {
         open: false,
+        openConfirm: false,
+        openEdit: false,
         picture: null,
         description: '',
         size: '',
@@ -68,7 +72,7 @@ class ClothPage extends Component {
             str = atob(window.localStorage.token),
             login = str.substring(0 ,str.indexOf(':'));
         
-        axios.get(url + login + '/0', {
+        axios.get(url + login + '/0?size=10', {
             headers: {
                 'Authorization': "Basic " + window.localStorage.token
             }
@@ -153,7 +157,9 @@ class ClothPage extends Component {
                     this.props.deleteClothAttr(code)
                 }
             })
-            .catch(err => console.error(err))
+            .catch(err => console.error(err));
+        
+        this.closeConfirm();
     };
     
     setClothData = () => {
@@ -163,11 +169,9 @@ class ClothPage extends Component {
             return (
                 <Card key={index}>
                     {
-                        idx !== -1 
-                            ? <Image src={clothIcons[idx].value}  wrapped ui={false}/> 
-                            : <div className='image'>
-                                <Icon name='plus' size='huge' className='addClothIcon'/>
-                            </div>
+                        data.picture !== null 
+                            ? data.picture 
+                            : <Image src={clothIcons[idx].value}  wrapped ui={false}/>
                     }
                     <Card.Content textAlign='center'>
                         <Card.Header>{data.description}</Card.Header>
@@ -192,21 +196,116 @@ class ClothPage extends Component {
                                     display: 'inline-block',
                                     backgroundColor: data.color
                                 }
-                            }/>
+                            }
+                            />
                         </Card.Description>
                         <Card.Description>
                             <b>Price:</b> {data.price}$
                         </Card.Description>
                     </Card.Content>
                     <Card.Content extra textAlign='center'>
-                        <Icon name='edit' color='blue' size='large'/>
-                        <Icon name='delete' color='red' size='large' onClick={() => this.delClothAttr(data.code)}/>
+                        <Button icon='edit' color='blue' basic onClick={() => this.openEdit(data)}/>
+                        <Button icon='delete' color='red' basic onClick={this.openConfirm}/>
                     </Card.Content>
+                    <Confirm
+                        className='confirm_window'
+                        size='mini'
+                        open={this.state.openConfirm}
+                        onCancel={this.closeConfirm}
+                        onConfirm={() => this.delClothAttr(data.code)}
+                    />
                 </Card>
             )
         })
 
     };
+    
+    editClothAttr = (code) => {
+        let url = 'http://localhost:8080/user-cloth/',
+            body = JSON.stringify({
+                picture: this.state.picture,
+                description: this.state.description,
+                size: this.state.size,
+                color: this.state.color,
+                price: this.state.price,
+                cloth: this.state.cloth
+            });
+        
+        axios.put(url + code, body, {
+            headers: {
+                'Content-type' : 'application/json',
+                'Authorization': "Basic " + window.localStorage.token
+            }
+        })
+            .then(response => {
+                if(response.status === 200) {
+                    this.props.updateClothAttr(code, JSON.parse(body))
+                }
+            })
+            .catch(err => console.log(err));
+        
+        this.closeEdit();
+    };
+    
+    editClothModal() {
+        return (
+            <Modal size='small' open={this.state.openEdit} onClose={this.closeEdit} closeIcon>
+                <Modal.Header>Edit Cloth</Modal.Header>
+                <Modal.Content>
+                    <Form>
+                        <Form.Field>
+                            <label>Cloth</label>
+                            <Dropdown
+                                fluidS
+                                onChange={this.editClothField}
+                                name='cloth'
+                                search
+                                selection
+                                options={this.createOptions()}
+                                defaultValue={
+                                    this.props.dataCloth.findIndex(x => 
+                                        x.name === this.state.cloth.name 
+                                        && x.sex.name === this.state.cloth.sex.name
+                                    )
+                                }
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Brand/Model</label>
+                            <input type='text' name='description' onChange={this.editField} value={this.state.description}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Picture</label>
+                            <input type='file' name='picture' onChange={this.handleLoadLocalFile} value={this.state.picture !== null ? this.state.picture : ''}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Size</label>
+                            <Dropdown
+                                fluid
+                                onChange={this.editSizeField}
+                                name='size'
+                                search
+                                selection
+                                options={size}
+                                value={this.state.size}
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Color</label>
+                            <input type='text' name='color' onChange={this.editField} value={this.state.color}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Price</label>
+                            <Input icon='dollar' type='number' name='price' value={this.state.price} onChange={this.editField}/>
+                        </Form.Field>
+                    </Form>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button type='submit' onClick={() => this.editClothAttr(this.state.code)}>Submit</Button>
+                </Modal.Actions>
+            </Modal>
+        )
+    }
     
     
     clothModal() {
@@ -232,7 +331,7 @@ class ClothPage extends Component {
                         </Form.Field>
                         <Form.Field>
                             <label>Picture</label>
-                            <input type='file' name='picture' onChange={this.editField}/>
+                            <input type='file' name='picture' onChange={this.handleLoadLocalFile}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Size</label>
@@ -264,9 +363,21 @@ class ClothPage extends Component {
 
     openModal = () =>
         this.setState({open: true});
+    
+    openConfirm = () => 
+        this.setState({openConfirm: true});
+    
+    openEdit = ({description, size, price, picture, cloth, color, code}) => 
+        this.setState({...this.state, openEdit: true, description, size, price, picture, cloth, color, code});
 
     closeModal = () =>
         this.setState({ open: false });
+    
+    closeConfirm = () =>
+        this.setState({openConfirm: false});
+
+    closeEdit = () =>
+        this.setState({openEdit: false});
 
     editField = ({target}) => {
         this.setState({...this.state, [target.name]: target.value})
@@ -278,6 +389,13 @@ class ClothPage extends Component {
 
     editSizeField = (event, data) => {
         this.setState({...this.state, size: data.value})
+    };
+
+    handleLoadLocalFile = (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        const localImageUrl = window.URL.createObjectURL(file);
+        this.setState({...this.state, picture: localImageUrl})
     };
 
     render() {
@@ -293,6 +411,7 @@ class ClothPage extends Component {
                     {this.setClothData()}
                 </Card.Group>
                 {this.clothModal()}
+                {this.editClothModal()}
             </div>
           
         )
@@ -305,7 +424,8 @@ function matchDispatchToProps(dispatch) {
         setClothAttr: setClothAttr,
         setCloth: setCloth,
         addClothAttr: addClothAttr,
-        deleteClothAttr: deleteClothAttr
+        deleteClothAttr: deleteClothAttr,
+        updateClothAttr: updateClothAttr
     }, dispatch)
 }
 

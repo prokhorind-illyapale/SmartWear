@@ -18,6 +18,15 @@ export const clothAttr = (state = initialState, action) => {
             ];
         case 'DELETE_CLOTH_ATTR':
             return state.filter(({code}) => code !== action.payload);
+        case 'UPDATE_CLOTH_ATTR':
+            return state.map(cloth =>
+                cloth.code === action.payload.code
+                    ? {
+                        ...cloth,
+                        ...action.payload.data
+                    }
+                    : cloth
+            );
         default:
             return state;
     }
