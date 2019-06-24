@@ -24,7 +24,7 @@ public class Look {
     private User user;
     @Column(unique = true)
     @GeneratedValue(strategy = IDENTITY)
-    private String code;
+    private long code;
     @Column
     private int likes;
     @Column
@@ -62,7 +62,7 @@ public class Look {
 
     ;
 
-    public Look(User user, String code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, List<Comment> comments, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
+    public Look(User user, long code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, List<Comment> comments, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -91,12 +91,12 @@ public class Look {
         this.user = user;
     }
 
-    public String getCode() {
-        return code;
+    public void setCode(long code) {
+        this.code = code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public long getCode() {
+        return code;
     }
 
     public int getLikes() {

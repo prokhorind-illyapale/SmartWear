@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.javaee.springreact.web.converter.LookDataToModelConverter;
+import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.repository.LookRepository;
@@ -26,9 +28,11 @@ public class LookServiceImpl implements LookService {
 
     @Autowired
     private LookRepository lookRepository;
+    @Autowired
+    private LookDataToModelConverter lookDataToModelConverter;
 
     @Override
-    public Look findByCode(String code) {
+    public Look findByCode(long code) {
         return lookRepository.findByCode(code);
     }
 
@@ -37,7 +41,7 @@ public class LookServiceImpl implements LookService {
         return lookRepository.findAllUserLooks(login);
     }
 
-    public boolean isUserHasLookNumber(String code) {
+    public boolean isUserHasLookNumber(long code) {
         try {
             Look look = lookRepository.findByCode(code);
             if (!isNull(look)) {
@@ -55,7 +59,7 @@ public class LookServiceImpl implements LookService {
     }
 
     @Override
-    public boolean isPrincipalLook(String code, String login) {
+    public boolean isPrincipalLook(long code, String login) {
         Look look = lookRepository.isPrincipalLook(code, login);
         if (isNull(look)) {
             return false;
@@ -85,11 +89,25 @@ public class LookServiceImpl implements LookService {
 
     @Override
     @Transactional
-    public void deleteLookByCode(String code) {
+    public void deleteLookByCode(long code) {
         lookRepository.deleteLookByCode(code);
     }
 
-    public boolean isLookPublic(String code) {
+    @Override
+    @Transactional
+    public void save(LookData lookData) {
+     Look look = lookDataToModelConverter.convert(lookData);
+     look.setCode(lookData.getCode());
+     lookRepository.save(look);
+    }
+
+
+    @Override
+    public Long getLastRow() {
+        return isNull(lookRepository.getLastRow()) ? 0l : lookRepository.getLastRow();
+    }
+
+    public boolean isLookPublic(long code) {
         return lookRepository.isLookPublic(code);
     }
 

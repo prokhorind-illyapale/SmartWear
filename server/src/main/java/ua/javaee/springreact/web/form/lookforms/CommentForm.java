@@ -10,11 +10,12 @@ public class CommentForm {
     private String login;
     private String message;
     private Date lastUpdated;
+    private long commentId;
 
     public CommentForm() {
     }
 
-    public CommentForm(String login, String message, Date lastUpdated) {
+    public CommentForm(String login, String message, Date lastUpdated,long commentId) {
         this.login = login;
         this.message = message;
         this.lastUpdated = lastUpdated;
@@ -42,5 +43,13 @@ public class CommentForm {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
+    }
+
+    public long getCommentId() {
+        return commentId;
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface LookRepository extends JpaRepository<Look, Long> {
 
-    Look findByCode(String code);
+    Look findByCode(long code);
 
     @Query(("SELECT k FROM Look k WHERE k.user.login= :login"))
     List<Look> findAllUserLooks(String login);
@@ -23,15 +23,18 @@ public interface LookRepository extends JpaRepository<Look, Long> {
     List<Look> findAllLooksByUserAttributes(List<Long> userAttributesCodes);
 
     @Query("SELECT k.isActive FROM Look k WHERE k.code = :code")
-    Boolean isLookPublic(String code);
+    Boolean isLookPublic(long code);
 
     @Query("SELECT k FROM Look k WHERE k.code = :code AND k.user.login = :login")
-    Look isPrincipalLook(String code, String login);
+    Look isPrincipalLook(long code, String login);
 
     @Modifying
     @Query("DELETE FROM Look k WHERE k.code = :code")
-    void deleteLookByCode(String code);
+    void deleteLookByCode(long code);
 
     @Query("SELECT k FROM Look k WHERE  k.user.login = :login")
     List<Look> getLooksByLogin(String login);
+
+    @Query("SELECT l.lookId FROM Look l WHERE id = (SELECT MAX(l.lookId) FROM Look l)")
+    Long getLastRow();
 }

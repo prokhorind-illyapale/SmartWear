@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.service;
 
+import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 
@@ -10,17 +11,21 @@ import java.util.List;
  */
 public interface LookService {
 
-    Look findByCode(String code);
+    Look findByCode(long code);
 
     List<Look> findAllUserLooks(String login);
 
     void removeDeletedUserClothAttributesFromLooks(List<UserClothAttribute> userClothAttributes);
 
-    boolean isLookPublic(String code);
+    boolean isLookPublic(long code);
 
-    boolean isUserHasLookNumber(String code);
+    boolean isUserHasLookNumber(long code);
 
-    boolean isPrincipalLook(String code, String login);
+    boolean isPrincipalLook(long code, String login);
 
-    void deleteLookByCode(String code);
+    void deleteLookByCode(long code);
+
+    void save(LookData lookData);
+
+    Long getLastRow();
 }

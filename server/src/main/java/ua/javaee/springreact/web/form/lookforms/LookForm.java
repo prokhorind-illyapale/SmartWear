@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  */
 public class LookForm {
     private String userLogin;
-    private String code;
+    private long code;
     private int likes;
     private boolean isPublic;
     private String description;
@@ -26,7 +26,7 @@ public class LookForm {
     public LookForm() {
     }
 
-    public LookForm(String userLogin, String code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes, List<CommentForm> comments) {
+    public LookForm(String userLogin,long code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes, List<CommentForm> comments) {
         this.userLogin = userLogin;
         this.code = code;
         this.likes = likes;
@@ -39,6 +39,15 @@ public class LookForm {
         this.comments = comments;
     }
 
+    public LookForm(boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<Long> userClothAttributesCodes) {
+        this.isPublic = isPublic;
+        this.description = description;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+        this.lookTypes = lookTypes;
+        this.userClothAttributesCodes = userClothAttributesCodes;
+    }
+
     public void setUserLogin(String userLogin) {
         this.userLogin = userLogin;
     }
@@ -47,12 +56,12 @@ public class LookForm {
         return userLogin;
     }
 
-    public String getCode() {
-        return code;
+    public void setCode(long code) {
+        this.code = code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public long getCode() {
+        return code;
     }
 
     public int getLikes() {
@@ -93,6 +102,14 @@ public class LookForm {
 
     public void setUserClothAttributes(Set<UserClothAttributeDataForm> userClothAttributes) {
         this.userClothAttributesCodes = userClothAttributes.stream().map(UserClothAttributeDataForm::getCode).collect(Collectors.toSet());
+    }
+
+    public void setUserClothAttributesCodes(Set<Long> userClothAttributesCodes) {
+        this.userClothAttributesCodes = userClothAttributesCodes;
+    }
+
+    public Set<Long> getUserClothAttributesCodes() {
+        return userClothAttributesCodes;
     }
 
     public void setMaxTemperature(BigDecimal maxTemperature) {

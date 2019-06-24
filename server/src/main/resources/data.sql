@@ -31,9 +31,9 @@ INSERT INTO look_type (look_type_id, name) VALUES ('4', 'Party');
 INSERT INTO look_type (look_type_id, name) VALUES ('5', 'Work');
 
 INSERT INTO look (look_id, description, likes, user_id, is_active, min_temperature, max_temperature, code)
-VALUES (1, 'checklook1 for testuser2', 0, 1, 1, 10, 15, '1');
+VALUES (1, 'checklook1 for testuser2', 0, 1, 1, 10, 15, 1);
 INSERT INTO look (look_id, description, likes, user_id, is_active, min_temperature, max_temperature, code)
-VALUES (2, 'checklook2 for testuser2', 0, 1, 0, 9, 20, '2');
+VALUES (2, 'checklook2 for testuser2', 0, 1, 0, 9, 20, 2);
 
 INSERT INTO look_to_look_type (look_id, look_type_id) VALUES ('1', '1');
 INSERT INTO look_to_look_type (look_id, look_type_id) VALUES ('1', '5');

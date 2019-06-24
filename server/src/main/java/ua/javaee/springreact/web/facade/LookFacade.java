@@ -9,17 +9,22 @@ import java.util.List;
  * Created by kleba on 24.02.2019.
  */
 public interface LookFacade {
-    LookData findByCode(String code);
+    LookData findByCode(long code);
 
     List<LookData> findAllUserLooks(String login);
 
-    boolean isLookPublic(String code);
+    boolean isLookPublic(long code);
 
-    boolean isLookNumberExists(String code);
+    boolean isLookNumberExists(long code);
 
-    boolean isPrincipalLook(String code, String login);
+    boolean isPrincipalLook(long code, String login);
 
-    Look findModelByCode(String code);
+    Look findModelByCode(long code);
 
-    void deleteLookByCode(String code);
+    void deleteLookByCode(long code);
+
+    long saveLook(LookData look);
+
+    void updateLook(LookData look);
+
 }

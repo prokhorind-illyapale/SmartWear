@@ -16,6 +16,7 @@ public class CommentDataToFormConverter implements AbstractConverter<CommentForm
         target.setLogin(source.getLogin());
         target.setMessage(source.getMessage());
         target.setLastUpdated(source.getLastUpdated());
+        target.setCommentId(source.getCommentId());
         return target;
     }
 }

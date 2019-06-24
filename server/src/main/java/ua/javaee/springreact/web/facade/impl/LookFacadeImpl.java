@@ -32,9 +32,10 @@ public class LookFacadeImpl implements LookFacade {
     private CommentService commentService;
 
     @Override
-    public LookData findByCode(String code) {
+    public LookData findByCode(long code) {
         Look look = lookService.findByCode(code);
         LookData lookData = (LookData) lookModelToLookDataConverter.convert(look);
+        lookData.setComments(getCommentDatas(look));
         return lookData;
     }
 
@@ -51,28 +52,42 @@ public class LookFacadeImpl implements LookFacade {
     }
 
     @Override
-    public boolean isLookPublic(String code) {
+    public boolean isLookPublic(long code) {
         return lookService.isLookPublic(code);
     }
 
     @Override
-    public boolean isLookNumberExists(String code) {
+    public boolean isLookNumberExists(long code) {
         return lookService.isUserHasLookNumber(code);
     }
 
     @Override
-    public boolean isPrincipalLook(String code, String login) {
+    public boolean isPrincipalLook(long code, String login) {
         return lookService.isPrincipalLook(code, login);
     }
 
     @Override
-    public Look findModelByCode(String code) {
+    public Look findModelByCode(long code) {
         return lookService.findByCode(code);
     }
 
     @Override
-    public void deleteLookByCode(String code) {
+    public void deleteLookByCode(long code) {
         lookService.deleteLookByCode(code);
+    }
+
+    @Override
+    public long saveLook(LookData look) {
+        long code = lookService.getLastRow() + 1l;
+        look.setCode(code);
+        lookService.save(look);
+        return code;
+    }
+
+    @Override
+    public void updateLook(LookData lookData) {
+        lookData.setCode(lookData.getCode());
+        lookService.save(lookData);
     }
 
     private List<CommentData> getCommentDatas(Look source) {
