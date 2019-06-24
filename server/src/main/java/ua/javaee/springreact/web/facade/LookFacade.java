@@ -27,4 +27,8 @@ public interface LookFacade {
 
     void updateLook(LookData look);
 
+    boolean addLike(String login,long code);
+
+    boolean removeLike(String login,long code);
+
 }

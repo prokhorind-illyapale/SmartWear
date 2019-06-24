@@ -57,6 +57,9 @@ public class Look {
     )
     private Set<UserClothAttribute> userClothAttributes = new HashSet<>();
 
+    @ManyToMany(mappedBy = "lookLikes")
+    private Set<User> users = new HashSet<>();
+
     public Look() {
     }
 
@@ -169,5 +172,13 @@ public class Look {
 
     public byte[] getPicture() {
         return picture;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<User> getUsers() {
+        return users;
     }
 }

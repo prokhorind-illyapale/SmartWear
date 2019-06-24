@@ -47,6 +47,7 @@ public class LookDataToFormConverter implements AbstractConverter<LookForm, Look
         target.setMaxTemperature(source.getMaxTemperature());
         target.setComments(getCommentForms(source));
         target.setPicture(source.getPicture());
+        target.setLikedUsers(source.getLikedUsers());
         return target;
     }
 

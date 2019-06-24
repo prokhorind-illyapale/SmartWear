@@ -22,6 +22,7 @@ public class LookData {
     private List<CommentData> comments = new ArrayList<>();
     private BigDecimal minTemperature;
     private BigDecimal maxTemperature;
+    private Set<String> likedUsers = new HashSet<>();
 
     public LookData() {
     }
@@ -127,5 +128,13 @@ public class LookData {
 
     public byte[] getPicture() {
         return picture;
+    }
+
+    public void setLikedUsers(Set<String> likedUsers) {
+        this.likedUsers = likedUsers;
+    }
+
+    public Set<String> getLikedUsers() {
+        return likedUsers;
     }
 }

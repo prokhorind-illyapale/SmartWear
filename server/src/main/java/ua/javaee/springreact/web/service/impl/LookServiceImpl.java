@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.javaee.springreact.web.converter.LookDataToModelConverter;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
+import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.repository.LookRepository;
+import ua.javaee.springreact.web.repository.UserRepository;
 import ua.javaee.springreact.web.service.LookService;
 
 import java.util.List;
@@ -28,6 +30,8 @@ public class LookServiceImpl implements LookService {
 
     @Autowired
     private LookRepository lookRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private LookDataToModelConverter lookDataToModelConverter;
 
@@ -96,11 +100,34 @@ public class LookServiceImpl implements LookService {
     @Override
     @Transactional
     public void save(LookData lookData) {
-     Look look = lookDataToModelConverter.convert(lookData);
-     look.setCode(lookData.getCode());
-     lookRepository.save(look);
+        Look look = lookDataToModelConverter.convert(lookData);
+        look.setCode(lookData.getCode());
+        lookRepository.save(look);
     }
 
+    @Override
+    @Transactional
+    public boolean addLike(long code, String login) {
+        User user = userRepository.findByLogin(login);
+        Look look = lookRepository.findByCode(code);
+        boolean isUserAdded = look.getUsers().add(user);
+        boolean isLookAdded = user.getLookLikes().add(look);
+        userRepository.save(user);
+        lookRepository.save(look);
+        return isLookAdded && isUserAdded;
+    }
+
+    @Override
+    @Transactional
+    public boolean removeLike(String login, long code) {
+        User user = userRepository.findByLogin(login);
+        Look look = lookRepository.findByCode(code);
+        boolean isUserRemoved = look.getUsers().remove(user);
+        boolean isLookRemoved = user.getLookLikes().remove(look);
+        userRepository.save(user);
+        lookRepository.save(look);
+        return isLookRemoved && isUserRemoved;
+    }
 
     @Override
     public Long getLastRow() {

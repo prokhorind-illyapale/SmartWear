@@ -22,6 +22,7 @@ public class LookForm {
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
     private Set<Long> userClothAttributesCodes = new HashSet<>();
     private List<CommentForm> comments = new ArrayList<>();
+    private Set<String> likedUsers = new HashSet<>();
 
     public LookForm() {
     }
@@ -142,5 +143,13 @@ public class LookForm {
 
     public byte[] getPicture() {
         return picture;
+    }
+
+    public void setLikedUsers(Set<String> likedUsers) {
+        this.likedUsers = likedUsers;
+    }
+
+    public Set<String> getLikedUsers() {
+        return likedUsers;
     }
 }

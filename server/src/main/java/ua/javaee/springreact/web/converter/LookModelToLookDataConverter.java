@@ -9,12 +9,14 @@ import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.LookType;
+import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.populator.AbstractPopulator;
 import ua.javaee.springreact.web.service.CommentService;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -43,12 +45,13 @@ public class LookModelToLookDataConverter implements AbstractConverter<LookData,
         userToUserDataPopulator.populate(source.getUser(), userData);
         target.setCode(source.getCode());
         target.setDescription(source.getDescription());
-        target.setLikes(source.getLikes());
+        target.setLikes(source.getUsers().size());
         target.setUser(userData);
         target.setUserClothAttributes(getUserClothAttributeDatas(source));
         target.setMinTemperature(source.getMinTemperature());
         target.setMaxTemperature(source.getMaxTemperature());
         target.setPicture(source.getPicture());
+        target.setLikedUsers(source.getUsers().stream().map(User::getLogin).collect(Collectors.toSet()));
         return target;
     }
 

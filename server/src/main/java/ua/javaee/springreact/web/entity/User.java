@@ -2,7 +2,9 @@ package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -32,6 +34,14 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Look> looks = new ArrayList();
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "User_To_Look_Likes",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "look_id")}
+    )
+    private Set<Look> lookLikes = new HashSet<>();
 
     public User() {
     }
@@ -108,5 +118,13 @@ public class User {
 
     public List<Look> getLooks() {
         return looks;
+    }
+
+    public void setLookLikes(Set<Look> lookLikes) {
+        this.lookLikes = lookLikes;
+    }
+
+    public Set<Look> getLookLikes() {
+        return lookLikes;
     }
 }

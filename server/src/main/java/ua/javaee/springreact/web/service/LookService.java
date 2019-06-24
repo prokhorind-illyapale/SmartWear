@@ -28,4 +28,8 @@ public interface LookService {
     void save(LookData lookData);
 
     Long getLastRow();
+
+    boolean addLike(long code, String login);
+
+    boolean removeLike(String login,long code);
 }

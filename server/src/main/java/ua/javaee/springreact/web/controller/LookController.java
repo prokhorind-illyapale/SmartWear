@@ -147,6 +147,21 @@ public class LookController {
         return ok().build();
     }
 
+    @PostMapping("/like/{code}")
+    public ResponseEntity addLike(@PathVariable long code, Principal principal) {
+        if (!lookFacade.isLookNumberExists(code)) {
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+        return ok().body(lookFacade.addLike(principal.getName(),code));
+    }
+
+    @DeleteMapping("/like/{code}")
+    public ResponseEntity deleteLike(@PathVariable long code, Principal principal) {
+        if (!lookFacade.isLookNumberExists(code)) {
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+        return ok().body(lookFacade.removeLike(principal.getName(),code));
+    }
 
     @DeleteMapping(value = "/delete/{code}")
     public ResponseEntity<?> deleteLookByCode(@PathVariable("code") long code, Principal principal) {

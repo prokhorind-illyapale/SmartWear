@@ -8,9 +8,11 @@ import ua.javaee.springreact.web.data.CommentData;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
+import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.facade.LookFacade;
 import ua.javaee.springreact.web.service.CommentService;
 import ua.javaee.springreact.web.service.LookService;
+import ua.javaee.springreact.web.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,17 @@ public class LookFacadeImpl implements LookFacade {
         lookData.setCode(lookData.getCode());
         lookService.save(lookData);
     }
+
+    @Override
+    public boolean addLike(String login, long code) {
+        return lookService.addLike(code, login);
+    }
+
+    @Override
+    public boolean removeLike(String login, long code) {
+        return lookService.removeLike(login, code);
+    }
+
 
     private List<CommentData> getCommentDatas(Look source) {
         List<CommentData> comments = new ArrayList<>();
