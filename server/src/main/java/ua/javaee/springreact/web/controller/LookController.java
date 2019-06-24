@@ -143,7 +143,8 @@ public class LookController {
 
         LookData lookData = (LookData) lookFormToDataConverter.convert(lookForm);
         lookData.setCode(lookForm.getCode());
-        return ok().body(lookFacade.saveLook(lookData));
+        lookFacade.updateLook(lookData);
+        return ok().build();
     }
 
 
