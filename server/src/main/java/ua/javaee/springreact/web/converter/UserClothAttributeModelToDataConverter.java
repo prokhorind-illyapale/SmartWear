@@ -9,6 +9,8 @@ import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.populator.UserToUserDataPopulator;
 
+import static java.util.Objects.isNull;
+
 /**
  * Created by kleba on 24.02.2019.
  */
@@ -31,11 +33,18 @@ public class UserClothAttributeModelToDataConverter implements AbstractConverter
         target.setCode(source.getCode());
         target.setCloth((ClothData) clothModelToDataConverter.convert(source.getCloth()));
         target.setColor(source.getColor());
-        target.setPicture(source.getPicture());
+        target.setPicture(convertBlobImage(source.getPicture()));
         target.setPrice(source.getPrice());
         target.setSize(source.getSize());
         target.setUserData(user);
         target.setPublic(source.isPublic());
         return target;
+    }
+
+    private String convertBlobImage(byte[] picture) {
+        if (isNull(picture)) {
+            return null;
+        }
+        return new String(picture);
     }
 }

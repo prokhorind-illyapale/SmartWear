@@ -17,9 +17,9 @@ public class UserClothAttribute {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_cloth_id")
     private long userClothId;
-    @Column
+    @Column(unique = true)
     private long code;
-    @Column(columnDefinition = "mediumblob")
+    @Column
     private byte[] picture;
     @Column
     private String description;

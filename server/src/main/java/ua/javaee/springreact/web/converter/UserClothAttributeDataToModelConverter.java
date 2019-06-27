@@ -11,6 +11,7 @@ import ua.javaee.springreact.web.service.UserService;
 
 import java.security.Principal;
 
+import static org.apache.logging.log4j.util.Strings.isBlank;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Component
@@ -36,8 +37,15 @@ public class UserClothAttributeDataToModelConverter implements AbstractConverter
         target.setPrice(source.getPrice());
         target.setSize(source.getSize());
         target.setCloth(clothService.getCloth(clothData.getName(), (clothData.getSex().getName())));
-        target.setPicture(source.getPicture());
+        target.setPicture(convertBlobImage(source.getPicture()));
         target.setPublic(source.isPublic());
         return target;
+    }
+
+    private byte[] convertBlobImage(String picture) {
+        if (isBlank(picture)) {
+            return null;
+        }
+        return picture.getBytes();
     }
 }

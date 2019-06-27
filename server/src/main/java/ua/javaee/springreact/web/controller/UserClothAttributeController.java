@@ -23,6 +23,7 @@ public class UserClothAttributeController {
     public static final String NOT_EXISTS_WITH_CODE = "User cloth attributes  is not exists with code:";
     public static final String NO_PERMISSIONS_FOR_THIS_ACTION = "You have no permissions for this action";
     public static final String CANT_SAVE = "Cant'save";
+    public static final String USER_CLOTH_ATTRIBUTE_WAS_NOT_SAVED = "user cloth attribute was not saved";
     @Autowired
     private UserClothAttributeFacade userClothAttributeFacade;
     @Autowired
@@ -83,6 +84,9 @@ public class UserClothAttributeController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody UserClothAttributeData userClothAttributeData) {
+        if (userClothAttributeFacade.save(userClothAttributeData) == 0l) {
+            return processingErrors(USER_CLOTH_ATTRIBUTE_WAS_NOT_SAVED, VALIDATION_TYPE_ERROR);
+        }
         return ok(userClothAttributeFacade.save(userClothAttributeData));
     }
 }

@@ -9,7 +9,7 @@ public class UserClothAttributeDataForm {
 
     private String userLogin;
     private long code;
-    private byte[] picture;
+    private String picture;
     private String description;
     private String size;
     private String color;
@@ -22,7 +22,7 @@ public class UserClothAttributeDataForm {
 
     ;
 
-    public UserClothAttributeDataForm(String userLogin, boolean isPublic, long code, byte[] picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
+    public UserClothAttributeDataForm(String userLogin, boolean isPublic, long code, String picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
         this.userLogin = userLogin;
         this.code = code;
         this.picture = picture;
@@ -50,12 +50,12 @@ public class UserClothAttributeDataForm {
         return code;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public String getPicture() {
+        return picture;
     }
 
     public String getDescription() {
