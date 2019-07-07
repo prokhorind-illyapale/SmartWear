@@ -84,9 +84,10 @@ public class UserClothAttributeController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody UserClothAttributeData userClothAttributeData) {
-        if (userClothAttributeFacade.save(userClothAttributeData) == 0l) {
+        long saved = userClothAttributeFacade.save(userClothAttributeData);
+        if (saved == 0l) {
             return processingErrors(USER_CLOTH_ATTRIBUTE_WAS_NOT_SAVED, VALIDATION_TYPE_ERROR);
         }
-        return ok(userClothAttributeFacade.save(userClothAttributeData));
+        return ok(saved);
     }
 }
