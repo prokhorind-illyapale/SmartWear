@@ -1,5 +1,7 @@
 package ua.javaee.springreact.web.form.lookforms;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +11,7 @@ public class UserClothAttributeDataForm {
 
     private String userLogin;
     private long code;
-    private String picture;
+    private MultipartFile picture;
     private String description;
     private String size;
     private String color;
@@ -22,7 +24,7 @@ public class UserClothAttributeDataForm {
 
     ;
 
-    public UserClothAttributeDataForm(String userLogin, boolean isPublic, long code, String picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
+    public UserClothAttributeDataForm(String userLogin, boolean isPublic, long code, MultipartFile picture, String description, String size, String color, BigDecimal price, ClothForm cloth) {
         this.userLogin = userLogin;
         this.code = code;
         this.picture = picture;
@@ -50,11 +52,11 @@ public class UserClothAttributeDataForm {
         return code;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
 
-    public String getPicture() {
+    public MultipartFile getPicture() {
         return picture;
     }
 

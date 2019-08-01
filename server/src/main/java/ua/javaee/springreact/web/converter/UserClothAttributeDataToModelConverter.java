@@ -2,6 +2,7 @@ package ua.javaee.springreact.web.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.ClothData;
 import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
@@ -9,9 +10,9 @@ import ua.javaee.springreact.web.service.ClothService;
 import ua.javaee.springreact.web.service.UserClothAttributeService;
 import ua.javaee.springreact.web.service.UserService;
 
+import java.io.IOException;
 import java.security.Principal;
 
-import static org.apache.logging.log4j.util.Strings.isBlank;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Component
@@ -42,10 +43,11 @@ public class UserClothAttributeDataToModelConverter implements AbstractConverter
         return target;
     }
 
-    private byte[] convertBlobImage(String picture) {
-        if (isBlank(picture)) {
+    private byte[] convertBlobImage(MultipartFile picture) {
+        try {
+            return picture.getBytes();
+        } catch (IOException e) {
             return null;
         }
-        return picture.getBytes();
     }
 }

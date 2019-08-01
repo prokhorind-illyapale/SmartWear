@@ -1,5 +1,7 @@
 package ua.javaee.springreact.web.data;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 
 /**
@@ -11,7 +13,7 @@ public class UserClothAttributeData {
 
     private long code;
 
-    private String picture;
+    private MultipartFile picture;
 
     private String description;
 
@@ -25,7 +27,7 @@ public class UserClothAttributeData {
 
     private boolean isPublic;
 
-    public UserClothAttributeData(UserData userData, boolean isPublic, long code, String picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
+    public UserClothAttributeData(UserData userData, boolean isPublic, long code, MultipartFile picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
         this.userData = userData;
         this.code = code;
         this.picture = picture;
@@ -57,11 +59,11 @@ public class UserClothAttributeData {
         return code;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
 
-    public String getPicture() {
+    public MultipartFile getPicture() {
         return picture;
     }
 

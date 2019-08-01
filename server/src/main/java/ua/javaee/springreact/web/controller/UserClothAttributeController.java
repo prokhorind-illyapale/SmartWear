@@ -3,6 +3,7 @@ package ua.javaee.springreact.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.facade.ClothFacade;
 import ua.javaee.springreact.web.facade.UserClothAttributeFacade;
@@ -89,5 +90,22 @@ public class UserClothAttributeController {
             return processingErrors(USER_CLOTH_ATTRIBUTE_WAS_NOT_SAVED, VALIDATION_TYPE_ERROR);
         }
         return ok(saved);
+    }
+
+    @PostMapping("/{code}/picture")
+    public ResponseEntity savePicture(@PathVariable("code") long userClothAttributeCode, Principal principal, @RequestParam("file") MultipartFile picture) {
+        if (!userFacade.isUserHasAdminRights(principal.getName())
+                && !userClothAttributeFacade.isUserClothAttributes(userFacade.getUserByLogin(principal.getName()), userClothAttributeCode)) {
+            return processingErrors(NO_PERMISSIONS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+        UserClothAttributeData userClothAttribute = userClothAttributeFacade.get(userClothAttributeCode);
+
+        if (isNull(userClothAttribute)) {
+            processingErrors(NOT_EXISTS_WITH_CODE, VALIDATION_TYPE_ERROR);
+        }
+
+        userClothAttribute.setPicture(picture);
+        userClothAttributeFacade.update(userClothAttribute, userClothAttributeCode);
+        return ok().build();
     }
 }

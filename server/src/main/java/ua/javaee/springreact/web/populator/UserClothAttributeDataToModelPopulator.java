@@ -2,11 +2,12 @@ package ua.javaee.springreact.web.populator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.service.ClothService;
 
-import static org.apache.logging.log4j.util.Strings.isBlank;
+import java.io.IOException;
 
 @Component
 public class UserClothAttributeDataToModelPopulator implements AbstractPopulator<UserClothAttributeData, UserClothAttribute> {
@@ -25,10 +26,11 @@ public class UserClothAttributeDataToModelPopulator implements AbstractPopulator
         target.setPublic(source.isPublic());
     }
 
-    private byte[] convertBlobImage(String picture) {
-        if (isBlank(picture)) {
+    private byte[] convertBlobImage(MultipartFile picture) {
+        try {
+            return picture.getBytes();
+        } catch (IOException e) {
             return null;
         }
-        return picture.getBytes();
     }
 }

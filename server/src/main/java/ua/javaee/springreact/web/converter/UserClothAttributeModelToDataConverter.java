@@ -3,11 +3,13 @@ package ua.javaee.springreact.web.converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.ClothData;
 import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.populator.UserToUserDataPopulator;
+import ua.javaee.springreact.web.util.BASE64DecodedMultipartFile;
 
 import static java.util.Objects.isNull;
 
@@ -41,10 +43,11 @@ public class UserClothAttributeModelToDataConverter implements AbstractConverter
         return target;
     }
 
-    private String convertBlobImage(byte[] picture) {
-        if (isNull(picture)) {
+    private MultipartFile convertBlobImage(byte[] picture) {
+        MultipartFile multipartFile = new BASE64DecodedMultipartFile(picture);
+        if (isNull(multipartFile)) {
             return null;
         }
-        return new String(picture);
+        return multipartFile;
     }
 }
