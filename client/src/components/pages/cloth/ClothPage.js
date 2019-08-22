@@ -91,7 +91,7 @@ class ClothPage extends Component {
         })
             .then(response => {
                 if(response.status === 200) {
-                    this.props.setCloth(response.data)
+                    this.props.setCloth(response.data);
                 }
             })
             .catch(err => console.error(err));
@@ -136,6 +136,15 @@ class ClothPage extends Component {
                 if(response.status === 200) {
                     this.setState({...this.state, code: response.data});
                     this.props.addClothAttr(payload, this.state.code);
+                    this.setState({})
+
+                    // axios.post(url + `${response.data}/picture`, this.state.picture, {
+                    //     'Content-type' : 'application/json',
+                    //     'Authorization': "Basic " + window.localStorage.token
+                    // })
+                    //     .then(response => console.log(response))
+                    //     .catch(err => console.log(err))
+
                 }
             })
             .catch(err => console.error(err));
@@ -145,7 +154,6 @@ class ClothPage extends Component {
     
     delClothAttr = (code) => {
         let url = 'http://localhost:8080/user-cloth/';
-
       
         axios.delete(url + code, {
             headers: {
@@ -165,18 +173,20 @@ class ClothPage extends Component {
     setClothData = () => {
         let data = this.props.data;
         return data.map((data, index) => {
-            let idx = clothIcons.findIndex(x => x.name === data.cloth.name);
+            let clothName = data.cloth.name.charAt(0).toUpperCase() + data.cloth.name.slice(1),
+                idx = clothIcons.findIndex(x => x.name === clothName);
+
             return (
                 <Card key={index}>
                     {
                         data.picture !== null 
-                            ? data.picture 
+                            ? <img width="100%" src={data.picture}/> 
                             : <Image src={clothIcons[idx].value}  wrapped ui={false}/>
                     }
                     <Card.Content textAlign='center'>
                         <Card.Header>{data.description}</Card.Header>
                         <Card.Meta>
-                            {data.cloth.name}
+                            {clothName}
                         </Card.Meta>
                         <Card.Description>
                             <b>Size:</b> {data.size}
@@ -276,7 +286,7 @@ class ClothPage extends Component {
                         </Form.Field>
                         <Form.Field>
                             <label>Picture</label>
-                            <input type='file' name='picture' onChange={this.handleLoadLocalFile} value={this.state.picture !== null ? this.state.picture : ''}/>
+                            <input type='file'  accept=".jpg, .jpeg, .png" name='picture' onChange={this.handleLoadLocalFile} value={this.state.picture !== null ? this.state.picture : ''}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Size</label>
@@ -393,9 +403,12 @@ class ClothPage extends Component {
 
     handleLoadLocalFile = (event) => {
         event.preventDefault();
-        const file = event.target.files[0];
-        const localImageUrl = window.URL.createObjectURL(file);
-        this.setState({...this.state, picture: localImageUrl})
+
+        let data = new FormData(),
+            file = event.target.files[0];
+
+        data.append('file', file, file.name);
+        this.setState({...this.state, picture: data});
     };
 
     render() {
