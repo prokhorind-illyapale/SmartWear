@@ -29,7 +29,7 @@ public class UserClothAttributeDataToModelPopulator implements AbstractPopulator
     private byte[] convertBlobImage(MultipartFile picture) {
         try {
             return picture.getBytes();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return null;
         }
     }

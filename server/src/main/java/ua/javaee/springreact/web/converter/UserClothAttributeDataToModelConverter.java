@@ -46,7 +46,7 @@ public class UserClothAttributeDataToModelConverter implements AbstractConverter
     private byte[] convertBlobImage(MultipartFile picture) {
         try {
             return picture.getBytes();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return null;
         }
     }

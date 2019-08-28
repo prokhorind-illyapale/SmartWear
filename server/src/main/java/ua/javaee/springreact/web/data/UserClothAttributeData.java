@@ -1,8 +1,11 @@
 package ua.javaee.springreact.web.data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -10,21 +13,14 @@ import java.math.BigDecimal;
 public class UserClothAttributeData {
 
     private UserData userData;
-
     private long code;
-
+    @JsonInclude(NON_NULL)
     private MultipartFile picture;
-
     private String description;
-
     private String size;
-
     private String color;
-
     private BigDecimal price;
-
     private ClothData cloth;
-
     private boolean isPublic;
 
     public UserClothAttributeData(UserData userData, boolean isPublic, long code, MultipartFile picture, String description, String size, String color, BigDecimal price, ClothData cloth) {
