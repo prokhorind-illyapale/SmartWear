@@ -49,3 +49,17 @@ INSERT INTO comment (comment_id, last_updated, login, message, look_id)
 VALUES (1, '2019-02-24 00:00:00', 'Валера', 'Hi', 2);
 INSERT INTO comment (comment_id, last_updated, login, message, look_id)
 VALUES (2, '2019-02-24 00:00:00', 'Hi', 'Валера', 2);
+
+INSERT INTO command (command_id,name) values (1,'Enable');
+INSERT INTO command (command_id,name) values (2,'Disable');
+
+INSERT INTO device (device_id,name,device_type,) values (1,'gadget','GADGET');
+INSERT INTO device (device_id,name,device_type,) values (2,'indicator','INDICATOR');
+
+INSERT INTO Device_To_Command (device_id,command_id) values (1,1);
+INSERT INTO Device_To_Command (device_id,command_id) values (1,2);
+
+INSERT INTO Room (room_id,user_id,room_name) values (1,2,'room1');
+
+INSERT INTO User_Device (user_device_id,user_id,room_id,device_id,name) values (1,2,null,1,'testuser1 gadget');
+INSERT INTO User_Device (user_device_id,user_id,room_id,device_id,name) values (2,2,1,2,'testuser1 indicator');

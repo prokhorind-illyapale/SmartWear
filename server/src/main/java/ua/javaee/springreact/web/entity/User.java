@@ -34,6 +34,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Look> looks = new ArrayList();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Room> rooms = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserDevice> userDevices = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -126,5 +130,21 @@ public class User {
 
     public Set<Look> getLookLikes() {
         return lookLikes;
+    }
+
+    public void setUserDevices(List<UserDevice> userDevices) {
+        this.userDevices = userDevices;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<UserDevice> getUserDevices() {
+        return userDevices;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
     }
 }
