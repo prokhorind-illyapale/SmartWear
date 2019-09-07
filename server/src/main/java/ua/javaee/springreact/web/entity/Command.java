@@ -1,8 +1,6 @@
 package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -15,14 +13,6 @@ public class Command {
     private long commandId;
     @Column
     private String name;
-
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "Device_To_Command",
-            joinColumns = {@JoinColumn(name = "command_id")},
-            inverseJoinColumns = {@JoinColumn(name = "device_id")}
-    )
-    private List<Device> devices = new ArrayList<>();
 
     public long getCommandId() {
         return commandId;
@@ -38,13 +28,5 @@ public class Command {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Device> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
     }
 }
