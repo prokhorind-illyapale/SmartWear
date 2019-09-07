@@ -23,7 +23,7 @@ public class Device {
     @OneToMany(mappedBy = "device", cascade = REMOVE)
     private List<UserDevice> userDevices = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "Device_To_Command",
             joinColumns = {@JoinColumn(name = "device_id")},
