@@ -1,11 +1,9 @@
 package ua.javaee.springreact.web.data;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -14,7 +12,7 @@ public class UserClothAttributeData {
 
     private UserData userData;
     private long code;
-    @JsonInclude(NON_NULL)
+    @JsonIgnore
     private MultipartFile picture;
     private String description;
     private String size;
