@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.entity.UserClothAttribute;
@@ -26,6 +27,8 @@ public interface LookService {
     void deleteLookByCode(long code);
 
     void save(LookData lookData);
+
+    void savePicture(MultipartFile picture, long code);
 
     Long getLastRow();
 

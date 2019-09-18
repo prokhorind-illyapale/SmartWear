@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.converter.LookDataToModelConverter;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
@@ -14,6 +15,7 @@ import ua.javaee.springreact.web.repository.LookRepository;
 import ua.javaee.springreact.web.repository.UserRepository;
 import ua.javaee.springreact.web.service.LookService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -48,11 +50,7 @@ public class LookServiceImpl implements LookService {
     public boolean isUserHasLookNumber(long code) {
         try {
             Look look = lookRepository.findByCode(code);
-            if (!isNull(look)) {
-                return true;
-            } else {
-                return false;
-            }
+            return !isNull(look);
         } catch (NumberFormatException e) {
             logger.error("Wrong code format:" + e.getMessage());
             return false;
@@ -65,11 +63,7 @@ public class LookServiceImpl implements LookService {
     @Override
     public boolean isPrincipalLook(long code, String login) {
         Look look = lookRepository.isPrincipalLook(code, login);
-        if (isNull(look)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !isNull(look);
     }
 
     public void removeDeletedUserClothAttributesFromLooks(List<UserClothAttribute> userClothAttributes) {
@@ -82,9 +76,7 @@ public class LookServiceImpl implements LookService {
         for (Look look : looks) {
             for (UserClothAttribute userClothAttribute : userClothAttributes) {
                 Set<UserClothAttribute> userClothAttributeSet = look.getUserClothAttributes();
-                if (userClothAttributeSet.contains(userClothAttribute)) {
-                    userClothAttributeSet.remove(userClothAttribute);
-                }
+                userClothAttributeSet.remove(userClothAttribute);
             }
         }
         lookRepository.saveAll(looks);
@@ -103,6 +95,17 @@ public class LookServiceImpl implements LookService {
         Look look = lookDataToModelConverter.convert(lookData);
         look.setCode(lookData.getCode());
         lookRepository.save(look);
+    }
+
+    @Override
+    public void savePicture(MultipartFile picture, long code) {
+        Look look = findByCode(code);
+        try {
+            look.setPicture(picture.getBytes());
+            lookRepository.save(look);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
