@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.facade;
 
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Look;
 
@@ -30,5 +31,7 @@ public interface LookFacade {
     boolean addLike(String login,long code);
 
     boolean removeLike(String login,long code);
+
+    void savePicture(MultipartFile multipartFile, long code);
 
 }

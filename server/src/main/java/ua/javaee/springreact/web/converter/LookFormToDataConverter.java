@@ -9,7 +9,6 @@ import ua.javaee.springreact.web.facade.UserClothAttributeFacade;
 import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.lookforms.LookForm;
 import ua.javaee.springreact.web.form.lookforms.LookTypeDataForm;
-import ua.javaee.springreact.web.service.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +30,6 @@ public class LookFormToDataConverter implements AbstractConverter <LookData, Loo
         target.setMaxTemperature(source.getMaxTemperature());
         target.setMinTemperature(source.getMinTemperature());
         target.setActive(source.isPublic());
-        target.setPicture(source.getPicture());
         target.setDescription(source.getDescription());
         target.setLikes(source.getLikes());
         target.setLookTypes(getLookTypes(source.getLookTypes()));

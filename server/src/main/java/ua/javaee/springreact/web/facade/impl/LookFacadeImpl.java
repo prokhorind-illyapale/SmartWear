@@ -3,16 +3,15 @@ package ua.javaee.springreact.web.facade.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.converter.AbstractConverter;
 import ua.javaee.springreact.web.data.CommentData;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
-import ua.javaee.springreact.web.entity.User;
 import ua.javaee.springreact.web.facade.LookFacade;
 import ua.javaee.springreact.web.service.CommentService;
 import ua.javaee.springreact.web.service.LookService;
-import ua.javaee.springreact.web.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +99,11 @@ public class LookFacadeImpl implements LookFacade {
     @Override
     public boolean removeLike(String login, long code) {
         return lookService.removeLike(login, code);
+    }
+
+    @Override
+    public void savePicture(MultipartFile multipartFile, long code) {
+        lookService.savePicture(multipartFile, code);
     }
 
 

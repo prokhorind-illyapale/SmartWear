@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.converter.AbstractConverter;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Comment;
@@ -14,14 +15,13 @@ import ua.javaee.springreact.web.form.lookforms.LookForm;
 import ua.javaee.springreact.web.service.CommentService;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-import static java.util.Collections.*;
-import static java.util.Objects.*;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
@@ -63,8 +63,7 @@ public class LookController {
 
         if (isUserHasRights(code, principal)) {
             LookData lookData = lookFacade.findByCode(code);
-            LookForm form = (LookForm) lookDataToFormConverter.convert(lookData);
-            return new ResponseEntity<Object>(form, OK);
+            return new ResponseEntity<Object>(lookData, OK);
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
@@ -77,12 +76,7 @@ public class LookController {
         }
         if (principal.getName().equalsIgnoreCase(login) || userFacade.isUserHasAdminRights(principal.getName())) {
             List<LookData> looks = lookFacade.findAllUserLooks(login);
-            List<LookForm> forms = new ArrayList<>();
-            for (LookData lookData : looks) {
-                LookForm form = (LookForm) lookDataToFormConverter.convert(lookData);
-                forms.add(form);
-            }
-            return new ResponseEntity<Object>(forms, OK);
+            return new ResponseEntity<Object>(looks, OK);
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
@@ -99,19 +93,19 @@ public class LookController {
     }
 
     @PostMapping("/comment/{code}")
-    public ResponseEntity addComment(@PathVariable long code,@RequestParam String comment, Principal principal) {
+    public ResponseEntity addComment(@PathVariable long code, @RequestParam String comment, Principal principal) {
 
         if (!lookFacade.isLookNumberExists(code)) {
             return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
         }
-        return ok().body(commentService.addComment(principal.getName(),comment,code));
+        return ok().body(commentService.addComment(principal.getName(), comment, code));
     }
 
     @PutMapping("/comment/{commentCode}")
-    public ResponseEntity updateComment(@PathVariable("commentCode") long code,@RequestParam String message, Principal principal) {
+    public ResponseEntity updateComment(@PathVariable("commentCode") long code, @RequestParam String message, Principal principal) {
 
         Comment comment = commentService.findCommentById(code);
-        if(isNull(comment) || !comment.getLogin().equals(principal.getName())){
+        if (isNull(comment) || !comment.getLogin().equals(principal.getName())) {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
         comment.setMessage(message);
@@ -123,10 +117,10 @@ public class LookController {
     @DeleteMapping("/comment/{commentCode}")
     public ResponseEntity removeComment(@PathVariable("commentCode") long code, Principal principal) {
 
-      Comment comment = commentService.findCommentById(code);
-      if(isNull(comment) || !comment.getLogin().equals(principal.getName())){
-          return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
-      }
+        Comment comment = commentService.findCommentById(code);
+        if (isNull(comment) || !comment.getLogin().equals(principal.getName())) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
+        }
         commentService.removeComment(code);
         return ok().build();
     }
@@ -152,7 +146,7 @@ public class LookController {
         if (!lookFacade.isLookNumberExists(code)) {
             return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
         }
-        return ok().body(lookFacade.addLike(principal.getName(),code));
+        return ok().body(lookFacade.addLike(principal.getName(), code));
     }
 
     @DeleteMapping("/like/{code}")
@@ -160,7 +154,7 @@ public class LookController {
         if (!lookFacade.isLookNumberExists(code)) {
             return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
         }
-        return ok().body(lookFacade.removeLike(principal.getName(),code));
+        return ok().body(lookFacade.removeLike(principal.getName(), code));
     }
 
     @DeleteMapping(value = "/delete/{code}")
@@ -177,6 +171,20 @@ public class LookController {
         } else {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
+    }
+
+    @PostMapping("/picture/{code}")
+    public ResponseEntity savePicture(@RequestParam("file") MultipartFile file, @PathVariable Long code, Principal principal) {
+
+        if (!lookFacade.isLookNumberExists(code)) {
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+
+        if (!isUserHasRights(code, principal)) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+        lookFacade.savePicture(file, code);
+        return ResponseEntity.ok().build();
     }
 
     private boolean isUserHasRights(long code, Principal principal) {
