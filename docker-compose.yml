@@ -44,6 +44,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example123
+    depends_on:
+      - mongo
 
   master:
     image: semantive/spark
