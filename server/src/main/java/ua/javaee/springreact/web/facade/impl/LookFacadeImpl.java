@@ -16,6 +16,8 @@ import ua.javaee.springreact.web.service.LookService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by kleba on 24.02.2019.
  */
@@ -104,6 +106,13 @@ public class LookFacadeImpl implements LookFacade {
     @Override
     public void savePicture(MultipartFile multipartFile, long code) {
         lookService.savePicture(multipartFile, code);
+    }
+
+    @Override
+    public List<LookData> findMostPopularUserLooks(String login, int minTemperature, int maxTemperature, int limit, String sex) {
+        List<Look> looks = lookService.findMostPopularUserLooks(login, minTemperature, maxTemperature, limit, sex);
+        List<LookData> lookDatas = looks.stream().map(l -> (LookData) lookModelToLookDataConverter.convert(l)).collect(toList());
+        return lookDatas;
     }
 
 

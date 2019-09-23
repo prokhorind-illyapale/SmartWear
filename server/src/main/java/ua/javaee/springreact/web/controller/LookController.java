@@ -2,11 +2,13 @@ package ua.javaee.springreact.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.converter.AbstractConverter;
 import ua.javaee.springreact.web.data.LookData;
+import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.facade.LookFacade;
@@ -24,8 +26,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
-import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
-import static ua.javaee.springreact.web.util.error.ErrorTypes.VALIDATION_TYPE_ERROR;
+import static ua.javaee.springreact.web.util.error.ErrorTypes.*;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -55,6 +56,9 @@ public class LookController {
     @Qualifier("lookFormToDataConverter")
     private AbstractConverter lookFormToDataConverter;
 
+    @Value("${spring.look.limit}")
+    private int lookLimit;
+
     @RequestMapping(value = "/get/{code}", method = GET)
     public ResponseEntity<?> getLookByCode(@PathVariable("code") long code, Principal principal) {
         if (!lookFacade.isLookNumberExists(code)) {
@@ -81,6 +85,16 @@ public class LookController {
             return processingErrors(NO_RIGHTS_FOR_THIS_ACTION + principal.getName(), PERMISSION_TYPE_ERROR);
         }
 
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity getLooksForUser(@RequestParam int minTemp, @RequestParam int maxTemp, Principal principal) {
+        UserData sessionUser = userFacade.getUserByLogin(principal.getName());
+        List<LookData> looks = lookFacade.findMostPopularUserLooks(sessionUser.getLogin(), minTemp, maxTemp, lookLimit, sessionUser.getSex());
+        if (looks.isEmpty()) {
+            return processingErrors("No looks found", NO_LOOKS_ERROR);
+        }
+        return ResponseEntity.ok(looks);
     }
 
     @PostMapping

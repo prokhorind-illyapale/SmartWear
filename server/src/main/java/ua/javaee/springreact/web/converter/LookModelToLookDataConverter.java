@@ -44,6 +44,7 @@ public class LookModelToLookDataConverter implements AbstractConverter<LookData,
         target.setLookTypes(getLookTypeDatas(source));
         userToUserDataPopulator.populate(source.getUser(), userData);
         target.setCode(source.getCode());
+        target.setActive(source.isActive());
         target.setDescription(source.getDescription());
         target.setLikes(source.getUsers().size());
         target.setUser(userData);

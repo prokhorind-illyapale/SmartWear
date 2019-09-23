@@ -1,6 +1,5 @@
 package ua.javaee.springreact.web.data;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,16 +19,14 @@ public class LookData {
     private Set<LookTypeData> lookTypes = new HashSet<>();
     private Set<UserClothAttributeData> userClothAttributes = new HashSet<>();
     private List<CommentData> comments = new ArrayList<>();
-    private BigDecimal minTemperature;
-    private BigDecimal maxTemperature;
+    private int minTemperature;
+    private int maxTemperature;
     private Set<String> likedUsers = new HashSet<>();
 
     public LookData() {
     }
 
-    ;
-
-    public LookData(UserData user, long code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes, List<CommentData> comments, BigDecimal minTemperature, BigDecimal maxTemperature) {
+    public LookData(UserData user, long code, int likes, boolean isActive, String description, Set<LookTypeData> lookTypes, Set<UserClothAttributeData> userClothAttributes, List<CommentData> comments, int minTemperature, int maxTemperature) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -98,19 +95,19 @@ public class LookData {
         isActive = active;
     }
 
-    public void setMinTemperature(BigDecimal minTemperature) {
+    public void setMinTemperature(int minTemperature) {
         this.minTemperature = minTemperature;
     }
 
-    public void setMaxTemperature(BigDecimal maxTemperature) {
+    public void setMaxTemperature(int maxTemperature) {
         this.maxTemperature = maxTemperature;
     }
 
-    public BigDecimal getMinTemperature() {
+    public int getMinTemperature() {
         return minTemperature;
     }
 
-    public BigDecimal getMaxTemperature() {
+    public int getMaxTemperature() {
         return maxTemperature;
     }
 

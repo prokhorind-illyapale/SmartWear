@@ -3,6 +3,7 @@ package ua.javaee.springreact.web.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
+import static org.springframework.data.domain.PageRequest.of;
 
 /**
  * Created by kleba on 24.02.2019.
@@ -28,6 +30,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class LookServiceImpl implements LookService {
 
+    public static final int ZERO_PAGE = 0;
     private Logger logger = LoggerFactory.getLogger(LookServiceImpl.class);
 
     @Autowired
@@ -130,6 +133,16 @@ public class LookServiceImpl implements LookService {
         userRepository.save(user);
         lookRepository.save(look);
         return isLookRemoved && isUserRemoved;
+    }
+
+    @Override
+    public List<Look> findMostPopularUserLooks(String login, int minTemperature, int maxTemperature, int limit, String sex) {
+        List<Look> userLooks = lookRepository.findMostPopularSessionUserLooks(login, minTemperature, maxTemperature, of(ZERO_PAGE, limit, Sort.by(Sort.Direction.DESC, "likes")));
+        if (userLooks.size() < limit) {
+            int numberOfLooks = limit - userLooks.size();
+            userLooks.addAll(lookRepository.findMostPopularUserLooks(login, minTemperature, maxTemperature, sex, of(ZERO_PAGE, numberOfLooks, Sort.by(Sort.Direction.DESC, "likes"))));
+        }
+        return userLooks;
     }
 
     @Override

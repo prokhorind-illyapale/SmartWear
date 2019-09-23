@@ -1,6 +1,5 @@
 package ua.javaee.springreact.web.form.lookforms;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,8 +15,8 @@ public class LookForm {
     private int likes;
     private boolean isPublic;
     private String description;
-    private BigDecimal minTemperature;
-    private BigDecimal maxTemperature;
+    private int minTemperature;
+    private int maxTemperature;
     private Set<LookTypeDataForm> lookTypes = new HashSet<>();
     private Set<Long> userClothAttributesCodes = new HashSet<>();
     private List<CommentForm> comments = new ArrayList<>();
@@ -26,7 +25,7 @@ public class LookForm {
     public LookForm() {
     }
 
-    public LookForm(String userLogin,long code, int likes, boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes, List<CommentForm> comments) {
+    public LookForm(String userLogin, long code, int likes, boolean isPublic, String description, int minTemperature, int maxTemperature, Set<LookTypeDataForm> lookTypes, Set<UserClothAttributeDataForm> userClothAttributes, List<CommentForm> comments) {
         this.userLogin = userLogin;
         this.code = code;
         this.likes = likes;
@@ -39,7 +38,7 @@ public class LookForm {
         this.comments = comments;
     }
 
-    public LookForm(boolean isPublic, String description, BigDecimal minTemperature, BigDecimal maxTemperature, Set<LookTypeDataForm> lookTypes, Set<Long> userClothAttributesCodes) {
+    public LookForm(boolean isPublic, String description, int minTemperature, int maxTemperature, Set<LookTypeDataForm> lookTypes, Set<Long> userClothAttributesCodes) {
         this.isPublic = isPublic;
         this.description = description;
         this.minTemperature = minTemperature;
@@ -112,19 +111,19 @@ public class LookForm {
         return userClothAttributesCodes;
     }
 
-    public void setMaxTemperature(BigDecimal maxTemperature) {
+    public void setMaxTemperature(int maxTemperature) {
         this.maxTemperature = maxTemperature;
     }
 
-    public void setMinTemperature(BigDecimal minTemperature) {
+    public void setMinTemperature(int minTemperature) {
         this.minTemperature = minTemperature;
     }
 
-    public BigDecimal getMaxTemperature() {
+    public int getMaxTemperature() {
         return maxTemperature;
     }
 
-    public BigDecimal getMinTemperature() {
+    public int getMinTemperature() {
         return minTemperature;
     }
 
