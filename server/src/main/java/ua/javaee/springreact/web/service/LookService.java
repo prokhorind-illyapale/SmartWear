@@ -35,4 +35,6 @@ public interface LookService {
     boolean addLike(long code, String login);
 
     boolean removeLike(String login,long code);
+
+    List<Look> findMostPopularUserLooks(String login, int minTemperature, int maxTemperature, int limit, String sex);
 }

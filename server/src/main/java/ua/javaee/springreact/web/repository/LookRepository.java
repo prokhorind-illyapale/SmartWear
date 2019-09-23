@@ -1,5 +1,6 @@
 package ua.javaee.springreact.web.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,13 @@ public interface LookRepository extends JpaRepository<Look, Long> {
 
     @Query(("SELECT k FROM Look k WHERE k.user.login= :login"))
     List<Look> findAllUserLooks(String login);
+
+    @Query("SELECT k FROM Look k WHERE k.user.login= :login AND k.minTemperature >= :minTemp  AND k.maxTemperature  <=  :maxTemp")
+    List<Look> findMostPopularSessionUserLooks(String login, int minTemp, int maxTemp, Pageable pageable);
+
+    @Query("SELECT k FROM Look k WHERE k.minTemperature >= :minTemp AND  k.user.login != :login AND k.maxTemperature <= :maxTemp AND k.isActive = true AND k.user.sex=:sex")
+    List<Look> findMostPopularUserLooks(String login, int minTemp, int maxTemp, String sex, Pageable pageable);
+
 
     @Query("SELECT k FROM Look k  JOIN UserClothAttribute uca ON uca.code IN (:userAttributesCodes)")
     List<Look> findAllLooksByUserAttributes(List<Long> userAttributesCodes);

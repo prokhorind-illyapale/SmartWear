@@ -1,7 +1,6 @@
 package ua.javaee.springreact.web.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +31,9 @@ public class Look {
     @Column
     private boolean isActive;
     @Column
-    private BigDecimal minTemperature;
+    private int minTemperature;
     @Column
-    private BigDecimal maxTemperature;
+    private int maxTemperature;
     @Column(columnDefinition = "mediumblob")
     private byte[] picture;
 
@@ -63,9 +62,7 @@ public class Look {
     public Look() {
     }
 
-    ;
-
-    public Look(User user, long code, int likes, String description, boolean isActive, BigDecimal minTemperature, BigDecimal maxTemperature, List<Comment> comments, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
+    public Look(User user, long code, int likes, String description, boolean isActive, int minTemperature, int maxTemperature, List<Comment> comments, Set<LookType> lookTypes, Set<UserClothAttribute> userClothAttributes) {
         this.user = user;
         this.code = code;
         this.likes = likes;
@@ -142,19 +139,19 @@ public class Look {
         return isActive;
     }
 
-    public void setMaxTemperature(BigDecimal maxTemperature) {
+    public void setMaxTemperature(int maxTemperature) {
         this.maxTemperature = maxTemperature;
     }
 
-    public void setMinTemperature(BigDecimal minTemperature) {
+    public void setMinTemperature(int minTemperature) {
         this.minTemperature = minTemperature;
     }
 
-    public BigDecimal getMaxTemperature() {
+    public int getMaxTemperature() {
         return maxTemperature;
     }
 
-    public BigDecimal getMinTemperature() {
+    public int getMinTemperature() {
         return minTemperature;
     }
 
