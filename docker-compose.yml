@@ -8,6 +8,8 @@ services:
     image: sr-rest-dev
     ports:
       - '8080:8080'
+    depends_on:
+      - mongo
 
   client:
     build:
@@ -24,3 +26,67 @@ services:
     depends_on:
       - web
     command: npm start
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example123
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example123
+    depends_on:
+      - mongo
+
+  master:
+    image: semantive/spark
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h master
+    hostname: master
+    environment:
+      MASTER: spark://master:7077
+      SPARK_CONF_DIR: /conf
+      SPARK_PUBLIC_DNS: localhost
+    ports:
+      - 4040:4040
+      - 6066:6066
+      - 7077:7077
+      - 9090:8080
+    volumes:
+      - ./data:/tmp/data
+
+  worker:
+    image: semantive/spark
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    hostname: worker1
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 4
+      SPARK_WORKER_MEMORY: 4g
+      SPARK_WORKER_PORT: 8881
+      SPARK_WORKER_WEBUI_PORT: 9091
+      SPARK_PUBLIC_DNS: localhost
+    links:
+      - master
+    ports:
+      - 9091:9091
+    volumes:
+      - ./data:/tmp/data
+
+  rb:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    image: sr-rabbitmq-dev
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "1883:1883"
