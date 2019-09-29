@@ -89,6 +89,10 @@ class NavMenu  extends Component {
                         <Icon name='home'/>
                         <span>Home</span>
                     </Link>
+                    <Link to={`/look`} onClick={this.props.closeMenu}>
+                        <Icon name='diamond'/>
+                        <span>Look</span>
+                    </Link>
                     <Link to={`/cloth`} onClick={this.props.closeMenu}>
                         <Icon name='user circle'/>
                         <span>Cloth</span>

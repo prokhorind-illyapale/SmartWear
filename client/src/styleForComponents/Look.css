@@ -1,0 +1,25 @@
+.look-block {
+    margin-top: 20px;
+    width: 60%;
+}
+
+.look-block:first-child {
+    margin-top: 60px;
+}
+
+.look-block .look-icon {
+    transition: .2s;
+    cursor: pointer;
+}
+
+.look-block .look-icon:hover {
+    transform: scale(1.2)
+}
+
+.look-block .look-no--result {
+    min-height: 150px;
+}
+
+.look-block .look-comments {
+    transition: .4s;
+}

@@ -8,6 +8,8 @@ import {bindActionCreators} from "redux";
 import {setUserData} from "../../actions/setUserData";
 import connect from "react-redux/es/connect/connect";
 import ClothPage from "./cloth/ClothPage";
+import LookPage from "./look/LookPage";
+import '../../styleForComponents/kit.css'
 
 
 
@@ -35,12 +37,13 @@ class Main extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <Route exact path="/" component={UserPage}/>
-                    <Route path="/admin" component={Admin}/>
-                    <Route path="/settings" component={Settings}/>
-                    <Route path="/cloth" component={ClothPage}/>
-                </div>
+                <Route exact path="/" component={UserPage}/>
+                <Route path="/admin" component={Admin}/>
+                <Route path="/settings" component={Settings}/>
+                <Route path="/cloth" component={ClothPage}/>
+                <div className="column centered">
+                    <Route path="/look" component={LookPage}/> 
+                </div>  
             </div>
 
         )

@@ -178,11 +178,7 @@ class ClothPage extends Component {
 
             return (
                 <Card key={index}>
-                    {
-                        data.picture !== null 
-                            ? <img width="100%" src={data.picture}/> 
-                            : <Image src={clothIcons[idx].value}  wrapped ui={false}/>
-                    }
+                    <Image src={clothIcons[idx].value}  wrapped ui={false}/>
                     <Card.Content textAlign='center'>
                         <Card.Header>{data.description}</Card.Header>
                         <Card.Meta>
@@ -284,10 +280,10 @@ class ClothPage extends Component {
                             <label>Brand/Model</label>
                             <input type='text' name='description' onChange={this.editField} value={this.state.description}/>
                         </Form.Field>
-                        <Form.Field>
+                        {/* <Form.Field>
                             <label>Picture</label>
                             <input type='file'  accept=".jpg, .jpeg, .png" name='picture' onChange={this.handleLoadLocalFile} value={this.state.picture !== null ? this.state.picture : ''}/>
-                        </Form.Field>
+                        </Form.Field> */}
                         <Form.Field>
                             <label>Size</label>
                             <Dropdown
@@ -339,10 +335,10 @@ class ClothPage extends Component {
                             <label>Brand/Model</label>
                             <input type='text' name='description' onChange={this.editField}/>
                         </Form.Field>
-                        <Form.Field>
+                        {/* <Form.Field>
                             <label>Picture</label>
                             <input type='file' name='picture' onChange={this.handleLoadLocalFile}/>
-                        </Form.Field>
+                        </Form.Field> */}
                         <Form.Field>
                             <label>Size</label>
                             <Dropdown
