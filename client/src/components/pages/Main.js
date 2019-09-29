@@ -41,9 +41,7 @@ class Main extends Component {
                 <Route path="/admin" component={Admin}/>
                 <Route path="/settings" component={Settings}/>
                 <Route path="/cloth" component={ClothPage}/>
-                <div className="column centered">
-                    <Route path="/look" component={LookPage}/> 
-                </div>  
+                <Route path="/look" component={LookPage}/>  
             </div>
 
         )
