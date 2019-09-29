@@ -7,6 +7,10 @@
     margin-top: 60px;
 }
 
+.look-block:last-child {
+    margin-bottom: 60px;
+}
+
 .look-block .look-icon {
     transition: .2s;
     cursor: pointer;
@@ -22,4 +26,21 @@
 
 .look-block .look-comments {
     transition: .4s;
+}
+
+.look-block .lot-add-look {
+    align-items: center;
+    justify-content: center;
+    min-height: 270px !important;
+    opacity: .5;
+    transition: .2s !important;
+    cursor: pointer;
+}
+
+.look-block .lot-add-look:hover {
+    opacity: 1;
+}
+
+.look-block .look-cloth-element {
+    margin-right: 15px !important;
 }

@@ -39,13 +39,12 @@ class LookPage extends Component {
     }
 
     setClothData = (item) => {
-        if(item.userClothAttributes.length !== 0) {
             return item.userClothAttributes.map((data, index) => {
                 let clothName = data.cloth.name.charAt(0).toUpperCase() + data.cloth.name.slice(1),
                 idx = clothIcons.findIndex(x => x.name === clothName);
 
                 return (
-                    <Card key={index}>
+                    <Card className="look-cloth-element" key={index}>
                         <Image src={clothIcons[idx].value}  wrapped ui={false}/>
                         <Card.Content textAlign='center'>
                             <Card.Header>{data.description}</Card.Header>
@@ -80,16 +79,6 @@ class LookPage extends Component {
                     </Card>
                 )
             })
-        } else {
-            return (
-                <div className="row w100 centered align-center look-no--result">
-                    <div>
-                        <Button size="huge" primary>Add Cloth</Button>
-                    </div>
-                </div>  
-            )
-            
-        }
     }
 
     setCommets = (length, item) => {
@@ -127,7 +116,12 @@ class LookPage extends Component {
                         {item.description}
                     </Header>
                     <Segment attached>
-                        {this.setClothData(item)}
+                        <Card.Group itemsPerRow={3}>
+                            {this.setClothData(item)}
+                            <Card className="lot-add-look">
+                                <Icon size="huge" name="plus"/>
+                            </Card>
+                        </Card.Group>
                         <div className="row space-between">
                             <div className="row align-center">
                                 <Icon className="look-icon" color="red" name="like"/>
