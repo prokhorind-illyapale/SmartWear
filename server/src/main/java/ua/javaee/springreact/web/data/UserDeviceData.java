@@ -6,6 +6,8 @@ public class UserDeviceData {
     private RoomData room;
     private DeviceData device;
     private String name;
+    private String valueType;
+    private int pin;
 
 
     public void setUser(String user) {
@@ -38,5 +40,21 @@ public class UserDeviceData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
+    }
+
+    public String getValueType() {
+        return valueType;
     }
 }

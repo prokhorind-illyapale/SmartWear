@@ -28,6 +28,8 @@ public class UserDeviceToUserDeviceDataConverter implements AbstractConverter<Us
     public UserDeviceData convert(UserDevice source) {
         UserDeviceData target = new UserDeviceData();
         target.setName(source.getName());
+        target.setPin(source.getPin());
+        target.setValueType(source.getValueType());
         target.setDevice(deviceToDeviceDataConverter.convert(source.getDevice()));
         if (nonNull(source.getRoom())) {
             target.setRoom(roomToRoomDataConverter.convert(source.getRoom()));

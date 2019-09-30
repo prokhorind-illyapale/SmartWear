@@ -7,4 +7,7 @@ import ua.javaee.springreact.web.entity.Indicator;
 @Repository
 public interface IndicatorRepository extends MongoRepository<Indicator, String> {
 
+    //List<Indicator> findTopByOrderByUserDeviceIdDescAndUserDeviceIdIn(List<Long> userDeviceIdList);
+
+    //List<Indicator>  findByUserDeviceIdIn(List<Long> userDeviceIdList);
 }

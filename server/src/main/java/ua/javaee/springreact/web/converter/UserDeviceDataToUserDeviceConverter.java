@@ -24,6 +24,8 @@ public class UserDeviceDataToUserDeviceConverter implements AbstractConverter<Us
         UserDevice target = new UserDevice();
         target.setDevice(defaultDeviceService.findByName(source.getDevice().getName()));
         target.setName(source.getName());
+        target.setPin(source.getPin());
+        target.setValueType(source.getValueType());
         if (nonNull(source.getRoom())) {
             target.setRoom(defaultRoomService.find(source.getRoom().getRoomName(), source.getUser()));
         }

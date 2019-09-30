@@ -90,4 +90,9 @@ public class CommandController {
         defaultCommandFacade.remove(command);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{command}/{userDeviceName}")
+    public ResponseEntity doCommand(@PathVariable String command, @PathVariable String userDeviceName, Principal principal) {
+        return ResponseEntity.ok().build();
+    }
 }
