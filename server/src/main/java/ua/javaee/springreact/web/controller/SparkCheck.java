@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ua.javaee.springreact.web.repository.IndicatorRepository;
+import ua.javaee.springreact.web.service.impl.DefaultIndicatorService;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,11 @@ public class SparkCheck {
 
     @Autowired
     private SparkConf sparkConf;
+    @Autowired
+    private DefaultIndicatorService defaultIndicatorService;
+
+    @Autowired
+    private IndicatorRepository indicatorRepository;
 
     @GetMapping
     public ResponseEntity check() {

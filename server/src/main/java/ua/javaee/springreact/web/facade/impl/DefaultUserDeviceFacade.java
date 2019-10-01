@@ -24,6 +24,10 @@ public class DefaultUserDeviceFacade {
         return isNull(userDevice) ? null : userDeviceToUserDeviceDataConverter.convert(userDevice);
     }
 
+    public UserDevice findModel(String login, String name){
+        return defaultUserDeviceService.find(login, name);
+    }
+
     public List<UserDeviceData> findAllByLogin(String login) {
         List<UserDevice> userDevices = defaultUserDeviceService.find(login);
         return userDevices.stream().map(ud -> userDeviceToUserDeviceDataConverter.convert(ud)).collect(toList());

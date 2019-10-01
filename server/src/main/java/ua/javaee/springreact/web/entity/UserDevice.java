@@ -22,7 +22,11 @@ public class UserDevice {
     @ManyToOne
     private Device device;
     @Column
+    private String valueType;
+    @Column
     private String name;
+    @Column
+    private int pin;
 
     public UserDevice() {
     }
@@ -65,6 +69,22 @@ public class UserDevice {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
+    }
+
+    public String getValueType() {
+        return valueType;
     }
 }
 

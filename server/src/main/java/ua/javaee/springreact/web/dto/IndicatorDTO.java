@@ -1,14 +1,17 @@
 package ua.javaee.springreact.web.dto;
 
-public class Indicator {
+public class IndicatorDTO {
     private long id;
     private String value;
     private long userDeviceId;
 
-    public Indicator(long id, String value, long userDeviceId) {
+    public IndicatorDTO(long id, String value, long userDeviceId) {
         this.id = id;
         this.value = value;
         this.userDeviceId = userDeviceId;
+    }
+
+    public IndicatorDTO() {
     }
 
     public long getId() {

@@ -3,6 +3,7 @@ package ua.javaee.springreact.web.rabbit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.javaee.springreact.web.dto.IndicatorDTO;
 import ua.javaee.springreact.web.entity.Indicator;
 import ua.javaee.springreact.web.repository.IndicatorRepository;
 import ua.javaee.springreact.web.service.impl.SequenceGeneratorService;
@@ -21,7 +22,7 @@ public class DemoMqttProducer {
 
     public void save(String inMsg) {
         try {
-            ua.javaee.springreact.web.dto.Indicator dto = parse(inMsg);
+            IndicatorDTO dto = parse(inMsg);
             Indicator indicator = convertIndicator(dto);
             indicatorRepository.save(indicator);
         } catch (IOException e) {
@@ -29,7 +30,7 @@ public class DemoMqttProducer {
         }
     }
 
-    private Indicator convertIndicator(ua.javaee.springreact.web.dto.Indicator dto) {
+    private Indicator convertIndicator(IndicatorDTO dto) {
         Indicator indicator = new Indicator();
         indicator.setDate(new Date());
         indicator.setId(sequenceGeneratorService.generateSequence(Indicator.SEQUENCE_NAME));
@@ -38,8 +39,8 @@ public class DemoMqttProducer {
         return indicator;
     }
 
-    public ua.javaee.springreact.web.dto.Indicator parse(String inMsg) throws IOException {
-        ua.javaee.springreact.web.dto.Indicator indicator = objectMapper.readValue(inMsg, ua.javaee.springreact.web.dto.Indicator.class);
+    public IndicatorDTO parse(String inMsg) throws IOException {
+        IndicatorDTO indicator = objectMapper.readValue(inMsg, IndicatorDTO.class);
         return indicator;
     }
 

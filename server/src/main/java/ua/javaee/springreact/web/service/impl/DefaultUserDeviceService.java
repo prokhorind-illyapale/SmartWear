@@ -20,6 +20,10 @@ public class DefaultUserDeviceService {
         return userDeviceRepository.findByUserLoginAndName(login, name);
     }
 
+    public List<Long> findUserDeviceIdsInRoom(String login, String roomName) {
+        return userDeviceRepository.findUserDeviceIdsInARoom(login, roomName);
+    }
+
     public List<UserDevice> find(String login) {
         return userDeviceRepository.findAllByByUserLogin(login);
     }
