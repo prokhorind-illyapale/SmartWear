@@ -1,9 +1,6 @@
 package ua.javaee.springreact.config;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
@@ -18,16 +15,22 @@ public class RabbitMqPublisher {
     private String login;
 
     @Autowired
-    private MqttPahoClientFactory mqttPahoClientFactory;
+    private MqttPahoClientFactory mqttClientFactory;
 
-    public void send(String topic, String command, int pin) throws MqttException {
-        MqttConnectOptions options = mqttPahoClientFactory.getConnectionOptions();
-        MqttClient sampleClient = new MqttClient(url, login);
-        MqttConnectOptions connOpts = new MqttConnectOptions();
-        connOpts.setCleanSession(true);
-        sampleClient.connect(connOpts);
-        MqttMessage message = new MqttMessage(command.getBytes());
-        sampleClient.publish(String.format("%s/%d", topic, pin), message);
-        sampleClient.disconnect();
+    public void send(String topic, String command, int pin) {
+        try {
+            String commandWithPin = String.format("%s:%d",command,pin);
+            MqttConnectOptions options = mqttClientFactory.getConnectionOptions();
+            MqttClient sampleClient = new MqttClient(url, login);
+            options.setCleanSession(true);
+            sampleClient.connect(options);
+            MqttTopic mqtttopic = sampleClient.getTopic(topic);
+            MqttMessage message = new MqttMessage(commandWithPin.getBytes());
+            message.setQos(1);
+            mqtttopic.publish(message);
+            sampleClient.disconnect();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
