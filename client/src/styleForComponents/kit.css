@@ -2,6 +2,10 @@
     display: flex;
 }
 
+.row.reverse {
+    flex-direction: row-reverse;
+}
+
 .row.centered {
     justify-content: center;
 }
@@ -33,4 +37,21 @@
 
 .mt20 {
     margin-top: 20px;
+}
+
+.mt100 {
+    margin-top: 100px;
+}
+
+.mb100 {
+    margin-bottom: 100px;
+}
+
+.white {
+    color: white !important;
+    opacity: .7;
+}
+
+.pad020 {
+    padding: 0 20px;
 }

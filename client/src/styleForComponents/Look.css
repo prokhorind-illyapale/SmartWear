@@ -44,3 +44,19 @@
 .look-block .look-cloth-element {
     margin-right: 15px !important;
 }
+
+.main-page--look__container {
+    width: 50%;
+}
+
+.main-page--look__container .look-block {
+    width: 100%;
+}
+
+.main-page--look__container .look-block:first-child {
+    margin-top: 0;
+}
+
+.main-page--look__container .look-block:last-child {
+    margin-bottom: 0;
+}

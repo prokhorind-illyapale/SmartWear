@@ -6,7 +6,8 @@ import { clothTypes } from "./clothTypes";
 import { lookTypes } from "./lookTypes";
 import { cloth } from "./cloth";
 import { clothAttr } from "./clothAttr";
-import { look } from "./look"
+import { look } from "./look";
+import { topThreeLook } from "./topThreeLook";
 
 const allReducers = combineReducers({
     appData,
@@ -16,7 +17,8 @@ const allReducers = combineReducers({
     lookTypes,
     cloth,
     clothAttr,
-    look
+    look,
+    topThreeLook,
 });
 
 const reducers = (state, action) => {
