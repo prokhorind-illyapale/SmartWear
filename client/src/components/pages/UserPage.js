@@ -60,10 +60,10 @@ class UserPage extends Component {
                 this.props.getWeather(responseWeather.data);
                 this.setState(responseWeather.data.main);
 
-                // let minTemp = Math.round(this.state.temp_min),
-                //     maxTemp = Math.round(this.state.temp_max);
+                let minTemp = Math.round(this.state.temp_min),
+                    maxTemp = Math.round(this.state.temp_max);
 
-                let topThreeUrl = `http://localhost:8080/look/top?minTemp=-100&maxTemp=35`
+                let topThreeUrl = `http://localhost:8080/look/top?minTemp=-${minTemp}&maxTemp=${maxTemp}`
                 axios.get(topThreeUrl, {
                     headers: {
                         'Authorization': "Basic " + window.localStorage.token,
@@ -294,12 +294,12 @@ class UserPage extends Component {
 
         if(Object.keys(data).length !== 0) {
             return (
-                <div className="row reverse pad020 mt100 mb100">
+                <div className="main-page__container column centered">
                     <div className="main-page--wheather__container">
-                        <Header className="white" as='h2' icon textAlign='center'>
+                        {/* <Header className="white" as='h2' icon textAlign='center'>
                             <Icon name='bolt' circular />
                             <Header.Content>Wheather</Header.Content>
-                        </Header>
+                        </Header> */}
                         <Segment className="main-page--temp__container">
                             <Button.Group style={degBtn}>
                                 <Button active={this.state.celsius} onClick={this.changeToCelsius}>&deg;C</Button>
@@ -335,10 +335,10 @@ class UserPage extends Component {
                         </Segment> 
                     </div>
                     <div className="main-page--look__container">
-                    <Header className="white" as='h2' icon textAlign='center'>
+                    {/* <Header className="white" as='h2' icon textAlign='center'>
                         <Icon name='chess queen' circular />
                         <Header.Content>Top 3</Header.Content>
-                    </Header>
+                    </Header> */}
                         {this.setLooks()}
                     </div>
                 </div>
