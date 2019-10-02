@@ -20,10 +20,10 @@ public interface LookRepository extends JpaRepository<Look, Long> {
     @Query(("SELECT k FROM Look k WHERE k.user.login= :login"))
     List<Look> findAllUserLooks(String login);
 
-    @Query("SELECT k FROM Look k WHERE k.user.login= :login AND k.minTemperature >= :minTemp  AND k.maxTemperature  <=  :maxTemp")
+    @Query("SELECT k FROM Look k WHERE k.user.login= :login AND :minTemp >= k.minTemperature   AND  :maxTemp  <= k.maxTemperature")
     List<Look> findMostPopularSessionUserLooks(String login, int minTemp, int maxTemp, Pageable pageable);
 
-    @Query("SELECT k FROM Look k WHERE k.minTemperature >= :minTemp AND  k.user.login != :login AND k.maxTemperature <= :maxTemp AND k.isActive = true AND k.user.sex=:sex")
+    @Query("SELECT k FROM Look k WHERE :minTemp >= k.minTemperature  AND  k.user.login != :login AND :maxTemp  <= k.maxTemperature AND k.isActive = true AND k.user.sex=:sex")
     List<Look> findMostPopularUserLooks(String login, int minTemp, int maxTemp, String sex, Pageable pageable);
 
 

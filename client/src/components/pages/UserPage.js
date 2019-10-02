@@ -63,7 +63,7 @@ class UserPage extends Component {
                 let minTemp = Math.round(this.state.temp_min),
                     maxTemp = Math.round(this.state.temp_max);
 
-                let topThreeUrl = `http://localhost:8080/look/top?minTemp=-${minTemp}&maxTemp=${maxTemp}`
+                let topThreeUrl = `http://localhost:8080/look/top?minTemp=${minTemp}&maxTemp=${maxTemp}`
                 axios.get(topThreeUrl, {
                     headers: {
                         'Authorization': "Basic " + window.localStorage.token,
