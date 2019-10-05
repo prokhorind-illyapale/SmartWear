@@ -8,6 +8,8 @@ import { cloth } from "./cloth";
 import { clothAttr } from "./clothAttr";
 import { look } from "./look";
 import { topThreeLook } from "./topThreeLook";
+import { commandList } from "./commandList";
+import { devices } from "./devices"; 
 
 const allReducers = combineReducers({
     appData,
@@ -19,6 +21,8 @@ const allReducers = combineReducers({
     clothAttr,
     look,
     topThreeLook,
+    commandList,
+    devices,
 });
 
 const reducers = (state, action) => {

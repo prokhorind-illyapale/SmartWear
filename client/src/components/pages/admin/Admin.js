@@ -5,6 +5,8 @@ import Users from "./Users";
 import clothTypes from './clothTypes';
 import lookTypes from './lookTypes'
 import Cloth from "./Cloth";
+import commandList from "./commandList";
+import Devices from "./Devices";
 
 const container = {
     width: '80%',
@@ -80,11 +82,33 @@ class Admin extends Component {
                             Look Types
                         </Menu.Item>
                     </Link>
+                    <Link to={`/admin/commandlist`}>
+                        <Menu.Item
+                            as='span'
+                            name='commandlist'
+                            active={activeItem === 'commandlist'}
+                            onClick={this.handleItemClick}
+                        >
+                            Command List
+                        </Menu.Item>
+                    </Link>
+                    <Link to={`/admin/devices`}>
+                        <Menu.Item
+                            as='span'
+                            name='devices'
+                            active={activeItem === 'devices'}
+                            onClick={this.handleItemClick}
+                        >
+                            Devices
+                        </Menu.Item>
+                    </Link>
                 </Menu>
                 <Route exact path='/admin' component={Users}/>
                 <Route path='/admin/clothtypes' component={clothTypes}/>
                 <Route path='/admin/looktypes' component={lookTypes}/>
                 <Route path='/admin/cloth' component={Cloth}/>
+                <Route path='/admin/commandlist' component={commandList}/>
+                <Route path ='/admin/devices' component={Devices}/>
             </Segment>
         )
     }
