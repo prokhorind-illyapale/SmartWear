@@ -10,6 +10,8 @@ import { look } from "./look";
 import { topThreeLook } from "./topThreeLook";
 import { commandList } from "./commandList";
 import { devices } from "./devices"; 
+import { room } from "./room";
+import { deviceInRoom } from "./deviceInRoom"
 
 const allReducers = combineReducers({
     appData,
@@ -23,6 +25,8 @@ const allReducers = combineReducers({
     topThreeLook,
     commandList,
     devices,
+    room,
+    deviceInRoom
 });
 
 const reducers = (state, action) => {

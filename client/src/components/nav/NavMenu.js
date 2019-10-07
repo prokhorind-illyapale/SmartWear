@@ -109,6 +109,10 @@ class NavMenu  extends Component {
                         <Icon name='settings'/>
                         <span>Settings</span>
                     </Link>
+                    <Link to={`/rooms`} onClick={this.props.closeMenu}>
+                        <Icon name='warehouse'/>
+                        <span>Room</span>
+                    </Link>
                     <a href={void(0)} className='item-pointer' onClick={this.open}>
                         <Icon name='log out'/>
                         <span>Logout</span>

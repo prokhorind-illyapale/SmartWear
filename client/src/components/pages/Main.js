@@ -9,6 +9,7 @@ import {setUserData} from "../../actions/setUserData";
 import connect from "react-redux/es/connect/connect";
 import ClothPage from "./cloth/ClothPage";
 import LookPage from "./look/LookPage";
+import RoomPage from "./room/RoomPage";
 import '../../styleForComponents/kit.css'
 
 
@@ -42,6 +43,7 @@ class Main extends Component {
                 <Route path="/settings" component={Settings}/>
                 <Route path="/cloth" component={ClothPage}/>
                 <Route path="/look" component={LookPage}/>  
+                <Route path="/rooms" component={RoomPage}/>
             </div>
 
         )
