@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.javaee.springreact.web.converter.AbstractConverter;
 import ua.javaee.springreact.web.data.LookData;
+import ua.javaee.springreact.web.data.UserClothAttributeData;
 import ua.javaee.springreact.web.data.UserData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
 import ua.javaee.springreact.web.facade.LookFacade;
+import ua.javaee.springreact.web.facade.UserClothAttributeFacade;
 import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.lookforms.LookForm;
 import ua.javaee.springreact.web.service.CommentService;
@@ -38,20 +40,20 @@ public class LookController {
     private static final String NO_RIGHTS_FOR_THIS_ACTION = "No rights for this action:";
     private static final String CODE_NOT_FOUND = "Code not found:";
     private static final String USER_NOT_FOUND = "User not found for login:";
+    public static final String LOOK_CONTAINS_CLOTH = "Look already contains this cloth";
+    public static final String LOOK_NOT_CONTAINS_CLOTH = "Look doesn't contains this cloth";
 
     @Autowired
     private LookFacade lookFacade;
-
     @Autowired
     private UserFacade userFacade;
-
+    @Autowired
+    private UserClothAttributeFacade userClothAttributeFacade;
     @Autowired
     private CommentService commentService;
-
     @Autowired
     @Qualifier("lookDataToFormConverter")
     private AbstractConverter lookDataToFormConverter;
-
     @Autowired
     @Qualifier("lookFormToDataConverter")
     private AbstractConverter lookFormToDataConverter;
@@ -199,6 +201,60 @@ public class LookController {
         }
         lookFacade.savePicture(file, code);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{lookCode}/cloth/{clothCode}")
+    public ResponseEntity addClothToLook(@PathVariable long lookCode, @PathVariable long clothCode, Principal principal) {
+        LookData lookData = lookFacade.findByCode(lookCode);
+
+        if (isNull(lookData)) {
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+        if (!isUserHasRights(lookCode, principal)) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+        UserClothAttributeData attribute = userClothAttributeFacade.get(clothCode);
+
+        if (!hasPermissions(principal, attribute)) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+
+        if (isExists(lookData, attribute)) {
+            return processingErrors(LOOK_CONTAINS_CLOTH, VALIDATION_TYPE_ERROR);
+        }
+        lookFacade.addClothToLook(lookCode, clothCode);
+        return ResponseEntity.ok().build();
+    }
+
+    private boolean hasPermissions(Principal principal, UserClothAttributeData attribute) {
+        return attribute.getUserData().getLogin().equalsIgnoreCase(principal.getName()) || attribute.isPublic() || userFacade.isUserHasAdminRights(principal.getName());
+    }
+
+    @DeleteMapping("/{lookCode}/cloth/{clothCode}")
+    public ResponseEntity removeClothFromLook(@PathVariable long lookCode, @PathVariable long clothCode, Principal principal) {
+        LookData lookData = lookFacade.findByCode(lookCode);
+
+        if (isNull(lookData)) {
+            return processingErrors(CODE_NOT_FOUND + principal.getName(), VALIDATION_TYPE_ERROR);
+        }
+        if (!isUserHasRights(lookCode, principal)) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+        UserClothAttributeData attribute = userClothAttributeFacade.get(clothCode);
+
+        if (!hasPermissions(principal, attribute)) {
+            return processingErrors(NO_RIGHTS_FOR_THIS_ACTION, PERMISSION_TYPE_ERROR);
+        }
+
+        if (!isExists(lookData, attribute)) {
+            return processingErrors(LOOK_NOT_CONTAINS_CLOTH, VALIDATION_TYPE_ERROR);
+        }
+        lookFacade.removeClothFromLook(lookCode, clothCode);
+        return ResponseEntity.ok().build();
+    }
+
+    private boolean isExists(LookData lookData, UserClothAttributeData attribute) {
+        return lookData.getUserClothAttributes().stream().anyMatch(userClothAttributeData -> userClothAttributeData.getCode() == attribute.getCode());
     }
 
     private boolean isUserHasRights(long code, Principal principal) {

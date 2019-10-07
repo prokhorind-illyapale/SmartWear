@@ -34,6 +34,10 @@ public interface LookFacade {
 
     void savePicture(MultipartFile multipartFile, long code);
 
+    void addClothToLook(long lookCode, long clothCode);
+
+    void removeClothFromLook(long lookCode, long clothCode);
+
     List<LookData> findMostPopularUserLooks(String login, int minTemperature, int maxTemperature, int limit, String sex);
 
 }

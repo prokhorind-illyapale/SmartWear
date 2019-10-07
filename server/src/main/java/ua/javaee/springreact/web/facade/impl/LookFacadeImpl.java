@@ -9,9 +9,11 @@ import ua.javaee.springreact.web.data.CommentData;
 import ua.javaee.springreact.web.data.LookData;
 import ua.javaee.springreact.web.entity.Comment;
 import ua.javaee.springreact.web.entity.Look;
+import ua.javaee.springreact.web.entity.UserClothAttribute;
 import ua.javaee.springreact.web.facade.LookFacade;
 import ua.javaee.springreact.web.service.CommentService;
 import ua.javaee.springreact.web.service.LookService;
+import ua.javaee.springreact.web.service.UserClothAttributeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import static java.util.stream.Collectors.toList;
 public class LookFacadeImpl implements LookFacade {
     @Autowired
     private LookService lookService;
+    @Autowired
+    private UserClothAttributeService userClothAttributeService;
     @Autowired
     @Qualifier("lookModelToLookDataConverter")
     private AbstractConverter lookModelToLookDataConverter;
@@ -106,6 +110,22 @@ public class LookFacadeImpl implements LookFacade {
     @Override
     public void savePicture(MultipartFile multipartFile, long code) {
         lookService.savePicture(multipartFile, code);
+    }
+
+    @Override
+    public void addClothToLook(long lookCode, long clothCode) {
+        Look look = lookService.findByCode(lookCode);
+        UserClothAttribute attribute = userClothAttributeService.get(clothCode);
+        look.getUserClothAttributes().add(attribute);
+        lookService.save(look);
+    }
+
+    @Override
+    public void removeClothFromLook(long lookCode, long clothCode) {
+        Look look = lookService.findByCode(lookCode);
+        UserClothAttribute attribute = userClothAttributeService.get(clothCode);
+        look.getUserClothAttributes().remove(attribute);
+        lookService.save(look);
     }
 
     @Override

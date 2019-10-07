@@ -101,6 +101,12 @@ public class LookServiceImpl implements LookService {
     }
 
     @Override
+    @Transactional
+    public void save(Look look) {
+        lookRepository.save(look);
+    }
+
+    @Override
     public void savePicture(MultipartFile picture, long code) {
         Look look = findByCode(code);
         try {

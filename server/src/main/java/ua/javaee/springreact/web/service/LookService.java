@@ -28,6 +28,8 @@ public interface LookService {
 
     void save(LookData lookData);
 
+    void save(Look look);
+
     void savePicture(MultipartFile picture, long code);
 
     Long getLastRow();
