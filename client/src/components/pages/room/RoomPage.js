@@ -146,9 +146,9 @@ class RoomPage extends Component {
                     <Table.Cell>
                         <List celled ordered>
                             {item.device.commands.map((command, index) => {
-                                return (
-                                    <List.Item key={index}>{command}</List.Item>
-                                )
+                                   return (
+                                        <List.Item key={index}>{command.name}</List.Item>
+                                   ) 
                             })}
                         </List>
                     </Table.Cell>
