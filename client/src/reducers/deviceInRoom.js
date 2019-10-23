@@ -6,6 +6,14 @@ export const deviceInRoom = (state = initialState, action) => {
             return [
                 ...action.payload
             ];
+        case 'ADD_DEVICE_IN_ROOM':
+            return [
+                ...state,
+                {
+                    ...action.payload
+                }
+                
+            ];
         default:
             return state;
     }
