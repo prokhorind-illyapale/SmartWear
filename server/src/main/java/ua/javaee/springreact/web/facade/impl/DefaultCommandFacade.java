@@ -5,8 +5,11 @@ import org.springframework.stereotype.Component;
 import ua.javaee.springreact.web.converter.CommandToCommandDataConverter;
 import ua.javaee.springreact.web.data.CommandData;
 import ua.javaee.springreact.web.entity.Command;
+import ua.javaee.springreact.web.entity.CommandRecord;
 import ua.javaee.springreact.web.service.impl.DefaultCommandService;
+import ua.javaee.springreact.web.service.impl.SequenceGeneratorService;
 
+import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -18,6 +21,8 @@ public class DefaultCommandFacade {
     private DefaultCommandService defaultCommandService;
     @Autowired
     private CommandToCommandDataConverter commandToCommandDataConverter;
+    @Autowired
+    private SequenceGeneratorService sequenceGeneratorService;
 
     public void add(CommandData commandData) {
         defaultCommandService.add(commandData);
@@ -30,6 +35,20 @@ public class DefaultCommandFacade {
     public CommandData findByName(String name) {
         Command command = defaultCommandService.findByName(name);
         return isNull(command) ? null : commandToCommandDataConverter.convert(command);
+    }
+
+    public void saveCommandRecord(String command, String login, String userDeviceName) {
+        defaultCommandService.add(create(command, login, userDeviceName));
+    }
+
+    private CommandRecord create(String command, String login, String userDeviceName) {
+        CommandRecord commandRecord = new CommandRecord();
+        commandRecord.setCommand(command);
+        commandRecord.setId(sequenceGeneratorService.generateSequence(CommandRecord.SEQUENCE_NAME));
+        commandRecord.setLogin(login);
+        commandRecord.setDate(new Date());
+        commandRecord.setUserDeviceName(userDeviceName);
+        return commandRecord;
     }
 
     public List<CommandData> findAll() {

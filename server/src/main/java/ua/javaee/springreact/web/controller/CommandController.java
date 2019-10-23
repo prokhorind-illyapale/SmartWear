@@ -15,10 +15,10 @@ import ua.javaee.springreact.web.facade.impl.DefaultUserDeviceFacade;
 import java.security.Principal;
 import java.util.Objects;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.ok;
 import static ua.javaee.springreact.web.util.error.ErrorHelper.processingErrors;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.PERMISSION_TYPE_ERROR;
 import static ua.javaee.springreact.web.util.error.ErrorTypes.VALIDATION_TYPE_ERROR;
@@ -105,13 +105,13 @@ public class CommandController {
 
     @PostMapping("/{command}/{userDeviceName}")
     public ResponseEntity doCommand(@PathVariable String command, @PathVariable String userDeviceName, Principal principal) throws MqttException {
-        UserDevice userDeviceData = defaultUserDeviceFacade.findModel(principal.getName(),userDeviceName);
+        UserDevice userDeviceData = defaultUserDeviceFacade.findModel(principal.getName(), userDeviceName);
 
         if (Objects.isNull(userDeviceData)) {
             return processingErrors(NO_RIGHTS, PERMISSION_TYPE_ERROR);
         }
-
-        rabbitMqPublisher.send(format("%s/%s",ESP_COMMAND_TOPIC,userDeviceData.getUserDeviceId()),command,userDeviceData.getPin());
+        rabbitMqPublisher.send(format("%s/%s", ESP_COMMAND_TOPIC, userDeviceData.getUserDeviceId()), command, userDeviceData.getPin());
+        defaultCommandFacade.saveCommandRecord(command, principal.getName(), userDeviceName);
         return ok().build();
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ua.javaee.springreact.web.converter.CommandDataToCommandConverter;
 import ua.javaee.springreact.web.data.CommandData;
 import ua.javaee.springreact.web.entity.Command;
+import ua.javaee.springreact.web.entity.CommandRecord;
+import ua.javaee.springreact.web.repository.CommandRecordRepository;
 import ua.javaee.springreact.web.repository.CommandRepository;
 
 import java.util.List;
@@ -14,11 +16,17 @@ public class DefaultCommandService {
     @Autowired
     private CommandRepository commandRepository;
     @Autowired
+    private CommandRecordRepository commandRecordRepository;
+    @Autowired
     private CommandDataToCommandConverter commandDataToCommandConverter;
 
     public void add(CommandData commandData) {
         Command command = commandDataToCommandConverter.convert(commandData);
         commandRepository.save(command);
+    }
+
+    public void add(CommandRecord commandRecord) {
+        commandRecordRepository.save(commandRecord);
     }
 
     public Command findByName(String name) {
