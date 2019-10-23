@@ -12,6 +12,7 @@ import ua.javaee.springreact.web.facade.UserFacade;
 import ua.javaee.springreact.web.form.RegistryUserForm;
 import ua.javaee.springreact.web.populator.*;
 import ua.javaee.springreact.web.service.UserService;
+import ua.javaee.springreact.web.service.impl.DefaultMailService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,12 @@ public class UserFacadeImpl implements UserFacade {
     private RoleToRoleDataPopulator roleToRoleDataPopulator;
     @Autowired(required = true)
     private UserToUserDataPopulator userToUserDataPopulator;
-    @Autowired(required = true)
+    @Autowired
     private UserDataToUserModelPopulator userDataToUserModelPopulator;
-    @Autowired(required = true)
+    @Autowired
     private UserService userService;
+    @Autowired
+    private DefaultMailService defaultMailService;
 
     private Logger logger = LoggerFactory.getLogger(UserFacadeImpl.class);
 
@@ -45,6 +48,7 @@ public class UserFacadeImpl implements UserFacade {
         UserData userData = new UserData();
         reguserFormToUserDataPopulator.populate(userForm, userData);
         userService.userReg(userData);
+        defaultMailService.sendSimpleMessage(userData.getEmail(), "registration", "welcome aboard:" + userData.getLogin());
     }
 
     public void updatePassword(String login, String password) {
@@ -67,11 +71,7 @@ public class UserFacadeImpl implements UserFacade {
         RoleData roleData = new RoleData();
         roleToRoleDataPopulator.populate(role, roleData);
 
-        if (roleData.getRoleName().equalsIgnoreCase(ADMIN)) {
-            return true;
-        } else {
-            return false;
-        }
+        return roleData.getRoleName().equalsIgnoreCase(ADMIN);
     }
 
     @Override
