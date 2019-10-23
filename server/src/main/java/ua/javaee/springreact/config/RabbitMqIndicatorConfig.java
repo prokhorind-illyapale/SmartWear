@@ -26,7 +26,6 @@ public class RabbitMqIndicatorConfig {
     @Autowired
     private DemoMqttProducer demoMqttProducer;
 
-
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
@@ -43,7 +42,11 @@ public class RabbitMqIndicatorConfig {
         return IntegrationFlows.from(
                 new MqttPahoMessageDrivenChannelAdapter("4",
                         mqttClientFactory(), topic, "topic2"))
-                .handle(m -> demoMqttProducer.save((String) m.getPayload()))
+                .handle(m -> {
+                    {
+                        demoMqttProducer.saveIndicatorValue(m);
+                    }
+                })
                 .get();
     }
 }

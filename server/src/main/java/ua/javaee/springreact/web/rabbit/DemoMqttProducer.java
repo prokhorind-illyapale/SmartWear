@@ -1,7 +1,10 @@
 package ua.javaee.springreact.web.rabbit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import ua.javaee.springreact.web.dto.IndicatorDTO;
 import ua.javaee.springreact.web.entity.Indicator;
@@ -20,14 +23,27 @@ public class DemoMqttProducer {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void save(String inMsg) {
+    private Logger logger = LoggerFactory.getLogger(DemoMqttProducer.class);
+
+
+    public void saveIndicatorValue(Message<?> m) {
         try {
-            IndicatorDTO dto = parse(inMsg);
-            Indicator indicator = convertIndicator(dto);
-            indicatorRepository.save(indicator);
+            Indicator i = getIndicator((String) m.getPayload());
+            save(i);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Can't save indicator");
+            logger.error(e.getMessage());
         }
+    }
+
+    private void save(Indicator indicator) {
+        indicatorRepository.save(indicator);
+    }
+
+    private Indicator getIndicator(String inMsg) throws IOException {
+        IndicatorDTO dto = parse(inMsg);
+        Indicator indicator = convertIndicator(dto);
+        return indicator;
     }
 
     private Indicator convertIndicator(IndicatorDTO dto) {
