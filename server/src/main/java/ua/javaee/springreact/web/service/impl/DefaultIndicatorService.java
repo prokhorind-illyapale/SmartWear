@@ -31,7 +31,7 @@ public class DefaultIndicatorService {
         return getLastValues(ids);
     }
 
-    private List<Indicator> getLastValues(List<Long> deviceIds) {
+    public List<Indicator> getLastValues(List<Long> deviceIds) {
         GroupOperation groupOperation = Aggregation.group("userDeviceId")
                 .addToSet("userDeviceId").as("userDeviceId")
                 .last("date").as("date")

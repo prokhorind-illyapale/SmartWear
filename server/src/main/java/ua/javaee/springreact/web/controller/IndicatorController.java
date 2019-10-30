@@ -2,10 +2,7 @@ package ua.javaee.springreact.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.javaee.springreact.web.facade.impl.DefaultIndicatorFacade;
 import ua.javaee.springreact.web.facade.impl.DefaultRoomFacade;
 
@@ -31,5 +28,10 @@ public class IndicatorController {
             return processingErrors(NO_RIGHTS, PERMISSION_TYPE_ERROR);
         }
         return ResponseEntity.ok(defaultIndicatorFacade.getLastValuesInRoom(principal.getName(), roomName));
+    }
+
+    @GetMapping
+    public ResponseEntity getLastValueByDeviceName(@RequestParam String deviceName, Principal principal) {
+        return ResponseEntity.ok(defaultIndicatorFacade.getLastValue(principal.getName(), deviceName));
     }
 }
