@@ -15,6 +15,7 @@ public class DefaultUserDeviceService {
     private UserDeviceRepository userDeviceRepository;
     @Autowired
     private UserDeviceDataToUserDeviceConverter userDeviceDataToUserDeviceConverter;
+    private DefaultRoomService defaultRoomService;
 
     public UserDevice find(String login, String name) {
         return userDeviceRepository.findByUserLoginAndName(login, name);
@@ -22,6 +23,10 @@ public class DefaultUserDeviceService {
 
     public List<Long> findUserDeviceIdsInRoom(String login, String roomName) {
         return userDeviceRepository.findUserDeviceIdsInARoom(login, roomName);
+    }
+
+    public List<String> findDeviceTypes(List<Long> roomIds) {
+        return userDeviceRepository.findAllIndicatorTypesInRooms(roomIds);
     }
 
     public List<UserDevice> find(String login) {
