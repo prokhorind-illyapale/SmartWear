@@ -11,7 +11,7 @@ import ua.javaee.springreact.web.view.IndicatorView;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -31,7 +31,7 @@ public class DefaultIndicatorFacade {
 
     public IndicatorView getLastValue(String login, String name) {
         UserDevice userDevice = defaultUserDeviceService.find(login, name);
-        Indicator indicator = defaultIndicatorService.getLastValues(Collections.singletonList(userDevice.getUserDeviceId())).get(0);
-        return Objects.isNull(indicator) ? null : indicatorToIndicatorViewConverter.convert(indicator);
+        Optional<Indicator> indicator = defaultIndicatorService.getLastValues(Collections.singletonList(userDevice.getUserDeviceId())).stream().findFirst();
+        return indicator.isPresent() ? indicatorToIndicatorViewConverter.convert(indicator.get()) : null;
     }
 }
