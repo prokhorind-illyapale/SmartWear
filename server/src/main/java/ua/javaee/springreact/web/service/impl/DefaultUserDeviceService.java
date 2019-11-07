@@ -46,7 +46,7 @@ public class DefaultUserDeviceService {
     }
 
     public List<Long> findIdsByType(String login, String type) {
-        return userDeviceRepository.findUserDeviceIdsInARoomByType(login, type);
+        return userDeviceRepository.findUserDeviceIdsByType(login, type);
     }
 
     public void save(UserDeviceData userDeviceData) {

@@ -25,7 +25,7 @@ public interface UserDeviceRepository extends JpaRepository<UserDevice, Long> {
     List<String> findAllIndicatorTypesInRooms(List<Long> ids);
 
     @Query("SELECT ud.userDeviceId FROM UserDevice ud WHERE ud.user.login= :login AND ud.valueType = :valueType")
-    List<Long> findUserDeviceIdsInARoomByType(String login, String valueType);
+    List<Long> findUserDeviceIdsByType(String login, String valueType);
 
     @Query("SELECT ud.userDeviceId FROM UserDevice ud WHERE ud.user.login= :login AND ud.name IN(:names)")
     List<Long> findUserDeviceIdsByNames(String login, List<String> names);
