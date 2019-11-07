@@ -14,5 +14,8 @@ public interface IndicatorRepository extends MongoRepository<Indicator, String> 
     List<Indicator> findByUserDeviceIdIn(List<Long> userDeviceIdList);
 
     @Query("{userDeviceId: {$in: ?0},date: {$gt: ?1, $lt: ?2}}")
-    List<Indicator> findByDateBetweenAndLogin(List<Long> userDeviceIds, Date from, Date to);
+    List<Indicator> findByDateBetweenAndUserDeviceIds(List<Long> userDeviceIds, Date from, Date to);
+
+    @Query("{userDeviceId: {$in: ?0}}")
+    List<Indicator> findByUserDeviceIds(List<Long> userDeviceIds, Date from);
 }

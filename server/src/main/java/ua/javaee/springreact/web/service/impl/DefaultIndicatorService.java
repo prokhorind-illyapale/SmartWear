@@ -8,10 +8,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import ua.javaee.springreact.web.entity.Indicator;
 import ua.javaee.springreact.web.repository.IndicatorRepository;
+import ua.javaee.springreact.web.util.DateUtils;
 
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 
@@ -54,6 +56,12 @@ public class DefaultIndicatorService {
     }
 
     public List<Indicator> findBetweenDates(List<Long> userDeviceIds, Date from, Date to) {
-        return indicatorRepository.findByDateBetweenAndLogin(userDeviceIds, from, to);
+        if (isNull(to)) {
+            to = DateUtils.parseDate(new Date());
+        }
+        if (isNull(from)) {
+            from = DateUtils.parseDate(new Date(0));
+        }
+        return indicatorRepository.findByDateBetweenAndUserDeviceIds(userDeviceIds, from, to);
     }
 }
