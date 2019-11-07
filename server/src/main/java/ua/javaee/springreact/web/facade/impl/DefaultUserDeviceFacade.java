@@ -55,4 +55,12 @@ public class DefaultUserDeviceFacade {
         List<Long> roomIds = defaultRoomService.findByLogin(login).stream().map(Room::getRoomId).collect(toList());
         return roomIds.isEmpty() ? emptyList() : defaultUserDeviceService.findDeviceTypes(roomIds);
     }
+
+    public List<Long> findIdsByDeviceName(String login, List<String> devices) {
+        return defaultUserDeviceService.findIdsByDeviceNames(login, devices);
+    }
+
+    public List<Long> findIdsByDeviceType(String login, String device) {
+        return defaultUserDeviceService.findIdsByType(login, device);
+    }
 }

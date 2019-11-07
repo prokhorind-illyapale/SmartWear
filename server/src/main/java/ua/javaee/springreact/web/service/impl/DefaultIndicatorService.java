@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ua.javaee.springreact.web.entity.Indicator;
 import ua.javaee.springreact.web.repository.IndicatorRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
@@ -46,5 +47,13 @@ public class DefaultIndicatorService {
                 aggregate(studentAggregation, "indicator", Indicator.class);
 
         return results.getMappedResults();
+    }
+
+    public List<Indicator> getValues(List<Long> deviceIds) {
+        return indicatorRepository.findByUserDeviceIdIn(deviceIds);
+    }
+
+    public List<Indicator> findBetweenDates(List<Long> userDeviceIds, Date from, Date to) {
+        return indicatorRepository.findByDateBetweenAndLogin(userDeviceIds, from, to);
     }
 }

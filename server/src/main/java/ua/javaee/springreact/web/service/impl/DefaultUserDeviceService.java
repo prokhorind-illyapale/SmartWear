@@ -21,6 +21,10 @@ public class DefaultUserDeviceService {
         return userDeviceRepository.findByUserLoginAndName(login, name);
     }
 
+    public UserDevice find(long userDeviceId) {
+        return userDeviceRepository.findById(userDeviceId).get();
+    }
+
     public List<Long> findUserDeviceIdsInRoom(String login, String roomName) {
         return userDeviceRepository.findUserDeviceIdsInARoom(login, roomName);
     }
@@ -35,6 +39,14 @@ public class DefaultUserDeviceService {
 
     public List<UserDevice> findAll(String login, String roomName) {
         return userDeviceRepository.findAllByUserLoginAndRoomName(login, roomName);
+    }
+
+    public List<Long> findIdsByDeviceNames(String login, List<String> deviceNames) {
+        return userDeviceRepository.findUserDeviceIdsByNames(login, deviceNames);
+    }
+
+    public List<Long> findIdsByType(String login, String type) {
+        return userDeviceRepository.findUserDeviceIdsInARoomByType(login, type);
     }
 
     public void save(UserDeviceData userDeviceData) {
