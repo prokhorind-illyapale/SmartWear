@@ -2,6 +2,7 @@ package ua.javaee.springreact.web.controller;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import static ua.javaee.springreact.web.util.DateUtils.parseDate;
 @Controller
 @RequestMapping("/report")
 public class ReportController {
+    private static final String APPLICATION_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     @Autowired
     private DefaultIndicatorFacade defaultIndicatorFacade;
@@ -59,7 +61,7 @@ public class ReportController {
         defaultIndicatorReportService.createReport(workbook, data, "full");
         byte[] report = ApachePoiExcelUtils.convertReport(workbook);
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=" + "onepage.xls")
+                .header("Content-Disposition", "attachment; filename=" + "onepage.xlsx")
                 .contentLength(report.length)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .body(report);
@@ -72,12 +74,15 @@ public class ReportController {
                                                             @RequestParam(required = false) String from,
                                                             @RequestParam(required = false) String to) {
         List<Long> ids = defaultUserDeviceFacade.findIdsByDeviceType(principal.getName(), type);
+        if (ids.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         List<Indicator4GraphData> data = defaultIndicatorFacade.findBetweenDates(ids, parseDate(from), parseDate(to));
         XSSFWorkbook workbook = new XSSFWorkbook();
-        defaultIndicatorReportService.createReport(workbook, data, "type");
+        defaultIndicatorReportService.createReport(workbook, data, type);
         byte[] report = ApachePoiExcelUtils.convertReport(workbook);
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=" + "type.xls")
+                .header("Content-Disposition", "attachment; filename=" + "type.xlsx")
                 .contentLength(report.length)
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .body(report);

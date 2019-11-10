@@ -29,6 +29,7 @@ public class ApachePoiExcelUtils {
         int i = 0;
         for (Field field : allFields) {
             setCell(row, i, field.getName());
+            sheet.autoSizeColumn(i);
             i++;
         }
     }
