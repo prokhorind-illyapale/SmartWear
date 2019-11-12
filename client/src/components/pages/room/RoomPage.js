@@ -33,7 +33,8 @@ class RoomPage extends Component {
         devicePin: '',
         deviceValueType: '',
         // command: [],
-        certainIndicatorsValueInRoom: []
+        certainIndicatorsValueInRoom: [],
+        isModalIndicatorValueOpen: false,
     }
 
     componentDidMount() {
@@ -80,6 +81,25 @@ class RoomPage extends Component {
                 <Modal.Actions>
                     <Button type='submit' onClick={this.addRoom}>Submit</Button>
                 </Modal.Actions>
+            </Modal>
+        )
+    }
+
+    indicatorValueModal() {
+        return (
+            <Modal size='small' open={this.state.isModalIndicatorValueOpen} onClose={this.closeIndicatorValueModal} closeIcon>
+                <Modal.Header>Indicator Value Is</Modal.Header>
+                <Modal.Content>
+                    <label>
+                        {
+                            this.state.certainIndicatorsValueInRoom.length !== 0 
+                            ?
+                            `Value: ${this.state.certainIndicatorsValueInRoom[0].value}`
+                            :
+                            'No Value'
+                        }
+                    </label>
+                </Modal.Content>
             </Modal>
         )
     }
@@ -256,7 +276,8 @@ class RoomPage extends Component {
         })
         .then(response => {
             if(response.status === 200) {
-                this.setState({...this.state, certainIndicatorsValueInRoom: [...this.state.certainIndicatorsValueInRoom, {[name]: response.data}]});   
+                console.log(response.data)
+                this.setState({certainIndicatorsValueInRoom: [{value: response.data.value}], isModalIndicatorValueOpen: true});
             }
         })
         .catch(err => console.error(err));
@@ -295,6 +316,10 @@ class RoomPage extends Component {
 
     closeConfirm = () => {
         this.setState({ isConfirmOpen: false })
+    };
+
+    closeIndicatorValueModal = () => {
+        this.setState({isModalIndicatorValueOpen: false})
     };
 
     createRoomOptions() {
@@ -349,26 +374,13 @@ class RoomPage extends Component {
                     <Table.Cell textAlign="center">
                         {
                             item.device.deviceType === 'INDICATOR' ? 
-                                <Button positive onClick={() => this.getCertainIndicatorVal(item.name)}>Get Value</Button> :
-                            <Icon name="close"/>
-                        }
-                        {
-                            this.state.certainIndicatorsValueInRoom.length !== 0 ?
-                                this.state.certainIndicatorsValueInRoom.map(indicator => {
-                                    // let keys = Object.keys(indicator);
-                                    console.log(indicator)
-                                    return;
-                                    // keys.map(key => {
-                                        // if(key !== item.name) return false;
-                                        return (
-                                            <span>{indicator[item.name].value}</span>
-
-                                        )
-
-                                    // })
-                                })
-                            :
-                            ''
+                                <Button 
+                                    positive 
+                                    onClick={() => this.getCertainIndicatorVal(item.name)}
+                                >
+                                Get Value</Button> 
+                                :
+                                <Icon name="close"/>
                         }
                     </Table.Cell>
               </Table.Row>
@@ -443,6 +455,7 @@ class RoomPage extends Component {
                 {this.setRooms()}
                 {this.roomModal()}
                 {this.addDeviceModal()}
+                {this.indicatorValueModal()}
                 <Confirm
                     className='confirm_window'
                     size='mini'
