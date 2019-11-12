@@ -7,7 +7,8 @@ import {setRoom} from "../../../actions/setRoom";
 import {addRoom} from "../../../actions/addRoom";
 import {setDeviceInRoom} from "../../../actions/setDeviceInRoom";
 import {deleteRoom} from "../../../actions/deleteRoom";
-import {addDeviceInRoom} from "../../../actions/addDeviceInRoom"
+import {addDeviceInRoom} from "../../../actions/addDeviceInRoom";
+import {setCommandList} from "../../../actions/setCommandList";
 // import '../../../styleForComponents/Look.css';
 // import '../../../styleForComponents/kit.css';
 
@@ -22,6 +23,7 @@ class RoomPage extends Component {
         isModalOpen: false,
         isModalDeviceOpen: false,
         isConfirmOpen: false,
+        showComandsField: false,
         roomNameDel: '',
         activeDevice: 0,
         roomName: '',
@@ -30,10 +32,13 @@ class RoomPage extends Component {
         deviceName: '',
         devicePin: '',
         deviceValueType: '',
+        // command: [],
+        certainIndicatorsValueInRoom: []
     }
 
     componentDidMount() {
-        let url = 'http://localhost:8080/room/user';
+        let url = 'http://localhost:8080/room/user',
+            urlCommand = 'http://localhost:8080/command';
     
         axios.get(url, {
             headers: {
@@ -43,6 +48,18 @@ class RoomPage extends Component {
             .then(response => {
                 if(response.status === 200) {
                     this.props.setRoom(response.data);
+                }
+            })
+            .catch(err => console.error(err));
+
+        axios.get(urlCommand, {
+            headers: {
+                'Authorization': "Basic " + window.localStorage.token
+            }
+        })
+            .then(response => {
+                if(response.status === 200) {
+                    this.props.setCommandList(response.data)
                 }
             })
             .catch(err => console.error(err));
@@ -93,6 +110,21 @@ class RoomPage extends Component {
                                 options={this.createDeviceOptions()}
                             />
                         </Form.Field>
+                        {/* {
+                            this.state.showComandsField &&
+                            <Form.Field>
+                                <label>Commands</label>
+                                <Dropdown
+                                    fluid
+                                    multiple
+                                    onChange={this.editCommandField}
+                                    name='clothTypeData'
+                                    search
+                                    selection
+                                    options={this.createCommandOptions()}
+                                />
+                             </Form.Field>
+                        } */}
                         <Form.Field>
                             <label>Device Name</label>
                             <input type='text' name='deviceName' onChange={this.editField}/>
@@ -145,7 +177,7 @@ class RoomPage extends Component {
                 device: {
                     name: this.state.device,
                     deviceType: this.state.device.toUpperCase(),
-                    commands: []
+                    commands: ['Enable', 'Disable']
                 },
                 name: this.state.deviceName,
                 valueType: this.state.deviceValueType,
@@ -214,16 +246,41 @@ class RoomPage extends Component {
             .catch(err => console.error(err));
     }
 
+    getCertainIndicatorVal = (name) => {
+        let url = `http://localhost:8080/indicator?deviceName=${name}`;
+
+        axios.get(url, {
+            headers: {
+                'Authorization': "Basic " + window.localStorage.token
+            }
+        })
+        .then(response => {
+            if(response.status === 200) {
+                this.setState({...this.state, certainIndicatorsValueInRoom: [...this.state.certainIndicatorsValueInRoom, {[name]: response.data}]});   
+            }
+        })
+        .catch(err => console.error(err));
+    }
+
     editField = ({target}) => {
         this.setState({[target.name]: target.value})
     };
 
     editDeviceField =(event, data) => {
-        this.setState({...this.state, device: data.value })
+        
+        this.setState({...this.state, device: data.value, showComandsField: data.value === 'gadget' ? true : false })
     };
 
     editRoomField =(event, data) => {
         this.setState({...this.state, roomNameForDevice: data.value })
+    };
+
+    editCommandField = (event, data) => { 
+        this.setState({...this.state, command: data.value.map(item => {
+            return {
+                name: item
+            }
+        })})
     };
 
     openModal = (name) => {
@@ -256,6 +313,15 @@ class RoomPage extends Component {
         }))
     }
 
+    createCommandOptions() {
+        return this.props.dataCommands.map((item, index) => ({
+            key: index,
+            text: item.name,
+            value: item.name,
+            
+        }));
+    }
+
     setDeviceData = () => {
         let dataDevice = this.props.dataDeviceInRoom;
         
@@ -267,16 +333,44 @@ class RoomPage extends Component {
                     </Table.Cell>
                     <Table.Cell>{item.device.name}</Table.Cell>
                     <Table.Cell>{item.device.deviceType}</Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell textAlign="center">
                         <List celled ordered>
-                            {item.device.commands.map((command, index) => {
+                            {
+                                item.device.deviceType === 'GADGET' ? 
+                                item.device.commands.map((command, index) => {
                                    return (
                                         <List.Item key={index}>{command.name}</List.Item>
-                                   ) 
-                            })}
+                                   )  
+                            }) :
+                            <Icon name="close"/>
+                        }
                         </List>
                     </Table.Cell>
-                    <Table.Cell>Value</Table.Cell>
+                    <Table.Cell textAlign="center">
+                        {
+                            item.device.deviceType === 'INDICATOR' ? 
+                                <Button positive onClick={() => this.getCertainIndicatorVal(item.name)}>Get Value</Button> :
+                            <Icon name="close"/>
+                        }
+                        {
+                            this.state.certainIndicatorsValueInRoom.length !== 0 ?
+                                this.state.certainIndicatorsValueInRoom.map(indicator => {
+                                    // let keys = Object.keys(indicator);
+                                    console.log(indicator)
+                                    return;
+                                    // keys.map(key => {
+                                        // if(key !== item.name) return false;
+                                        return (
+                                            <span>{indicator[item.name].value}</span>
+
+                                        )
+
+                                    // })
+                                })
+                            :
+                            ''
+                        }
+                    </Table.Cell>
               </Table.Row>
             )
         })
@@ -299,16 +393,23 @@ class RoomPage extends Component {
                                     <Table.HeaderCell>Name</Table.HeaderCell>
                                     <Table.HeaderCell>Device Name</Table.HeaderCell>
                                     <Table.HeaderCell>Device Type</Table.HeaderCell>
-                                    <Table.HeaderCell>Commands</Table.HeaderCell>
-                                    <Table.HeaderCell>Value</Table.HeaderCell>
+                                    <Table.HeaderCell textAlign="center">Commands</Table.HeaderCell>
+                                    <Table.HeaderCell textAlign="center">Value</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
                                     {this.setDeviceData()}
                                 </Table.Body>
+                                <Table.Footer>
+                                    <Table.Row>
+                                        <Table.HeaderCell colSpan='5'>
+                                            <Button positive>Get All Indicator Value</Button>
+                                        </Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Footer>
                             </Table>
                                 :
-                            <Button positive onClick={() => this.setDeviceInRoom(item.roomName, index)}>Click To Get Your Device</Button>
+                            <Button positive onClick={() => this.setDeviceInRoom(item.roomName, index)}>Get Your Devices</Button>
                         }
                         <Button negative onClick={() =>  {
                             this.setState({...this.state, isConfirmOpen: true, roomNameDel: item.roomName});
@@ -361,6 +462,7 @@ function matchDispatchToProps(dispatch) {
         setDeviceInRoom: setDeviceInRoom,
         deleteRoom: deleteRoom,
         addDeviceInRoom: addDeviceInRoom,
+        setCommandList: setCommandList,
     }, dispatch)
 }
 
@@ -368,6 +470,7 @@ function mapStateToProps(state) {
     return {
         data: state.room,
         dataDeviceInRoom: state.deviceInRoom,
+        dataCommands: state.commandList
     }
 }
 
