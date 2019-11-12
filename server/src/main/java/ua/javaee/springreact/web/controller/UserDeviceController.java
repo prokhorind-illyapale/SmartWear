@@ -46,6 +46,11 @@ public class UserDeviceController {
         return ResponseEntity.ok(defaultUserDeviceFacade.findAllByLoginAndRoomName(principal.getName(), name));
     }
 
+    @GetMapping("/indicator/types")
+    public ResponseEntity getIndicatorTypes(Principal principal) {
+        return ResponseEntity.ok(defaultUserDeviceFacade.findDeviceTypes(principal.getName()));
+    }
+
     @PostMapping
     public ResponseEntity addDevice(@RequestBody UserDeviceDataForm dataForm, Principal principal) {
         dataForm.setUser(principal.getName());

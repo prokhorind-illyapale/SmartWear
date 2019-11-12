@@ -20,4 +20,13 @@ public interface UserDeviceRepository extends JpaRepository<UserDevice, Long> {
 
     @Query("SELECT ud.userDeviceId FROM UserDevice ud WHERE ud.user.login= :login AND ud.room.roomName = :roomName")
     List<Long> findUserDeviceIdsInARoom(String login, String roomName);
+
+    @Query("SELECT DISTINCT ud.valueType FROM UserDevice ud WHERE ud.room.roomId IN(:ids) AND ud.valueType IS NOT NULL")
+    List<String> findAllIndicatorTypesInRooms(List<Long> ids);
+
+    @Query("SELECT ud.userDeviceId FROM UserDevice ud WHERE ud.user.login= :login AND ud.valueType = :valueType")
+    List<Long> findUserDeviceIdsByType(String login, String valueType);
+
+    @Query("SELECT ud.userDeviceId FROM UserDevice ud WHERE ud.user.login= :login AND ud.name IN(:names)")
+    List<Long> findUserDeviceIdsByNames(String login, List<String> names);
 }
