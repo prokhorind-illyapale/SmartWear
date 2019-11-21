@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class IndicatorView {
     private String value;
-    private long userDeviceId;
+    private String deviceName;
     private Date date;
 
     public IndicatorView() {
@@ -18,12 +18,12 @@ public class IndicatorView {
         this.value = value;
     }
 
-    public long getUserDeviceId() {
-        return userDeviceId;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
-    public void setUserDeviceId(long userDeviceId) {
-        this.userDeviceId = userDeviceId;
+    public String getDeviceName() {
+        return deviceName;
     }
 
     public Date getDate() {
