@@ -12,6 +12,7 @@ COPY package.json /app/package.json
 RUN npm install --silent
 RUN npm audit fix
 RUN npm install react-scripts@3.0.1 -g --silent
+RUN npm install react-apexcharts apexcharts
 
 # start app
 CMD ["npm", "start"]

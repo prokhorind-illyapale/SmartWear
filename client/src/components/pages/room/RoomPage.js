@@ -9,8 +9,8 @@ import {setDeviceInRoom} from "../../../actions/setDeviceInRoom";
 import {deleteRoom} from "../../../actions/deleteRoom";
 import {addDeviceInRoom} from "../../../actions/addDeviceInRoom";
 import {setCommandList} from "../../../actions/setCommandList";
-// import '../../../styleForComponents/Look.css';
-// import '../../../styleForComponents/kit.css';
+import ChartInRoom from "./chartInRoom";
+
 
 const deviceArr = [
     'gadget',
@@ -32,9 +32,8 @@ class RoomPage extends Component {
         deviceName: '',
         devicePin: '',
         deviceValueType: '',
-        // command: [],
-        certainIndicatorsValueInRoom: [],
         isModalIndicatorValueOpen: false,
+        indicatorValueInRoom: []
     }
 
     componentDidMount() {
@@ -89,17 +88,16 @@ class RoomPage extends Component {
         return (
             <Modal size='small' open={this.state.isModalIndicatorValueOpen} onClose={this.closeIndicatorValueModal} closeIcon>
                 <Modal.Header>Indicator Value Is</Modal.Header>
-                <Modal.Content>
-                    <label>
-                        {
-                            this.state.certainIndicatorsValueInRoom.length !== 0 
-                            ?
-                            `Value: ${this.state.certainIndicatorsValueInRoom[0].value}`
-                            :
-                            'No Value'
-                        }
-                    </label>
-                </Modal.Content>
+                    {
+                        this.state.indicatorValueInRoom.map((item, index) => {
+                            return (
+                                <Modal.Content key={index}>
+                                    <div>Value: {item.value}</div>
+                                    <div>Device Name: {item.deviceName}</div>
+                                </Modal.Content>
+                            )
+                        })
+                    }
             </Modal>
         )
     }
@@ -130,21 +128,6 @@ class RoomPage extends Component {
                                 options={this.createDeviceOptions()}
                             />
                         </Form.Field>
-                        {/* {
-                            this.state.showComandsField &&
-                            <Form.Field>
-                                <label>Commands</label>
-                                <Dropdown
-                                    fluid
-                                    multiple
-                                    onChange={this.editCommandField}
-                                    name='clothTypeData'
-                                    search
-                                    selection
-                                    options={this.createCommandOptions()}
-                                />
-                             </Form.Field>
-                        } */}
                         <Form.Field>
                             <label>Device Name</label>
                             <input type='text' name='deviceName' onChange={this.editField}/>
@@ -266,21 +249,23 @@ class RoomPage extends Component {
             .catch(err => console.error(err));
     }
 
-    getCertainIndicatorVal = (name) => {
-        let url = `http://localhost:8080/indicator?deviceName=${name}`;
+    getAllIndicatorValInRoom = (room) => {
+        let url = `http://localhost:8080/indicator/room/${room}`;
 
         axios.get(url, {
             headers: {
                 'Authorization': "Basic " + window.localStorage.token
             }
         })
-        .then(response => {
-            if(response.status === 200) {
-                console.log(response.data)
-                this.setState({certainIndicatorsValueInRoom: [{value: response.data.value}], isModalIndicatorValueOpen: true});
-            }
-        })
-        .catch(err => console.error(err));
+            .then(response => {
+                if(response.status === 200) {
+                    this.setState({
+                        indicatorValueInRoom: [...response.data], 
+                        isModalIndicatorValueOpen: true
+                    });
+                }
+            })
+            .catch(err => console.error(err))
     }
 
     editField = ({target}) => {
@@ -371,18 +356,6 @@ class RoomPage extends Component {
                         }
                         </List>
                     </Table.Cell>
-                    <Table.Cell textAlign="center">
-                        {
-                            item.device.deviceType === 'INDICATOR' ? 
-                                <Button 
-                                    positive 
-                                    onClick={() => this.getCertainIndicatorVal(item.name)}
-                                >
-                                Get Value</Button> 
-                                :
-                                <Icon name="close"/>
-                        }
-                    </Table.Cell>
               </Table.Row>
             )
         })
@@ -406,7 +379,7 @@ class RoomPage extends Component {
                                     <Table.HeaderCell>Device Name</Table.HeaderCell>
                                     <Table.HeaderCell>Device Type</Table.HeaderCell>
                                     <Table.HeaderCell textAlign="center">Commands</Table.HeaderCell>
-                                    <Table.HeaderCell textAlign="center">Value</Table.HeaderCell>
+                                    <Table.HeaderCell textAlign="center"></Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
@@ -415,7 +388,7 @@ class RoomPage extends Component {
                                 <Table.Footer>
                                     <Table.Row>
                                         <Table.HeaderCell colSpan='5'>
-                                            <Button positive>Get All Indicator Value</Button>
+                                            <Button onClick={() => this.getAllIndicatorValInRoom(item.roomName)} positive>Get All Indicator Value</Button>
                                         </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Footer>
@@ -463,6 +436,7 @@ class RoomPage extends Component {
                     onCancel={this.closeConfirm}
                     onConfirm={() => this.deleteRoom(this.state.roomNameDel)}
                 />
+                <ChartInRoom/>
             </div>
         ) 
     }
