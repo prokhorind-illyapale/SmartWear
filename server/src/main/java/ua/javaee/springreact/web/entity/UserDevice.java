@@ -16,7 +16,7 @@ public class UserDevice {
     @ManyToOne(cascade = PERSIST)
     private User user;
     @JoinColumn(name = "room_id")
-    @ManyToOne(cascade = PERSIST, optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = PERSIST, optional = true)
     private Room room;
     @JoinColumn(name = "device_id")
     @ManyToOne

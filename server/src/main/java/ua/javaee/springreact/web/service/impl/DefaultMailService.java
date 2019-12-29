@@ -7,6 +7,11 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import ua.javaee.springreact.web.entity.Room;
+import ua.javaee.springreact.web.entity.User;
+import ua.javaee.springreact.web.entity.UserDevice;
+
+import javax.transaction.Transactional;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
@@ -17,6 +22,43 @@ public class DefaultMailService {
     public JavaMailSender emailSender;
 
     private Logger logger = LoggerFactory.getLogger(DefaultMailService.class);
+
+    @Transactional
+    public void sendFixMessage(UserDevice userDevice, String value) {
+        User user = userDevice.getUser();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Dear");
+        sb.append("\t");
+        sb.append(user.getLogin());
+        sb.append("!");
+        sb.append("\n");
+        sb.append("");
+        sb.append(userDevice.getValueType().toLowerCase());
+        sb.append(" was fixed in a room::");
+        sb.append(userDevice.getRoom().getRoomName());
+        sendSimpleMessage(user.getEmail(),"fix",sb.toString());
+    }
+
+    @Transactional
+    public void sendAlertMessage(UserDevice userDevice, String value) {
+        User user = userDevice.getUser();
+        Room room = userDevice.getRoom();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Dear");
+        sb.append("\t");
+        sb.append(user.getLogin());
+        sb.append("!");
+        sb.append("\n");
+        sb.append("You have a suspicious ");
+        sb.append(userDevice.getValueType().toLowerCase());
+        sb.append(" value");
+        sb.append("(");
+        sb.append(value);
+        sb.append(")");
+        sb.append("Please check:");
+        sb.append(room.getRoomName());
+        sendSimpleMessage(user.getEmail(),"alert",sb.toString());
+    }
 
     public void sendSimpleMessage(String to, String subject, String text) {
         if (isBlank(to)) {
